@@ -29,10 +29,10 @@ export function calculateDayMenu({
     const shouldRestart = calories < CALORIES_LOWER_BOUND;
     if (shouldRestart) {
       return calculateDayMenu({
-        recipes: List(data.sort(randomSort)),
+        recipes: List(data).sort(randomSort),
       });
     }
-    return { menu, calories, protein };
+    return { menu: menu.toArray(), calories, protein };
   }
 
   const recipe = recipes.get(recipeIndex) || {};
@@ -55,14 +55,10 @@ export function calculateDayMenu({
     });
   }
 
-  const newMenuItem = `${recipe.Calories}cal | protein ${recipe.Protein}g | ${
-    recipe.name
-  } | ${recipe.type}`;
-
   const recipeUpdated = { ...recipe, servings: remainingServings };
 
   return calculateDayMenu({
-    menu: menu.push(newMenuItem),
+    menu: menu.push(recipe),
     recipes: recipes.update(recipeIndex, () => recipeUpdated),
     recipeIndex,
     calories: caloriesCounted,

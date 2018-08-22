@@ -1,24 +1,31 @@
+import { Card, CardAction, CardActions } from 'rmwc/Card';
+import { Icon } from 'rmwc/Icon';
+import { ListDivider } from 'rmwc/List';
+import { List, SimpleListItem } from 'rmwc/List';
 import { Typography } from 'rmwc/Typography';
-import { ListDivider } from 'rmwc';
 
-const Recipes = props => {
+const Recipes = ({ recipes, onAdd }) => {
   return (
-    <section>
-      <Typography use="overline">
-        Recipes
-        <ListDivider />
-      </Typography>
+    <Card outlined>
+      <CardActions fullBleed>
+        <CardAction onClick={onAdd}>Recipes</CardAction>
+      </CardActions>
+      <ListDivider />
 
-      {props.recipes.map(
-        ({ _key, name, Calories, Protein, Carbs, Fat, type, servings }) => (
-          <article key={_key}>
-            <Typography use="caption">
-              {`${Calories}cal | protein ${Protein}g | Carbs${Carbs}g | Fat${Fat}g | ${type} | ${servings} servings | ${name}`}
-            </Typography>
-          </article>
-        ),
-      )}
-    </section>
+      <List twoLine dense>
+        {recipes.map(
+          ({ _key, name, Calories, Protein, Carbs, Fat, type, servings }) => (
+            <SimpleListItem
+              key={_key}
+              graphic="restaurant"
+              text={`${name} (${type.toLowerCase()})`}
+              secondaryText={`${Calories}cal | Protein ${Protein}g | Carbs ${Carbs}g | Fat ${Fat}g | ${servings} servings`}
+              meta="chevron_right"
+            />
+          ),
+        )}
+      </List>
+    </Card>
   );
 };
 

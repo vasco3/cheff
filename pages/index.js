@@ -1,6 +1,12 @@
 import React from 'react';
 import Head from 'next/head';
-import { Typography } from 'rmwc/Typography';
+import {
+  TopAppBar,
+  TopAppBarRow,
+  TopAppBarSection,
+  TopAppBarTitle,
+} from 'rmwc/TopAppBar';
+
 import Cheff from '../src/Cheff';
 
 export default function HomePage() {
@@ -25,8 +31,27 @@ export default function HomePage() {
           rel="stylesheet"
         />
       </Head>
-      <Typography use="headline1">Cheff</Typography>
-      <Cheff />
+      <TopAppBar dense>
+        <TopAppBarRow>
+          <TopAppBarSection>
+            <TopAppBarTitle>Cheff</TopAppBarTitle>
+          </TopAppBarSection>
+        </TopAppBarRow>
+      </TopAppBar>
+
+      <div className="mdc-top-app-bar--dense-fixed-adjust">
+        <Cheff />
+      </div>
+      <style jsx global>{`
+        html,
+        body {
+          padding: 0;
+          margin: 0;
+        }
+        :root {
+          --mdc-theme-primary: rgb(253, 103, 33);
+        }
+      `}</style>
     </div>
   );
 }
