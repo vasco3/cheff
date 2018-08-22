@@ -26,7 +26,9 @@
   "dependencies": {
     "formik": "^1.0.3",
     "immutable": "^3.8.2",
+    "lodash": "^4.17.10",
     "next": "^6.1.1",
+    "numeral": "^2.0.6",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "rmwc": "^1.8.3",
