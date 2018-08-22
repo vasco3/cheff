@@ -1,0 +1,34 @@
+{
+  "name": "cheff",
+  "version": "1.0.0",
+  "description": "Meal Planner",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "export": "next export",
+    "start": "next start",
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vasco3/cheff.git"
+  },
+  "keywords": [
+    "nutrition"
+  ],
+  "author": "Jorge Cuadra Fueyo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vasco3/cheff/issues"
+  },
+  "homepage": "https://github.com/vasco3/cheff#readme",
+  "dependencies": {
+    "formik": "^1.0.3",
+    "immutable": "^3.8.2",
+    "next": "^6.1.1",
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2",
+    "yup": "^0.26.2"
+  }
+}

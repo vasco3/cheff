@@ -1,2 +1,3 @@
-# kx-meal-planner
-Meal Planner for calories and macros
+# Cheff
+
+> Meal Planner for calories and macros
