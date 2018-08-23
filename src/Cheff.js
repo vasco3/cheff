@@ -10,9 +10,6 @@ import {
   TopAppBarTitle,
 } from 'rmwc/TopAppBar';
 
-// import { ListDivider } from 'rmwc/List';
-// import { Typography } from 'rmwc/Typography';
-
 import Menu from './Menu';
 import Recipes from './Recipes';
 import recipes from '../data/recipes';
@@ -24,6 +21,7 @@ class Cheff extends Component {
   constructor(props) {
     super(props);
     this.calculate = this.calculate.bind(this);
+    this.handleAddRecipe = this.handleAddRecipe.bind(this);
     this.toggleSettings = this.toggleSettings.bind(this);
     this.updateSettings = this.updateSettings.bind(this);
 
@@ -69,6 +67,13 @@ class Cheff extends Component {
       carbsTotal: carbs,
       fatTotal: fat,
     });
+  }
+  handleAddRecipe(recipe) {
+    this.setState(prevState => ({
+      recipes: List(prevState.recipes)
+        .push(recipe)
+        .toArray(),
+    }));
   }
   toggleSettings() {
     this.setState(prevState => ({ settingsOpen: !prevState.settingsOpen }));
@@ -120,7 +125,7 @@ class Cheff extends Component {
               />
             </GridCell>
             <GridCell span="6" tablet="12">
-              <Recipes recipes={state.recipes} />
+              <Recipes recipes={state.recipes} onAdd={this.handleAddRecipe} />
             </GridCell>
           </Grid>
         </div>

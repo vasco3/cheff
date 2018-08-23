@@ -38,7 +38,7 @@ const Menu = ({
           ({ _key, name, Calories, Protein, Carbs, Fat, type = '' }, index) => (
             <SimpleListItem
               key={_key + index}
-              graphic="check_box_outline_blank"
+              graphic="restaurant"
               text={`${name} (${type.toLowerCase()})`}
               secondaryText={`${Calories}cal | Protein ${Protein}g | Carbs ${Carbs}g | Fat ${Fat}g | 1 serving`}
             />
