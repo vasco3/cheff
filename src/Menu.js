@@ -24,18 +24,12 @@ const Menu = ({
       <ListDivider />
 
       <Typography
-        use="subtitle1"
+        use="subtitle2"
         theme="text-secondary-on-background"
         className="px-4 py-2"
       >
-        {menu.length > 0 ? (
-          <React.Fragment>
-            {numeral(caloriesTotal).format('0,0')} cal, protein {proteinTotal}
-            g, carbs {carbsTotal} g, fat {fatTotal} g, {menu.length} servings
-          </React.Fragment>
-        ) : (
-          'Generate Menu'
-        )}
+        {numeral(caloriesTotal).format('0,0')} cal, protein {proteinTotal}
+        g, carbs {carbsTotal} g, fat {fatTotal} g, {menu.length} servings
       </Typography>
       {menu.length > 0 && <ListDivider />}
 
