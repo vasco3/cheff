@@ -6,19 +6,41 @@ import Recipes from './Recipes';
 import Menu from './Menu';
 import recipes from '../data/recipes';
 
-import { calculateDayMenu, randomSort } from './util';
+import { calculateDayMenu, calculateSettings, randomSort } from './util';
 
 class Cheff extends Component {
   constructor(props) {
     super(props);
     this.calculate = this.calculate.bind(this);
-    this.state = { menu: [], proteinTotal: 0, caloriesTotal: 0, recipes };
+    const settings = calculateSettings({
+      BODY_WEIGHT_LBS: 180,
+      CALORIES_TOLERANCE: 50,
+      PROTEIN_PER_BODY_LB: 1,
+      TOTAL_CALORIES: 3200,
+    });
+    this.state = {
+      menu: [],
+      caloriesTotal: 0,
+      proteinTotal: 0,
+      carbsTotal: 0,
+      fatTotal: 0,
+      recipes,
+      settings,
+    };
   }
   calculate() {
-    const { menu, protein, calories } = calculateDayMenu({
-      recipes: List(this.state.recipes).sort(randomSort),
+    const { state } = this;
+    const { menu, calories, carbs, fat, protein } = calculateDayMenu({
+      recipes: List(state.recipes).sort(randomSort),
+      settings: state.settings,
     });
-    this.setState({ menu, proteinTotal: protein, caloriesTotal: calories });
+    this.setState({
+      menu,
+      proteinTotal: protein,
+      caloriesTotal: calories,
+      carbsTotal: carbs,
+      fatTotal: fat,
+    });
   }
   render() {
     const { state } = this;
@@ -27,6 +49,8 @@ class Cheff extends Component {
         <GridCell span="6">
           <Menu
             caloriesTotal={state.caloriesTotal}
+            carbsTotal={state.carbsTotal}
+            fatTotal={state.fatTotal}
             menu={state.menu}
             proteinTotal={state.proteinTotal}
             onGenerate={this.calculate}

@@ -8,7 +8,9 @@ const Recipes = ({ recipes, onAdd }) => {
   return (
     <Card outlined>
       <CardActions fullBleed>
-        <CardAction onClick={onAdd}>Recipes</CardAction>
+        <CardAction onClick={onAdd}>
+          Recipes 
+        </CardAction>
       </CardActions>
       <ListDivider />
 

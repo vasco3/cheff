@@ -6,7 +6,14 @@ import { Typography } from 'rmwc/Typography';
 import { List, SimpleListItem } from 'rmwc/List';
 import numeral from 'numeral';
 
-const Menu = ({ menu, proteinTotal, caloriesTotal, onGenerate }) => {
+const Menu = ({
+  menu,
+  caloriesTotal,
+  carbsTotal,
+  fatTotal,
+  proteinTotal,
+  onGenerate,
+}) => {
   return (
     <Card outlined>
       <CardActions fullBleed>
@@ -24,7 +31,7 @@ const Menu = ({ menu, proteinTotal, caloriesTotal, onGenerate }) => {
         {menu.length > 0 ? (
           <React.Fragment>
             {numeral(caloriesTotal).format('0,0')} cal, protein {proteinTotal}
-            g, {menu.length} servings
+            g, carbs {carbsTotal} g, fat {fatTotal} g, {menu.length} servings
           </React.Fragment>
         ) : (
           'Generate Menu'
@@ -37,10 +44,9 @@ const Menu = ({ menu, proteinTotal, caloriesTotal, onGenerate }) => {
           ({ _key, name, Calories, Protein, Carbs, Fat, type = '' }, index) => (
             <SimpleListItem
               key={_key + index}
-              graphic="restaurant"
+              graphic="check_box_outline_blank"
               text={`${name} (${type.toLowerCase()})`}
               secondaryText={`${Calories}cal | Protein ${Protein}g | Carbs ${Carbs}g | Fat ${Fat}g | 1 serving`}
-              meta="chevron_right"
             />
           ),
         )}
