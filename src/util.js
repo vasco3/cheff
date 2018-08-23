@@ -59,13 +59,13 @@ export function calculateDayMenu({
 
   if (shouldSkipRecipe) {
     return calculateDayMenu({
-      menu,
-      recipes,
-      recipeIndex: recipeIndex + 1,
       calories,
-      protein,
       carbs,
       fat,
+      menu,
+      protein,
+      recipeIndex: recipeIndex + 1,
+      recipes,
       settings,
     });
   }

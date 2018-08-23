@@ -1,17 +1,11 @@
 import React from 'react';
 import Head from 'next/head';
-import {
-  TopAppBar,
-  TopAppBarRow,
-  TopAppBarSection,
-  TopAppBarTitle,
-} from 'rmwc/TopAppBar';
 
 import Cheff from '../src/Cheff';
 
-export default function HomePage() {
+function HomePage() {
   return (
-    <div>
+    <React.Fragment>
       <Head>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <link
@@ -31,17 +25,7 @@ export default function HomePage() {
           rel="stylesheet"
         />
       </Head>
-      <TopAppBar dense>
-        <TopAppBarRow>
-          <TopAppBarSection>
-            <TopAppBarTitle>Cheff</TopAppBarTitle>
-          </TopAppBarSection>
-        </TopAppBarRow>
-      </TopAppBar>
-
-      <div className="mdc-top-app-bar--dense-fixed-adjust">
-        <Cheff />
-      </div>
+      <Cheff />
       <style jsx global>{`
         html,
         body {
@@ -52,6 +36,8 @@ export default function HomePage() {
           --mdc-theme-primary: rgb(253, 103, 33);
         }
       `}</style>
-    </div>
+    </React.Fragment>
   );
 }
+
+export default HomePage;
