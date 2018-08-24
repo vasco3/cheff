@@ -1,3 +1,4 @@
+/* global localStorage */
 import React, { Component, Fragment } from 'react';
 import getIn from 'lodash/get';
 import { List } from 'immutable';
@@ -12,7 +13,6 @@ import {
 
 import Menu from './Menu';
 import Recipes from './Recipes';
-import recipes from '../data/recipes';
 import Settings from './Settings';
 
 import { calculateDayMenu, calculateSettings, randomSort } from './util';
@@ -24,6 +24,12 @@ class Cheff extends Component {
     this.handleAddRecipe = this.handleAddRecipe.bind(this);
     this.toggleSettings = this.toggleSettings.bind(this);
     this.updateSettings = this.updateSettings.bind(this);
+
+    const recipesJSON =
+      typeof localStorage === 'undefined'
+        ? []
+        : JSON.parse(localStorage.getItem('recipes') || '[]');
+    const recipes = List(recipesJSON);
 
     this.state = {
       BODY_WEIGHT_LBS: 180,
@@ -56,7 +62,7 @@ class Cheff extends Component {
       TOTAL_CALORIES,
     });
     const { menu, calories, carbs, fat, protein } = calculateDayMenu({
-      recipes: List(state.recipes).sort(randomSort),
+      recipes: state.recipes.sort(randomSort),
       settings,
     });
 
@@ -69,11 +75,11 @@ class Cheff extends Component {
     });
   }
   handleAddRecipe(recipe) {
-    this.setState(prevState => ({
-      recipes: List(prevState.recipes)
-        .push(recipe)
-        .toArray(),
-    }));
+    const recipes = this.state.recipes.push(recipe);
+
+    this.setState({ recipes }, function saveToLocal() {
+      localStorage.setItem('recipes', JSON.stringify(recipes.toArray()));
+    });
   }
   toggleSettings() {
     this.setState(prevState => ({ settingsOpen: !prevState.settingsOpen }));
@@ -125,7 +131,10 @@ class Cheff extends Component {
               />
             </GridCell>
             <GridCell span="6" tablet="12">
-              <Recipes recipes={state.recipes} onAdd={this.handleAddRecipe} />
+              <Recipes
+                recipes={state.recipes.toArray()}
+                onAdd={this.handleAddRecipe}
+              />
             </GridCell>
           </Grid>
         </div>
