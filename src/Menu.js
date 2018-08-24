@@ -18,7 +18,7 @@ const Menu = ({
     <Card outlined>
       <CardActions fullBleed>
         <CardAction onClick={onGenerate}>
-          Menu <Icon use="autorenew" />
+          Day Menu <Icon use="autorenew" />
         </CardAction>
       </CardActions>
       <ListDivider />
@@ -31,9 +31,15 @@ const Menu = ({
         {numeral(caloriesTotal).format('0,0')} cal, protein {proteinTotal}
         g, carbs {carbsTotal} g, fat {fatTotal} g, {menu.length} servings
       </Typography>
-      {menu.length > 0 && <ListDivider />}
+
+      <ListDivider />
 
       <List twoLine dense>
+        {menu.length === 0 && (
+          <Typography use="body2" tag="div" className="p-4">
+            Add at least two recipes before generating a day menu.
+          </Typography>
+        )}
         {menu.map(
           ({ _key, name, Calories, Protein, Carbs, Fat, type = '' }, index) => (
             <SimpleListItem

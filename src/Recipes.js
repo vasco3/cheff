@@ -8,17 +8,18 @@ import { Icon } from 'rmwc/Icon';
 import { ListDivider } from 'rmwc/List';
 import { List, SimpleListItem } from 'rmwc/List';
 import { TextField } from 'rmwc/TextField';
+import { Typography } from 'rmwc';
 
 class Recipes extends React.Component {
   state = {
-    name: '',
     Calories: 0,
-    Protein: 0,
     Carbs: 0,
     Fat: 0,
-    type: '',
-    servings: 0,
+    Protein: 0,
     isAdding: false,
+    name: '',
+    servings: 0,
+    type: 'Meal',
   };
   constructor(props) {
     super(props);
@@ -31,14 +32,14 @@ class Recipes extends React.Component {
     const { name, Calories, Protein, Carbs, Fat, type, servings } = this.state;
     this.setState({ isAdding: false }, () =>
       this.props.onAdd({
-        _key: snakeCase(name || '').toUpperCase(),
-        name,
         Calories: parseInt(Calories, 10),
-        Protein: parseInt(Protein, 10),
         Carbs: parseInt(Carbs, 10),
         Fat: parseInt(Fat, 10),
-        type,
+        Protein: parseInt(Protein, 10),
+        _key: snakeCase(name || '').toUpperCase(),
+        name,
         servings: parseInt(servings, 10),
+        type,
       }),
     );
   }
@@ -52,9 +53,10 @@ class Recipes extends React.Component {
   toggleAddRecipe() {
     this.setState(prevState => ({ isAdding: !prevState.isAdding }));
   }
+
   render() {
     const { state, props } = this;
-    const { recipes, onAdd } = props;
+    const { recipes } = props;
     return (
       <Card outlined>
         <CardActions fullBleed>
@@ -94,13 +96,18 @@ class Recipes extends React.Component {
               ))}
               <footer className="recipeFormFooter">
                 <Button onClick={this.toggleAddRecipe}>cancel</Button>
-                <Button onClick={this.addRecipe}>save</Button>
+                <Button onClick={this.addRecipe}>add recipe</Button>
               </footer>
             </div>
             <ListDivider />
           </React.Fragment>
         )}
         <List twoLine dense>
+          {recipes.length === 0 && (
+            <Typography use="body2" tag="div" className="p-4">
+              Click on the "+" icon to add recipes.
+            </Typography>
+          )}
           {recipes.map(
             ({ _key, name, Calories, Protein, Carbs, Fat, type, servings }) => (
               <SimpleListItem
