@@ -1,7 +1,5 @@
 const { List } = require('immutable');
 
-const data = require('../data/recipes');
-
 export function calculateSettings({
   BODY_WEIGHT_LBS,
   CALORIES_TOLERANCE,
@@ -23,21 +21,27 @@ export function randomSort() {
 
 // Find the combinations of recipes that amount 2,800 cal
 export function calculateDayMenu({
-  menu = List([]),
-  recipes = List([]),
-  recipeIndex = 0,
   calories = 0,
-  protein = 0,
   carbs = 0,
   fat = 0,
+  menu = List([]),
+  protein = 0,
+  recipeIndex = 0,
+  recipes = List([]),
+  consumedServings = 0,
   settings = {},
 }) {
   const shouldExit = recipeIndex >= recipes.size;
   if (shouldExit) {
-    const shouldRestart = calories < settings.CALORIES_LOWER_BOUND;
+    const shouldRestart =
+      calories > settings.CALORIES_UPPER_BOUND ||
+      calories < settings.CALORIES_LOWER_BOUND ||
+      protein > settings.PROTEIN_UPPER_BOUND + 10 ||
+      protein < settings.PROTEIN_UPPER_BOUND - 10;
+
     if (shouldRestart) {
       return calculateDayMenu({
-        recipes: List(data).sort(randomSort),
+        recipes: recipes.sort(randomSort),
         settings,
       });
     }
@@ -50,12 +54,10 @@ export function calculateDayMenu({
   const carbsCounted = carbs + recipe.Carbs;
   const fatCounted = fat + recipe.Fat;
 
-  const remainingServings = recipe.servings - 1;
-
   const shouldSkipRecipe =
     caloriesCounted > settings.CALORIES_UPPER_BOUND ||
-    proteinCounted > settings.PROTEIN_UPPER_BOUND ||
-    recipe.servings === 0;
+    proteinCounted > settings.PROTEIN_UPPER_BOUND + 10 ||
+    recipe.servings - consumedServings === 0;
 
   if (shouldSkipRecipe) {
     return calculateDayMenu({
@@ -66,20 +68,20 @@ export function calculateDayMenu({
       protein,
       recipeIndex: recipeIndex + 1,
       recipes,
+      consumedServings,
       settings,
     });
   }
 
-  const recipeUpdated = { ...recipe, servings: remainingServings };
-
   return calculateDayMenu({
-    menu: menu.push(recipe),
-    recipes: recipes.update(recipeIndex, () => recipeUpdated),
-    recipeIndex,
     calories: caloriesCounted,
-    protein: proteinCounted,
     carbs: carbsCounted,
     fat: fatCounted,
+    menu: menu.push(recipe),
+    protein: proteinCounted,
+    recipeIndex,
+    recipes,
+    consumedServings: consumedServings + 1,
     settings,
   });
 }

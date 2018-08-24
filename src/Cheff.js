@@ -74,6 +74,7 @@ class Cheff extends Component {
       fatTotal: fat,
     });
   }
+
   handleAddRecipe(recipe) {
     const recipes = this.state.recipes.push(recipe);
 
@@ -81,13 +82,15 @@ class Cheff extends Component {
       localStorage.setItem('recipes', JSON.stringify(recipes.toArray()));
     });
   }
+
   toggleSettings() {
     this.setState(prevState => ({ settingsOpen: !prevState.settingsOpen }));
   }
+
   updateSettings(event) {
     const name = getIn(event, 'target.name');
     const value = getIn(event, 'target.value');
-    this.setState({ [name]: value });
+    this.setState({ [name]: parseFloat(value, 10) });
   }
 
   render() {
