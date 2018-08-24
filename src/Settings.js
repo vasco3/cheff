@@ -1,46 +1,29 @@
 import { Drawer, DrawerContent } from 'rmwc/Drawer';
 import { TextField } from 'rmwc/TextField';
+import { Typography } from 'rmwc/Typography';
+import { ListDivider } from 'rmwc/List';
 
-const Settings = ({
-  open,
-  onChange,
-  BODY_WEIGHT_LBS,
-  CALORIES_TOLERANCE,
-  PROTEIN_PER_BODY_LB,
-  TOTAL_CALORIES,
-}) => {
+const Settings = ({ open, onChange, CALORIES_TOTAL, PROTEIN_TOTAL }) => {
   return (
     <Drawer persistent open={open == undefined ? true : open}>
       <DrawerContent className="flex flex-col justify-center">
+        <Typography use="overline" tag="div" className="px-4">
+          Daily targets
+        </Typography>
+        <ListDivider />
         <TextField
-          name="TOTAL_CALORIES"
-          defaultValue={TOTAL_CALORIES}
+          name="CALORIES_TOTAL"
+          defaultValue={CALORIES_TOTAL}
           outlined
-          label="calories"
+          label="Calories"
           onChange={onChange}
           className="mx-4"
         />
         <TextField
-          name="BODY_WEIGHT_LBS"
-          defaultValue={BODY_WEIGHT_LBS}
+          name="PROTEIN_TOTAL"
+          defaultValue={PROTEIN_TOTAL}
           outlined
-          label="Body lbs"
-          onChange={onChange}
-          className="mx-4"
-        />
-        <TextField
-          name="CALORIES_TOLERANCE"
-          defaultValue={CALORIES_TOLERANCE}
-          outlined
-          label="Calorie Tolerance"
-          onChange={onChange}
-          className="mx-4"
-        />
-        <TextField
-          name="PROTEIN_PER_BODY_LB"
-          defaultValue={PROTEIN_PER_BODY_LB}
-          outlined
-          label="Protein g per body lb"
+          label="Protein (g)"
           onChange={onChange}
           className="mx-4"
         />
