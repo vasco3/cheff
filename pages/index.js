@@ -21,7 +21,7 @@ function HomePage() {
           rel="stylesheet"
         />
         <link
-          href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css"
+          href="https://unpkg.com/material-components-web@0.38.2/dist/material-components-web.min.css"
           rel="stylesheet"
         />
         <script
