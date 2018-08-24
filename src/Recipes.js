@@ -8,7 +8,6 @@ import { Icon } from 'rmwc/Icon';
 import { ListDivider } from 'rmwc/List';
 import { List, SimpleListItem } from 'rmwc/List';
 import { TextField } from 'rmwc/TextField';
-// import { Typography } from 'rmwc/Typography';
 
 class Recipes extends React.Component {
   state = {
@@ -27,6 +26,7 @@ class Recipes extends React.Component {
     this.handleRecipeChange = this.handleRecipeChange.bind(this);
     this.toggleAddRecipe = this.toggleAddRecipe.bind(this);
   }
+
   addRecipe() {
     const { name, Calories, Protein, Carbs, Fat, type, servings } = this.state;
     this.setState({ isAdding: false }, () =>
@@ -108,7 +108,6 @@ class Recipes extends React.Component {
                 graphic="restaurant"
                 text={`${name} (${type.toLowerCase()})`}
                 secondaryText={`${Calories}cal | Protein ${Protein}g | Carbs ${Carbs}g | Fat ${Fat}g | ${servings} servings`}
-                meta="chevron_right"
               />
             ),
           )}
