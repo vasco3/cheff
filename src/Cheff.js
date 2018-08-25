@@ -112,11 +112,14 @@ class Cheff extends Component {
         <TopAppBar dense>
           <TopAppBarRow>
             <TopAppBarSection>
+              <TopAppBarActionItem alt="Menu" onClick={this.toggleSettings}>
+                menu
+              </TopAppBarActionItem>
               <TopAppBarTitle>Cheff</TopAppBarTitle>
             </TopAppBarSection>
-            <TopAppBarSection alignEnd>
-              <TopAppBarActionItem alt="Settings" onClick={this.toggleSettings}>
-                settings
+            {/* <TopAppBarSection alignEnd>
+              <TopAppBarActionItem alt="info" onClick={this.toggleSettings}>
+                info
               </TopAppBarActionItem>
             </TopAppBarSection>
           </TopAppBarRow>
