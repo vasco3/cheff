@@ -75,7 +75,7 @@ class Recipes extends React.Component {
       <Card outlined>
         <CardActions fullBleed>
           <CardAction onClick={this.toggleAddRecipe}>
-            Recipes{' '}
+            Recipes ({recipes.length})
             <span
               className={
                 state.isAdding || props.hasEnoughRecipes ? '' : 'add-icon'
@@ -128,8 +128,12 @@ class Recipes extends React.Component {
         )}
         <List twoLine dense>
           {recipes.length < props.recipesMinimumCount && (
-            <Typography use="body2" tag="div" className="p-4">
-              Add {recipes.length - props.recipesMinimumCount} more recipes
+            <Typography use="body2" tag="div" className="p-4 ">
+              Add {props.recipesMinimumCount - recipes.length} more recipes or
+              import{' '}
+              <Button dense onClick={props.importDemoRecipes}>
+                demo recipes
+              </Button>
             </Typography>
           )}
           {recipes

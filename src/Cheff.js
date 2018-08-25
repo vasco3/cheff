@@ -15,6 +15,8 @@ import Menu from './Menu';
 import Recipes from './Recipes';
 import Settings from './Settings';
 
+import demoRecipes from '../data/recipes';
+
 import { calculateDayMenu, calculateSettings, randomSort } from './util';
 const RECIPES_MINIMUM = 10;
 class Cheff extends Component {
@@ -77,6 +79,8 @@ class Cheff extends Component {
   handleRemoveRecipe(recipeIndex) {
     const recipes = this.state.recipes.delete(recipeIndex);
 
+  importDemoRecipes() {
+    const recipes = List(demoRecipes);
     this.setState({ recipes }, function saveToLocal() {
       localStorage.setItem('recipes', JSON.stringify(recipes.toArray()));
     });
@@ -138,6 +142,7 @@ class Cheff extends Component {
                 recipes={state.recipes.toArray()}
                 recipesMinimumCount={RECIPES_MINIMUM}
                 hasEnoughRecipes={hasEnoughRecipes}
+                importDemoRecipes={this.importDemoRecipes}
               />
             </GridCell>
           </Grid>
