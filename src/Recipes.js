@@ -97,7 +97,9 @@ class Recipes extends React.Component {
             </span>
           </CardAction>
         </CardActions>
+
         <ListDivider />
+
         {state.isAdding && (
           <React.Fragment>
             <Typography use="subtitle2" tag="div" className="mx-4 mt-4 mb-0">
@@ -136,17 +138,20 @@ class Recipes extends React.Component {
         )}
         <List twoLine dense>
           {recipes.length < props.recipesMinimumCount && (
-            <Typography use="body2" tag="div" className="p-4 ">
-              Add {props.recipesMinimumCount - recipes.length} more recipes or
-              import{' '}
-              <Button dense onClick={props.importDemoRecipes}>
-                demo recipes
-              </Button>
-            </Typography>
+            <React.Fragment>
+              <Typography use="body2" tag="div" className="p-4 ">
+                Add {props.recipesMinimumCount - recipes.length} more recipes or
+                import{' '}
+                <Button dense onClick={props.importDemoRecipes}>
+                  demo recipes
+                </Button>
+              </Typography>
+              <ListDivider />
+            </React.Fragment>
           )}
           {recipes
-            .filter(function filterOutRecipesToDelete(recipe, index) {
-              return index !== state.recipesToDelete.includes(index);
+            .filter(function filterOutRecipesToDelete(recipe) {
+              return !state.recipesToDelete.includes(recipe._key);
             })
             .map(({ _key, name, Calories, Protein, Carbs, Fat, servings }) => (
               <SimpleListItem
