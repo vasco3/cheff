@@ -16,7 +16,7 @@ import Recipes from './Recipes';
 import Settings from './Settings';
 
 import { calculateDayMenu, calculateSettings, randomSort } from './util';
-
+const RECIPES_MINIMUM = 10;
 class Cheff extends Component {
   constructor(props) {
     super(props);
@@ -84,6 +84,7 @@ class Cheff extends Component {
 
   render() {
     const { state } = this;
+    const hasEnoughRecipes = RECIPES_MINIMUM < state.recipes.size;
     return (
       <Fragment>
         <TopAppBar dense>
@@ -110,20 +111,23 @@ class Cheff extends Component {
             open={state.settingsOpen}
           />
           <Grid>
-            <GridCell span="6" tablet="12">
-              <Menu
-                caloriesTotal={state.caloriesTotal}
-                carbsTotal={state.carbsTotal}
-                fatTotal={state.fatTotal}
-                menu={state.menu}
-                onGenerate={this.calculate}
-                proteinTotal={state.proteinTotal}
-              />
-            </GridCell>
+            {hasEnoughRecipes && (
+              <GridCell span="6" tablet="12">
+                <Menu
+                  caloriesTotal={state.caloriesTotal}
+                  carbsTotal={state.carbsTotal}
+                  fatTotal={state.fatTotal}
+                  menu={state.menu}
+                  onGenerate={this.calculate}
+                  proteinTotal={state.proteinTotal}
+                />
+              </GridCell>
+            )}
             <GridCell span="6" tablet="12">
               <Recipes
                 onAdd={this.handleAddRecipe}
                 recipes={state.recipes.toArray()}
+                hasEnoughRecipes={hasEnoughRecipes}
               />
             </GridCell>
           </Grid>

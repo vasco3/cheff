@@ -61,7 +61,14 @@ class Recipes extends React.Component {
       <Card outlined>
         <CardActions fullBleed>
           <CardAction onClick={this.toggleAddRecipe}>
-            Recipes <Icon use="add" />
+            Recipes{' '}
+            <span
+              className={
+                state.isAdding || props.hasEnoughRecipes ? '' : 'add-icon'
+              }
+            >
+              <Icon use="add" />
+            </span>
           </CardAction>
         </CardActions>
         <ListDivider />
@@ -130,6 +137,21 @@ class Recipes extends React.Component {
             display: flex;
             justify-content: flex-end;
             grid-column: 1 / 4;
+          }
+          @keyframes bounce {
+            from {
+              transform: scale(1);
+            }
+            to {
+              transform: scale(1.2);
+            }
+          }
+          .add-icon {
+            animation-direction: alternate;
+            animation-duration: 1s;
+            animation-iteration-count: infinite;
+            animation-name: bounce;
+            animation-timing-function: cubic-bezier(0.3, 0.51, 0, 1.38);
           }
         `}</style>
       </Card>
