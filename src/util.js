@@ -57,10 +57,12 @@ export function calculateDayMenu({
   const carbsCounted = carbs + recipe.Carbs;
   const fatCounted = fat + recipe.Fat;
 
+  const hasServingsLeft = recipe.servings - consumedServings <= 0;
+
   const shouldSkipRecipe =
     caloriesCounted > settings.CALORIES_UPPER_BOUND ||
     proteinCounted > settings.PROTEIN_UPPER_BOUND + 10 ||
-    recipe.servings - consumedServings === 0;
+    hasServingsLeft;
 
   if (shouldSkipRecipe) {
     return calculateDayMenu({
@@ -71,7 +73,7 @@ export function calculateDayMenu({
       protein,
       recipeIndex: recipeIndex + 1,
       recipes,
-      consumedServings,
+      consumedServings: 0,
       settings,
     });
   }
