@@ -18,7 +18,10 @@ const Menu = ({
     <Card outlined>
       <CardActions fullBleed>
         <CardAction onClick={onGenerate}>
-          Menu <Icon use="autorenew" />
+          Day Menu {menu.length > 0 && `(${menu.length} servings)`}
+          <span className={!menu.length && 'bouncy'}>
+            <Icon use="autorenew" />
+          </span>
         </CardAction>
       </CardActions>
       <ListDivider />
@@ -28,10 +31,11 @@ const Menu = ({
         theme="text-secondary-on-background"
         className="px-4 py-2"
       >
-        {numeral(caloriesTotal).format('0,0')} cal, protein {proteinTotal}
-        g, carbs {carbsTotal} g, fat {fatTotal} g, {menu.length} servings
+        {numeral(caloriesTotal).format('0,0')} cal, protein {proteinTotal} g,
+        carbs {carbsTotal} g, fat {fatTotal} g
       </Typography>
-      {menu.length > 0 && <ListDivider />}
+
+      <ListDivider />
 
       <List twoLine dense>
         {menu.map(
@@ -45,6 +49,23 @@ const Menu = ({
           ),
         )}
       </List>
+      <style jsx>{`
+        @keyframes bounce {
+          from {
+            transform: scale(1);
+          }
+          to {
+            transform: scale(1.2);
+          }
+        }
+        .bouncy {
+          animation-direction: alternate;
+          animation-duration: 1s;
+          animation-iteration-count: infinite;
+          animation-name: bounce;
+          animation-timing-function: cubic-bezier(0.3, 0.51, 0, 1.38);
+        }
+      `}</style>
     </Card>
   );
 };

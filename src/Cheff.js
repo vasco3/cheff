@@ -16,7 +16,7 @@ import Recipes from './Recipes';
 import Settings from './Settings';
 
 import { calculateDayMenu, calculateSettings, randomSort } from './util';
-
+const RECIPES_MINIMUM = 10;
 class Cheff extends Component {
   constructor(props) {
     super(props);
@@ -32,35 +32,24 @@ class Cheff extends Component {
     const recipes = List(recipesJSON);
 
     this.state = {
-      BODY_WEIGHT_LBS: 180,
-      CALORIES_TOLERANCE: 50,
-      PROTEIN_PER_BODY_LB: 1,
-      TOTAL_CALORIES: 3200,
+      CALORIES_TOTAL: 2700,
+      PROTEIN_TOTAL: 150,
       caloriesTotal: 0,
       carbsTotal: 0,
       fatTotal: 0,
       menu: [],
-      settingsOpen: false,
       proteinTotal: 0,
       recipes,
+      settingsOpen: false,
     };
   }
 
   calculate() {
     const { state } = this;
-    const {
-      BODY_WEIGHT_LBS,
-      CALORIES_TOLERANCE,
-      PROTEIN_PER_BODY_LB,
-      TOTAL_CALORIES,
-    } = state;
+    const { CALORIES_TOTAL, PROTEIN_TOTAL } = state;
 
-    const settings = calculateSettings({
-      BODY_WEIGHT_LBS,
-      CALORIES_TOLERANCE,
-      PROTEIN_PER_BODY_LB,
-      TOTAL_CALORIES,
-    });
+    const settings = calculateSettings({ CALORIES_TOTAL, PROTEIN_TOTAL });
+
     const { menu, calories, carbs, fat, protein } = calculateDayMenu({
       recipes: state.recipes.sort(randomSort),
       settings,
@@ -95,6 +84,7 @@ class Cheff extends Component {
 
   render() {
     const { state } = this;
+    const hasEnoughRecipes = RECIPES_MINIMUM < state.recipes.size;
     return (
       <Fragment>
         <TopAppBar dense>
@@ -115,28 +105,29 @@ class Cheff extends Component {
           style={{ display: 'grid', gridTemplateColumns: 'auto 1fr' }}
         >
           <Settings
-            open={state.settingsOpen}
+            CALORIES_TOTAL={state.CALORIES_TOTAL}
+            PROTEIN_TOTAL={state.PROTEIN_TOTAL}
             onChange={this.updateSettings}
-            BODY_WEIGHT_LBS={state.BODY_WEIGHT_LBS}
-            CALORIES_TOLERANCE={state.CALORIES_TOLERANCE}
-            PROTEIN_PER_BODY_LB={state.PROTEIN_PER_BODY_LB}
-            TOTAL_CALORIES={state.TOTAL_CALORIES}
+            open={state.settingsOpen}
           />
           <Grid>
-            <GridCell span="6" tablet="12">
-              <Menu
-                caloriesTotal={state.caloriesTotal}
-                carbsTotal={state.carbsTotal}
-                fatTotal={state.fatTotal}
-                menu={state.menu}
-                proteinTotal={state.proteinTotal}
-                onGenerate={this.calculate}
-              />
-            </GridCell>
+            {hasEnoughRecipes && (
+              <GridCell span="6" tablet="12">
+                <Menu
+                  caloriesTotal={state.caloriesTotal}
+                  carbsTotal={state.carbsTotal}
+                  fatTotal={state.fatTotal}
+                  menu={state.menu}
+                  onGenerate={this.calculate}
+                  proteinTotal={state.proteinTotal}
+                />
+              </GridCell>
+            )}
             <GridCell span="6" tablet="12">
               <Recipes
-                recipes={state.recipes.toArray()}
                 onAdd={this.handleAddRecipe}
+                recipes={state.recipes.toArray()}
+                hasEnoughRecipes={hasEnoughRecipes}
               />
             </GridCell>
           </Grid>
