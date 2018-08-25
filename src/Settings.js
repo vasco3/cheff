@@ -2,8 +2,15 @@ import { Drawer, DrawerContent } from 'rmwc/Drawer';
 import { TextField } from 'rmwc/TextField';
 import { Typography } from 'rmwc/Typography';
 import { ListDivider } from 'rmwc/List';
+import { Button } from 'rmwc';
 
-const Settings = ({ open, onChange, CALORIES_TOTAL, PROTEIN_TOTAL }) => {
+const Settings = ({
+  open,
+  onChange,
+  onSave,
+  CALORIES_TOTAL,
+  PROTEIN_TOTAL,
+}) => {
   return (
     <Drawer persistent open={open == undefined ? true : open}>
       <DrawerContent className="flex flex-col justify-center">
@@ -27,6 +34,7 @@ const Settings = ({ open, onChange, CALORIES_TOTAL, PROTEIN_TOTAL }) => {
           onChange={onChange}
           className="mx-4"
         />
+        <Button onClick={onSave}>save</Button>
       </DrawerContent>
     </Drawer>
   );

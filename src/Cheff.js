@@ -109,6 +109,7 @@ class Cheff extends Component {
             PROTEIN_TOTAL={state.PROTEIN_TOTAL}
             onChange={this.updateSettings}
             open={state.settingsOpen}
+            onSave={this.toggleSettings}
           />
           <Grid>
             {hasEnoughRecipes && (
