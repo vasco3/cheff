@@ -25,6 +25,7 @@ class Cheff extends Component {
     this.calculate = this.calculate.bind(this);
     this.handleAddRecipe = this.handleAddRecipe.bind(this);
     this.handleRemoveRecipe = this.handleRemoveRecipe.bind(this);
+    this.importDemoRecipes = this.importDemoRecipes.bind(this);
     this.toggleSettings = this.toggleSettings.bind(this);
     this.transmitRecipes = this.transmitRecipes.bind(this);
     this.updateSettings = this.updateSettings.bind(this);
@@ -76,8 +77,15 @@ class Cheff extends Component {
     });
   }
 
-  handleRemoveRecipe(recipeIndex) {
-    const recipes = this.state.recipes.delete(recipeIndex);
+  handleRemoveRecipe(recipeKeys) {
+    const recipes = this.state.recipes.filter(
+      recipe => !recipeKeys.includes(recipe._key),
+    );
+
+    this.setState({ recipes }, function saveToLocal() {
+      localStorage.setItem('recipes', JSON.stringify(recipes.toArray()));
+    });
+  }
 
   importDemoRecipes() {
     const recipes = List(demoRecipes);

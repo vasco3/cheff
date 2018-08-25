@@ -1,35 +1,38 @@
 import React from 'react';
 import getIn from 'lodash/get';
+import { OrderedSet } from 'immutable';
+import uuid from 'uuid/v1';
 import snakeCase from 'lodash/snakeCase';
 import upperFirst from 'lodash/upperFirst';
 import { Button } from 'rmwc/Button';
 import { Card, CardAction, CardActions } from 'rmwc/Card';
 import { Icon } from 'rmwc/Icon';
-import { ListDivider } from 'rmwc/List';
-import { List, SimpleListItem } from 'rmwc/List';
+import { List, ListDivider, SimpleListItem } from 'rmwc/List';
 import { TextField } from 'rmwc/TextField';
 import { Typography } from 'rmwc';
 import { Snackbar } from 'rmwc/Snackbar';
 
 class Recipes extends React.Component {
-  state = {
-    Calories: 0,
-    Carbs: 0,
-    Fat: 0,
-    Protein: 0,
-    isAdding: false,
-    snackbarIsOpen: false,
-    name: '',
-    servings: 0,
-    type: 'Meal',
-  };
-
   constructor(props) {
     super(props);
     this.addRecipe = this.addRecipe.bind(this);
-    this.removeRecipe = this.removeRecipe.bind(this);
+    this.removeRecipeIntent = this.removeRecipeIntent.bind(this);
     this.handleRecipeChange = this.handleRecipeChange.bind(this);
+    this.snackbarOnHide = this.snackbarOnHide.bind(this);
     this.toggleAddRecipe = this.toggleAddRecipe.bind(this);
+
+    this.state = {
+      Calories: 0,
+      Carbs: 0,
+      Fat: 0,
+      Protein: 0,
+      isAdding: false,
+      name: '',
+      recipesToDelete: OrderedSet([]),
+      servings: 0,
+      snackbarIsOpen: false,
+      type: 'Meal',
+    };
   }
 
   addRecipe() {
@@ -40,7 +43,7 @@ class Recipes extends React.Component {
         Carbs: parseInt(Carbs, 10),
         Fat: parseInt(Fat, 10),
         Protein: parseInt(Protein, 10),
-        _key: snakeCase(name || '').toUpperCase(),
+        _key: snakeCase(name || '').toUpperCase() + uuid(),
         name,
         servings: parseInt(servings, 10),
         type,
@@ -48,14 +51,25 @@ class Recipes extends React.Component {
     );
   }
 
-  removeRecipe(recipeIndex) {
-    this.setState({
-      recipeIndexHidden: recipeIndex,
+  snackbarOnHide() {
+    const { props, state } = this;
+    if (state.recipesToDelete.size) {
+      this.setState(
+        { snackbarIsOpen: false, recipesToDelete: OrderedSet([]) },
+        function afterSnackbarHide() {
+          props.onRemove(state.recipesToDelete);
+        },
+      );
+    } else {
+      this.setState({ snackbarIsOpen: false });
+    }
+  }
+
+  removeRecipeIntent(recipeKey) {
+    this.setState(prevState => ({
+      recipesToDelete: prevState.recipesToDelete.add(recipeKey),
       snackbarIsOpen: true,
-      snackbarOnHide() {
-        this.props.onRemove(recipeIndex);
-      },
-    });
+    }));
   }
 
   handleRecipeChange(event) {
@@ -137,12 +151,20 @@ class Recipes extends React.Component {
             </Typography>
           )}
           {recipes
-            .filter((recipe, index) => index !== state.recipeIndexHidden)
+            .filter(function filterOutRecipesToDelete(recipe, index) {
+              return index !== state.recipesToDelete.includes(index);
+            })
             .map(
-              (
-                { _key, name, Calories, Protein, Carbs, Fat, type, servings },
-                index,
-              ) => (
+              ({
+                _key,
+                name,
+                Calories,
+                Protein,
+                Carbs,
+                Fat,
+                type,
+                servings,
+              }) => (
                 <SimpleListItem
                   key={_key}
                   graphic="restaurant"
@@ -151,7 +173,7 @@ class Recipes extends React.Component {
                   meta={
                     <Icon
                       use="delete"
-                      onClick={() => this.removeRecipe(index)}
+                      onClick={() => this.removeRecipeIntent(_key)}
                     />
                   }
                 />
@@ -161,19 +183,15 @@ class Recipes extends React.Component {
         <Snackbar
           actionHandler={() =>
             this.setState({
-              recipeIndexHidden: undefined,
+              recipesToDelete: OrderedSet([]),
               snackbarIsOpen: false,
-              snackbarOnHide() {},
             })
           }
           actionText="Undo"
           alignStart
           message="Deleted recipe"
-          onHide={() =>
-            this.setState({ snackbarIsOpen: false }, this.state.snackbarOnHide)
-          }
-          show={this.state.snackbarIsOpen}
-          timeout={5000}
+          onHide={this.snackbarOnHide}
+          show={state.snackbarIsOpen}
         />
         <style jsx>{`
           .recipeForm {
