@@ -22,7 +22,9 @@ class Cheff extends Component {
     super(props);
     this.calculate = this.calculate.bind(this);
     this.handleAddRecipe = this.handleAddRecipe.bind(this);
+    this.handleRemoveRecipe = this.handleRemoveRecipe.bind(this);
     this.toggleSettings = this.toggleSettings.bind(this);
+    this.transmitRecipes = this.transmitRecipes.bind(this);
     this.updateSettings = this.updateSettings.bind(this);
 
     const recipesJSON =
@@ -72,6 +74,14 @@ class Cheff extends Component {
     });
   }
 
+  handleRemoveRecipe(recipeIndex) {
+    const recipes = this.state.recipes.delete(recipeIndex);
+
+    this.setState({ recipes }, function saveToLocal() {
+      localStorage.setItem('recipes', JSON.stringify(recipes.toArray()));
+    });
+  }
+
   toggleSettings() {
     this.setState(prevState => ({ settingsOpen: !prevState.settingsOpen }));
   }
@@ -84,7 +94,7 @@ class Cheff extends Component {
 
   render() {
     const { state } = this;
-    const hasEnoughRecipes = RECIPES_MINIMUM < state.recipes.size;
+    const hasEnoughRecipes = RECIPES_MINIMUM <= state.recipes.size;
     return (
       <main>
         <TopAppBar dense>
@@ -124,7 +134,9 @@ class Cheff extends Component {
             <GridCell span="6" tablet="12">
               <Recipes
                 onAdd={this.handleAddRecipe}
+                onRemove={this.handleRemoveRecipe}
                 recipes={state.recipes.toArray()}
+                recipesMinimumCount={RECIPES_MINIMUM}
                 hasEnoughRecipes={hasEnoughRecipes}
               />
             </GridCell>

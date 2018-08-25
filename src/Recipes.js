@@ -9,6 +9,7 @@ import { ListDivider } from 'rmwc/List';
 import { List, SimpleListItem } from 'rmwc/List';
 import { TextField } from 'rmwc/TextField';
 import { Typography } from 'rmwc';
+import { Snackbar } from 'rmwc/Snackbar';
 
 class Recipes extends React.Component {
   state = {
@@ -17,13 +18,16 @@ class Recipes extends React.Component {
     Fat: 0,
     Protein: 0,
     isAdding: false,
+    snackbarIsOpen: false,
     name: '',
     servings: 0,
     type: 'Meal',
   };
+
   constructor(props) {
     super(props);
     this.addRecipe = this.addRecipe.bind(this);
+    this.removeRecipe = this.removeRecipe.bind(this);
     this.handleRecipeChange = this.handleRecipeChange.bind(this);
     this.toggleAddRecipe = this.toggleAddRecipe.bind(this);
   }
@@ -42,6 +46,16 @@ class Recipes extends React.Component {
         type,
       }),
     );
+  }
+
+  removeRecipe(recipeIndex) {
+    this.setState({
+      recipeIndexHidden: recipeIndex,
+      snackbarIsOpen: true,
+      snackbarOnHide() {
+        this.props.onRemove(recipeIndex);
+      },
+    });
   }
 
   handleRecipeChange(event) {
@@ -74,6 +88,9 @@ class Recipes extends React.Component {
         <ListDivider />
         {state.isAdding && (
           <React.Fragment>
+            <Typography use="subtitle2" tag="div" className="mx-4 mt-4 mb-0">
+              Enter new recipe information
+            </Typography>
             <div className="recipeForm">
               {[
                 'name',
@@ -110,25 +127,53 @@ class Recipes extends React.Component {
           </React.Fragment>
         )}
         <List twoLine dense>
-          {recipes.length === 0 && (
+          {recipes.length < props.recipesMinimumCount && (
             <Typography use="body2" tag="div" className="p-4">
-              Click on the "+" icon to add recipes.
+              Add {recipes.length - props.recipesMinimumCount} more recipes
             </Typography>
           )}
-          {recipes.map(
-            ({ _key, name, Calories, Protein, Carbs, Fat, type, servings }) => (
-              <SimpleListItem
-                key={_key}
-                graphic="restaurant"
-                text={`${name} (${type.toLowerCase()})`}
-                secondaryText={`${Calories}cal | Protein ${Protein}g | Carbs ${Carbs}g | Fat ${Fat}g | ${servings} servings`}
-              />
-            ),
-          )}
+          {recipes
+            .filter((recipe, index) => index !== state.recipeIndexHidden)
+            .map(
+              (
+                { _key, name, Calories, Protein, Carbs, Fat, type, servings },
+                index,
+              ) => (
+                <SimpleListItem
+                  key={_key}
+                  graphic="restaurant"
+                  text={`${name} (${type.toLowerCase()})`}
+                  secondaryText={`${Calories}cal | Protein ${Protein}g | Carbs ${Carbs}g | Fat ${Fat}g | ${servings} servings`}
+                  meta={
+                    <Icon
+                      use="delete"
+                      onClick={() => this.removeRecipe(index)}
+                    />
+                  }
+                />
+              ),
+            )}
         </List>
+        <Snackbar
+          actionHandler={() =>
+            this.setState({
+              recipeIndexHidden: undefined,
+              snackbarIsOpen: false,
+              snackbarOnHide() {},
+            })
+          }
+          actionText="Undo"
+          alignStart
+          message="Deleted recipe"
+          onHide={() =>
+            this.setState({ snackbarIsOpen: false }, this.state.snackbarOnHide)
+          }
+          show={this.state.snackbarIsOpen}
+          timeout={5000}
+        />
         <style jsx>{`
           .recipeForm {
-            padding: 1rem;
+            padding: 0 1rem 1rem;
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
             grid-column-gap: 1rem;
