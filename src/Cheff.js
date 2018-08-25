@@ -86,7 +86,7 @@ class Cheff extends Component {
     const { state } = this;
     const hasEnoughRecipes = RECIPES_MINIMUM < state.recipes.size;
     return (
-      <Fragment>
+      <main>
         <TopAppBar dense>
           <TopAppBarRow>
             <TopAppBarSection>
@@ -100,17 +100,14 @@ class Cheff extends Component {
           </TopAppBarRow>
         </TopAppBar>
 
-        <div
-          className="mdc-top-app-bar--dense-fixed-adjust"
-          style={{ display: 'grid', gridTemplateColumns: 'auto 1fr' }}
-        >
           <Settings
             CALORIES_TOTAL={state.CALORIES_TOTAL}
             PROTEIN_TOTAL={state.PROTEIN_TOTAL}
             onChange={this.updateSettings}
             open={state.settingsOpen}
-            onSave={this.toggleSettings}
+          onClose={this.toggleSettings}
           />
+        <div className="mdc-top-app-bar--dense-fixed-adjust">
           <Grid>
             {hasEnoughRecipes && (
               <GridCell span="6" tablet="12">
@@ -133,7 +130,7 @@ class Cheff extends Component {
             </GridCell>
           </Grid>
         </div>
-      </Fragment>
+      </main>
     );
   }
 }

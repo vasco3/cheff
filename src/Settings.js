@@ -2,17 +2,16 @@ import { Drawer, DrawerContent } from 'rmwc/Drawer';
 import { TextField } from 'rmwc/TextField';
 import { Typography } from 'rmwc/Typography';
 import { ListDivider } from 'rmwc/List';
-import { Button } from 'rmwc';
 
 const Settings = ({
   open,
   onChange,
-  onSave,
+  onClose,
   CALORIES_TOTAL,
   PROTEIN_TOTAL,
 }) => {
   return (
-    <Drawer persistent open={open == undefined ? true : open}>
+    <Drawer temporary open={open == undefined ? true : open} onClose={onClose}>
       <DrawerContent className="flex flex-col justify-center">
         <Typography use="overline" tag="div" className="px-4">
           Daily targets
@@ -34,7 +33,6 @@ const Settings = ({
           onChange={onChange}
           className="mx-4"
         />
-        <Button onClick={onSave}>save</Button>
       </DrawerContent>
     </Drawer>
   );
