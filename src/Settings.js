@@ -3,9 +3,15 @@ import { TextField } from 'rmwc/TextField';
 import { Typography } from 'rmwc/Typography';
 import { ListDivider } from 'rmwc/List';
 
-const Settings = ({ open, onChange, CALORIES_TOTAL, PROTEIN_TOTAL }) => {
+const Settings = ({
+  open,
+  onChange,
+  onClose,
+  CALORIES_TOTAL,
+  PROTEIN_TOTAL,
+}) => {
   return (
-    <Drawer persistent open={open == undefined ? true : open}>
+    <Drawer temporary open={open == undefined ? true : open} onClose={onClose}>
       <DrawerContent className="flex flex-col justify-center">
         <Typography use="overline" tag="div" className="px-4">
           Daily targets

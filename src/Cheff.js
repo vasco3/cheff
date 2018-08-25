@@ -1,5 +1,6 @@
 /* global localStorage */
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
+// import WebTorrent from 'webtorrent';
 import getIn from 'lodash/get';
 import { List } from 'immutable';
 import { Grid, GridCell } from 'rmwc/Grid';
@@ -15,6 +16,8 @@ import Menu from './Menu';
 import Recipes from './Recipes';
 import Settings from './Settings';
 
+import demoRecipes from '../data/recipes';
+
 import { calculateDayMenu, calculateSettings, randomSort } from './util';
 const RECIPES_MINIMUM = 10;
 class Cheff extends Component {
@@ -22,7 +25,10 @@ class Cheff extends Component {
     super(props);
     this.calculate = this.calculate.bind(this);
     this.handleAddRecipe = this.handleAddRecipe.bind(this);
+    this.handleRemoveRecipe = this.handleRemoveRecipe.bind(this);
+    this.importDemoRecipes = this.importDemoRecipes.bind(this);
     this.toggleSettings = this.toggleSettings.bind(this);
+    // this.transmitRecipes = this.transmitRecipes.bind(this);
     this.updateSettings = this.updateSettings.bind(this);
 
     const recipesJSON =
@@ -43,6 +49,11 @@ class Cheff extends Component {
       settingsOpen: false,
     };
   }
+
+  // componentDidMount() {
+  //   const client = new WebTorrent();
+  //   this.setState({ client });
+  // }
 
   calculate() {
     const { state } = this;
@@ -72,6 +83,29 @@ class Cheff extends Component {
     });
   }
 
+  handleRemoveRecipe(recipeKeys) {
+    const recipes = this.state.recipes.filter(
+      recipe => !recipeKeys.includes(recipe._key),
+    );
+
+    this.setState({ recipes }, function saveToLocal() {
+      localStorage.setItem('recipes', JSON.stringify(recipes.toArray()));
+    });
+  }
+
+  importDemoRecipes() {
+    const recipes = List(demoRecipes);
+    this.setState({ recipes }, function saveToLocal() {
+      localStorage.setItem('recipes', JSON.stringify(recipes.toArray()));
+    });
+  }
+
+  // transmitRecipes() {
+  //   this.state.client.seed(files, function seedTorrent(torrent) {
+  //     console.log('Client is seeding ' + torrent.magnetURI);
+  //   });
+  // }
+
   toggleSettings() {
     this.setState(prevState => ({ settingsOpen: !prevState.settingsOpen }));
   }
@@ -84,32 +118,33 @@ class Cheff extends Component {
 
   render() {
     const { state } = this;
-    const hasEnoughRecipes = RECIPES_MINIMUM < state.recipes.size;
+    const hasEnoughRecipes = RECIPES_MINIMUM <= state.recipes.size;
     return (
-      <Fragment>
+      <main>
         <TopAppBar dense>
           <TopAppBarRow>
             <TopAppBarSection>
+              <TopAppBarActionItem alt="Menu" onClick={this.toggleSettings}>
+                menu
+              </TopAppBarActionItem>
               <TopAppBarTitle>Cheff</TopAppBarTitle>
             </TopAppBarSection>
-            <TopAppBarSection alignEnd>
-              <TopAppBarActionItem alt="Settings" onClick={this.toggleSettings}>
-                settings
+            {/* <TopAppBarSection alignEnd>
+              <TopAppBarActionItem alt="info" onClick={this.toggleSettings}>
+                info
               </TopAppBarActionItem>
-            </TopAppBarSection>
+            </TopAppBarSection> */}
           </TopAppBarRow>
         </TopAppBar>
 
-        <div
-          className="mdc-top-app-bar--dense-fixed-adjust"
-          style={{ display: 'grid', gridTemplateColumns: 'auto 1fr' }}
-        >
-          <Settings
-            CALORIES_TOTAL={state.CALORIES_TOTAL}
-            PROTEIN_TOTAL={state.PROTEIN_TOTAL}
-            onChange={this.updateSettings}
-            open={state.settingsOpen}
-          />
+        <Settings
+          CALORIES_TOTAL={state.CALORIES_TOTAL}
+          PROTEIN_TOTAL={state.PROTEIN_TOTAL}
+          onChange={this.updateSettings}
+          open={state.settingsOpen}
+          onClose={this.toggleSettings}
+        />
+        <div className="mdc-top-app-bar--dense-fixed-adjust">
           <Grid>
             {hasEnoughRecipes && (
               <GridCell span="6" tablet="12">
@@ -126,13 +161,16 @@ class Cheff extends Component {
             <GridCell span="6" tablet="12">
               <Recipes
                 onAdd={this.handleAddRecipe}
+                onRemove={this.handleRemoveRecipe}
                 recipes={state.recipes.toArray()}
+                recipesMinimumCount={RECIPES_MINIMUM}
                 hasEnoughRecipes={hasEnoughRecipes}
+                importDemoRecipes={this.importDemoRecipes}
               />
             </GridCell>
           </Grid>
         </div>
-      </Fragment>
+      </main>
     );
   }
 }
