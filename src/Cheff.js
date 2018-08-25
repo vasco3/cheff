@@ -1,5 +1,6 @@
 /* global localStorage */
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
+// import WebTorrent from 'webtorrent';
 import getIn from 'lodash/get';
 import { List } from 'immutable';
 import { Grid, GridCell } from 'rmwc/Grid';
@@ -27,7 +28,7 @@ class Cheff extends Component {
     this.handleRemoveRecipe = this.handleRemoveRecipe.bind(this);
     this.importDemoRecipes = this.importDemoRecipes.bind(this);
     this.toggleSettings = this.toggleSettings.bind(this);
-    this.transmitRecipes = this.transmitRecipes.bind(this);
+    // this.transmitRecipes = this.transmitRecipes.bind(this);
     this.updateSettings = this.updateSettings.bind(this);
 
     const recipesJSON =
@@ -48,6 +49,11 @@ class Cheff extends Component {
       settingsOpen: false,
     };
   }
+
+  // componentDidMount() {
+  //   const client = new WebTorrent();
+  //   this.setState({ client });
+  // }
 
   calculate() {
     const { state } = this;
@@ -94,6 +100,12 @@ class Cheff extends Component {
     });
   }
 
+  // transmitRecipes() {
+  //   this.state.client.seed(files, function seedTorrent(torrent) {
+  //     console.log('Client is seeding ' + torrent.magnetURI);
+  //   });
+  // }
+
   toggleSettings() {
     this.setState(prevState => ({ settingsOpen: !prevState.settingsOpen }));
   }
@@ -121,17 +133,17 @@ class Cheff extends Component {
               <TopAppBarActionItem alt="info" onClick={this.toggleSettings}>
                 info
               </TopAppBarActionItem>
-            </TopAppBarSection>
+            </TopAppBarSection> */}
           </TopAppBarRow>
         </TopAppBar>
 
-          <Settings
-            CALORIES_TOTAL={state.CALORIES_TOTAL}
-            PROTEIN_TOTAL={state.PROTEIN_TOTAL}
-            onChange={this.updateSettings}
-            open={state.settingsOpen}
+        <Settings
+          CALORIES_TOTAL={state.CALORIES_TOTAL}
+          PROTEIN_TOTAL={state.PROTEIN_TOTAL}
+          onChange={this.updateSettings}
+          open={state.settingsOpen}
           onClose={this.toggleSettings}
-          />
+        />
         <div className="mdc-top-app-bar--dense-fixed-adjust">
           <Grid>
             {hasEnoughRecipes && (

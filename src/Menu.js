@@ -38,16 +38,14 @@ const Menu = ({
       <ListDivider />
 
       <List twoLine dense>
-        {menu.map(
-          ({ _key, name, Calories, Protein, Carbs, Fat, type = '' }, index) => (
-            <SimpleListItem
-              key={_key + index}
-              graphic="restaurant"
-              text={`${name} (${type.toLowerCase()})`}
-              secondaryText={`${Calories}cal | Protein ${Protein}g | Carbs ${Carbs}g | Fat ${Fat}g | 1 serving`}
-            />
-          ),
-        )}
+        {menu.map(({ _key, name, Calories, Protein, Carbs, Fat }, index) => (
+          <SimpleListItem
+            key={_key + index}
+            graphic="restaurant"
+            text={name}
+            secondaryText={`${Calories}cal | Protein ${Protein}g | Carbs ${Carbs}g | Fat ${Fat}g | 1 serving`}
+          />
+        ))}
       </List>
       <style jsx>{`
         @keyframes bounce {

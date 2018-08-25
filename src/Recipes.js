@@ -31,12 +31,11 @@ class Recipes extends React.Component {
       recipesToDelete: OrderedSet([]),
       servings: 0,
       snackbarIsOpen: false,
-      type: 'Meal',
     };
   }
 
   addRecipe() {
-    const { name, Calories, Protein, Carbs, Fat, type, servings } = this.state;
+    const { name, Calories, Protein, Carbs, Fat, servings } = this.state;
     this.setState({ isAdding: false }, () =>
       this.props.onAdd({
         Calories: parseInt(Calories, 10),
@@ -46,7 +45,6 @@ class Recipes extends React.Component {
         _key: snakeCase(name || '').toUpperCase() + uuid(),
         name,
         servings: parseInt(servings, 10),
-        type,
       }),
     );
   }
@@ -106,32 +104,28 @@ class Recipes extends React.Component {
               Enter new recipe information
             </Typography>
             <div className="recipeForm">
-              {[
-                'name',
-                'type',
-                'Calories',
-                'Protein',
-                'Carbs',
-                'Fat',
-                'servings',
-              ].map((attribute, index) => (
-                <TextField
-                  key={index}
-                  name={attribute}
-                  defaultValue={state[attribute]}
-                  outlined
-                  label={upperFirst(attribute)}
-                  onChange={this.handleRecipeChange}
-                  type={
-                    typeof state[attribute] === 'string' ? 'text' : 'number'
-                  }
-                  rootProps={{
-                    style: {
-                      ...(attribute === 'name' ? { gridColumn: '1 / 4' } : {}),
-                    },
-                  }}
-                />
-              ))}
+              {['name', 'Calories', 'Protein', 'Carbs', 'Fat', 'servings'].map(
+                (attribute, index) => (
+                  <TextField
+                    key={index}
+                    name={attribute}
+                    defaultValue={state[attribute]}
+                    outlined
+                    label={upperFirst(attribute)}
+                    onChange={this.handleRecipeChange}
+                    type={
+                      typeof state[attribute] === 'string' ? 'text' : 'number'
+                    }
+                    rootProps={{
+                      style: {
+                        ...(attribute === 'name'
+                          ? { gridColumn: '1 / 4' }
+                          : {}),
+                      },
+                    }}
+                  />
+                ),
+              )}
               <footer className="recipeFormFooter">
                 <Button onClick={this.toggleAddRecipe}>cancel</Button>
                 <Button onClick={this.addRecipe}>add recipe</Button>
@@ -154,31 +148,20 @@ class Recipes extends React.Component {
             .filter(function filterOutRecipesToDelete(recipe, index) {
               return index !== state.recipesToDelete.includes(index);
             })
-            .map(
-              ({
-                _key,
-                name,
-                Calories,
-                Protein,
-                Carbs,
-                Fat,
-                type,
-                servings,
-              }) => (
-                <SimpleListItem
-                  key={_key}
-                  graphic="restaurant"
-                  text={`${name} (${type.toLowerCase()})`}
-                  secondaryText={`${Calories}cal | Protein ${Protein}g | Carbs ${Carbs}g | Fat ${Fat}g | ${servings} servings`}
-                  meta={
-                    <Icon
-                      use="delete"
-                      onClick={() => this.removeRecipeIntent(_key)}
-                    />
-                  }
-                />
-              ),
-            )}
+            .map(({ _key, name, Calories, Protein, Carbs, Fat, servings }) => (
+              <SimpleListItem
+                key={_key}
+                graphic="restaurant"
+                text={name}
+                secondaryText={`${Calories}cal | Protein ${Protein}g | Carbs ${Carbs}g | Fat ${Fat}g | ${servings} servings`}
+                meta={
+                  <Icon
+                    use="delete"
+                    onClick={() => this.removeRecipeIntent(_key)}
+                  />
+                }
+              />
+            ))}
         </List>
         <Snackbar
           actionHandler={() =>
