@@ -142,18 +142,6 @@ class Cheff extends Component {
         />
         <div className="mdc-top-app-bar--dense-fixed-adjust">
           <Grid>
-            {hasEnoughRecipes && (
-              <GridCell span="6" tablet="12">
-                <Menu
-                  caloriesTotal={state.caloriesTotal}
-                  carbsTotal={state.carbsTotal}
-                  fatTotal={state.fatTotal}
-                  menu={state.menu}
-                  onGenerate={this.calculate}
-                  proteinTotal={state.proteinTotal}
-                />
-              </GridCell>
-            )}
             <GridCell span="6" tablet="12">
               <Recipes
                 onAdd={this.handleAddRecipe}
@@ -164,6 +152,18 @@ class Cheff extends Component {
                 importDemoRecipes={this.importDemoRecipes}
                 importRecipes={this.importRecipes}
               />
+            </GridCell>
+            <GridCell span="6" tablet="12">
+              {hasEnoughRecipes && (
+                <Menu
+                  caloriesTotal={state.caloriesTotal}
+                  carbsTotal={state.carbsTotal}
+                  fatTotal={state.fatTotal}
+                  menu={state.menu}
+                  onGenerate={this.calculate}
+                  proteinTotal={state.proteinTotal}
+                />
+              )}
             </GridCell>
           </Grid>
         </div>
