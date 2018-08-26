@@ -30,11 +30,12 @@
     "lodash": "^4.17.10",
     "next": "^6.1.1",
     "numeral": "^2.0.6",
+    "qrcode": "^1.2.2",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
+    "react-qr-reader": "^2.1.0",
     "rmwc": "^1.8.3",
     "uuid": "^3.3.2",
-    "webtorrent": "^0.102.1",
     "yup": "^0.26.2"
   }
 }

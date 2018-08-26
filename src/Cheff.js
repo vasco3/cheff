@@ -1,6 +1,5 @@
 /* global localStorage */
 import React, { Component } from 'react';
-// import WebTorrent from 'webtorrent';
 import getIn from 'lodash/get';
 import { List } from 'immutable';
 import { Grid, GridCell } from 'rmwc/Grid';
@@ -27,8 +26,8 @@ class Cheff extends Component {
     this.handleAddRecipe = this.handleAddRecipe.bind(this);
     this.handleRemoveRecipe = this.handleRemoveRecipe.bind(this);
     this.importDemoRecipes = this.importDemoRecipes.bind(this);
+    this.importRecipes = this.importRecipes.bind(this);
     this.toggleSettings = this.toggleSettings.bind(this);
-    // this.transmitRecipes = this.transmitRecipes.bind(this);
     this.updateSettings = this.updateSettings.bind(this);
 
     const recipesJSON =
@@ -49,11 +48,6 @@ class Cheff extends Component {
       settingsOpen: false,
     };
   }
-
-  // componentDidMount() {
-  //   const client = new WebTorrent();
-  //   this.setState({ client });
-  // }
 
   calculate() {
     const { state } = this;
@@ -100,11 +94,13 @@ class Cheff extends Component {
     });
   }
 
-  // transmitRecipes() {
-  //   this.state.client.seed(files, function seedTorrent(torrent) {
-  //     console.log('Client is seeding ' + torrent.magnetURI);
-  //   });
-  // }
+  importRecipes(recipesScanned) {
+    const recipes = List(recipesScanned);
+
+    this.setState({ recipes }, function saveToLocal() {
+      localStorage.setItem('recipes', JSON.stringify(recipes.toArray()));
+    });
+  }
 
   toggleSettings() {
     this.setState(prevState => ({ settingsOpen: !prevState.settingsOpen }));
@@ -166,6 +162,7 @@ class Cheff extends Component {
                 recipesMinimumCount={RECIPES_MINIMUM}
                 hasEnoughRecipes={hasEnoughRecipes}
                 importDemoRecipes={this.importDemoRecipes}
+                importRecipes={this.importRecipes}
               />
             </GridCell>
           </Grid>
