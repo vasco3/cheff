@@ -1,6 +1,6 @@
 import React from 'react';
-import { Card, CardAction, CardActions } from 'rmwc/Card';
-import { Icon } from 'rmwc/Icon';
+import { Card } from 'rmwc/Card';
+import { Fab } from 'rmwc/Fab';
 import { ListDivider } from 'rmwc/List';
 import { Typography } from 'rmwc/Typography';
 import { List, SimpleListItem } from 'rmwc/List';
@@ -16,14 +16,9 @@ const Menu = ({
 }) => {
   return (
     <Card outlined>
-      <CardActions fullBleed>
-        <CardAction onClick={onGenerate}>
-          Day Menu {menu.length > 0 && `(${menu.length} servings)`}
-          <span className={!menu.length && 'bouncy'}>
-            <Icon use="autorenew" />
-          </span>
-        </CardAction>
-      </CardActions>
+      <Typography use="subtitle1" tag="div" className="p-4">
+        Day Menu {menu.length > 0 && `(${menu.length} servings)`}
+      </Typography>
       <ListDivider />
 
       <Typography
@@ -46,23 +41,10 @@ const Menu = ({
           />
         ))}
       </List>
-      <style jsx>{`
-        @keyframes bounce {
-          from {
-            transform: scale(1);
-          }
-          to {
-            transform: scale(1.2);
-          }
-        }
-        .bouncy {
-          animation-direction: alternate;
-          animation-duration: 0.5s;
-          animation-iteration-count: infinite;
-          animation-name: bounce;
-          animation-timing-function: cubic-bezier(0.38, -0.4, 0.53, 1.97);
-        }
-      `}</style>
+
+      <div className="flex justify-end pr-4 py-4">
+        <Fab onClick={onGenerate} icon="autorenew" />
+      </div>
     </Card>
   );
 };
