@@ -3,7 +3,6 @@ import getIn from 'lodash/get';
 import { OrderedSet } from 'immutable';
 import uuid from 'uuid/v1';
 import snakeCase from 'lodash/snakeCase';
-import upperFirst from 'lodash/upperFirst';
 import { Button } from 'rmwc/Button';
 import { Card } from 'rmwc/Card';
 import { Icon } from 'rmwc/Icon';
@@ -18,6 +17,7 @@ class Recipes extends React.Component {
   constructor(props) {
     super(props);
     this.addRecipe = this.addRecipe.bind(this);
+    this.editRecipe = this.editRecipe.bind(this);
     this.removeRecipeIntent = this.removeRecipeIntent.bind(this);
     this.handleRecipeChange = this.handleRecipeChange.bind(this);
     this.snackbarOnHide = this.snackbarOnHide.bind(this);
@@ -31,6 +31,7 @@ class Recipes extends React.Component {
       isAdding: false,
       name: '',
       recipesToDelete: OrderedSet([]),
+      recipeToEdit: undefined,
       servings: 1,
       snackbarIsOpen: false,
     };
@@ -41,6 +42,22 @@ class Recipes extends React.Component {
 
     this.setState({ isAdding: false }, function addRecipeCallback() {
       props.onAdd({
+        Calories: parseInt(state.Calories, 10),
+        Carbs: parseInt(state.Carbs, 10),
+        Fat: parseInt(state.Fat, 10),
+        Protein: parseInt(state.Protein, 10),
+        _key: snakeCase(state.name || '').toUpperCase() + uuid(),
+        name: state.name,
+        servings: parseInt(state.servings, 10),
+      });
+    });
+  }
+
+  editRecipe() {
+    const { props, state } = this;
+
+    this.setState({ isEditing: false }, function addRecipeCallback() {
+      props.onEdit({
         Calories: parseInt(state.Calories, 10),
         Carbs: parseInt(state.Carbs, 10),
         Fat: parseInt(state.Fat, 10),
@@ -100,17 +117,26 @@ class Recipes extends React.Component {
               return !state.recipesToDelete.includes(recipe._key);
             })
             .map(({ _key, name, Calories, Protein, Carbs, Fat, servings }) => (
-              <SimpleListItem
-                key={_key}
-                text={name}
-                secondaryText={`${Calories}cal | Protein ${Protein}g | Carbs ${Carbs}g | Fat ${Fat}g | ${servings} servings`}
-                meta={
-                  <Icon
-                    use="delete"
-                    onClick={() => this.removeRecipeIntent(_key)}
+              <React.Fragment>
+                <SimpleListItem
+                  key={_key}
+                  text={name}
+                  secondaryText={`${Calories}cal | Protein ${Protein}g | Carbs ${Carbs}g | Fat ${Fat}g | ${servings} servings`}
+                  meta={
+                    <Icon
+                      use="delete"
+                      onClick={() => this.removeRecipeIntent(_key)}
+                    />
+                  }
+                />
+                {_key === getIn(state, 'recipeToEdit._key') && (
+                  <RecipeForm
+                    onCancel={this.toggleAddRecipe}
+                    onChange={this.handleRecipeChange}
+                    onSave={this.addRecipe}
                   />
-                }
-              />
+                )}
+              </React.Fragment>
             ))}
         </List>
 
