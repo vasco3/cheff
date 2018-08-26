@@ -58,10 +58,10 @@ const Menu = ({
         }
         .bouncy {
           animation-direction: alternate;
-          animation-duration: 1s;
+          animation-duration: 0.5s;
           animation-iteration-count: infinite;
           animation-name: bounce;
-          animation-timing-function: cubic-bezier(0.3, 0.51, 0, 1.38);
+          animation-timing-function: cubic-bezier(0.38, -0.4, 0.53, 1.97);
         }
       `}</style>
     </Card>
