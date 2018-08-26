@@ -102,7 +102,6 @@ class Recipes extends React.Component {
             .map(({ _key, name, Calories, Protein, Carbs, Fat, servings }) => (
               <SimpleListItem
                 key={_key}
-                graphic="restaurant"
                 text={name}
                 secondaryText={`${Calories}cal | Protein ${Protein}g | Carbs ${Carbs}g | Fat ${Fat}g | ${servings} servings`}
                 meta={

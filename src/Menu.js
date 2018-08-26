@@ -41,7 +41,6 @@ const Menu = ({
         {menu.map(({ _key, name, Calories, Protein, Carbs, Fat }, index) => (
           <SimpleListItem
             key={_key + index}
-            graphic="restaurant"
             text={name}
             secondaryText={`${Calories}cal | Protein ${Protein}g | Carbs ${Carbs}g | Fat ${Fat}g | 1 serving`}
           />
