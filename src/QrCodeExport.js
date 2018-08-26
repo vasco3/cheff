@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import WebTorrent from 'webtorrent';
 import QRCode from 'qrcode';
 import QrReader from 'react-qr-reader';
-import { CardAction, CardActions, CardActionButtons } from 'rmwc/Card';
+import { Button } from 'rmwc/Button';
 import { SimpleDialog } from 'rmwc/Dialog';
 import { Typography } from 'rmwc';
 
@@ -88,12 +88,8 @@ class QrCodeExport extends Component {
   render() {
     return (
       <React.Fragment>
-        <CardActions>
-          <CardActionButtons>
-            <CardAction onClick={this.exportRecipesToQRCode}>Export</CardAction>
-            <CardAction onClick={this.importRecipesToQRCode}>Import</CardAction>
-          </CardActionButtons>
-        </CardActions>
+        <Button onClick={this.exportRecipesToQRCode}>Export</Button>
+        <Button onClick={this.importRecipesToQRCode}>Import</Button>
 
         <SimpleDialog
           title="Export Recipes"
@@ -116,12 +112,14 @@ class QrCodeExport extends Component {
           onCancel={() => console.log('cancelled import')}
         >
           <Typography use="subtitle2">Scan QR code</Typography>
-          <QrReader
-            delay={500}
-            onError={this.handleScanError}
-            onScan={this.handleScan}
-            style={{ width: '100%' }}
-          />
+          {this.state.importDialogIsOpen && (
+            <QrReader
+              delay={500}
+              onError={this.handleScanError}
+              onScan={this.handleScan}
+              style={{ width: '100%' }}
+            />
+          )}
           <p>{this.state.torrentId && 'Ready'}</p>
         </SimpleDialog>
 
