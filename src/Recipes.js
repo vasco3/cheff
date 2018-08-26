@@ -12,8 +12,6 @@ import { TextField } from 'rmwc/TextField';
 import { Typography } from 'rmwc';
 import { Snackbar } from 'rmwc/Snackbar';
 
-import QrCodeExport from './QrCodeExport';
-
 class Recipes extends React.Component {
   constructor(props) {
     super(props);

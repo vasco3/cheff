@@ -11,6 +11,8 @@ import {
   TopAppBarTitle,
 } from 'rmwc/TopAppBar';
 
+import QrCodeExport from './QrCodeExport';
+
 import Menu from './Menu';
 import Recipes from './Recipes';
 import Settings from './Settings';
@@ -139,6 +141,14 @@ class Cheff extends Component {
           onChange={this.updateSettings}
           open={state.settingsOpen}
           onClose={this.toggleSettings}
+          advancedComponents={
+            <React.Fragment>
+              <QrCodeExport
+                recipes={state.recipes.toArray()}
+                importRecipes={this.importRecipes}
+              />
+            </React.Fragment>
+          }
         />
         <div className="mdc-top-app-bar--dense-fixed-adjust">
           <Grid>
@@ -150,7 +160,6 @@ class Cheff extends Component {
                 recipesMinimumCount={RECIPES_MINIMUM}
                 hasEnoughRecipes={hasEnoughRecipes}
                 importDemoRecipes={this.importDemoRecipes}
-                importRecipes={this.importRecipes}
               />
             </GridCell>
             <GridCell span="6" tablet="12">
