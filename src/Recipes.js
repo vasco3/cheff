@@ -12,6 +12,8 @@ import { TextField } from 'rmwc/TextField';
 import { Typography } from 'rmwc';
 import { Snackbar } from 'rmwc/Snackbar';
 
+import QrCodeExport from './QrCodeExport';
+
 class Recipes extends React.Component {
   constructor(props) {
     super(props);
@@ -140,8 +142,8 @@ class Recipes extends React.Component {
           {recipes.length < props.recipesMinimumCount && (
             <React.Fragment>
               <Typography use="body2" tag="div" className="p-4 ">
-                Add {props.recipesMinimumCount - recipes.length} more recipes or
-                import{' '}
+                Add {props.recipesMinimumCount - recipes.length} more recipes{' '}
+                <br /> or import{' '}
                 <Button dense onClick={props.importDemoRecipes}>
                   demo recipes
                 </Button>
@@ -168,6 +170,13 @@ class Recipes extends React.Component {
               />
             ))}
         </List>
+        <ListDivider />
+
+        <QrCodeExport
+          recipes={props.recipes}
+          importRecipes={props.importRecipes}
+        />
+
         <Snackbar
           actionHandler={() =>
             this.setState({
