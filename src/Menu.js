@@ -17,7 +17,7 @@ const Menu = ({
   return (
     <Card outlined>
       <Typography use="subtitle1" tag="div" className="p-4">
-        Day Menu {menu.length > 0 && `(${menu.length} servings)`}
+        Day Meal Plan {menu.length > 0 && `(${menu.length} servings)`}
       </Typography>
       <ListDivider />
 
