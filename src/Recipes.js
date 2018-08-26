@@ -3,21 +3,21 @@ import getIn from 'lodash/get';
 import { OrderedSet } from 'immutable';
 import uuid from 'uuid/v1';
 import snakeCase from 'lodash/snakeCase';
-import upperFirst from 'lodash/upperFirst';
 import { Button } from 'rmwc/Button';
-import { Card, CardAction, CardActions } from 'rmwc/Card';
+import { Card } from 'rmwc/Card';
 import { Icon } from 'rmwc/Icon';
 import { List, ListDivider, SimpleListItem } from 'rmwc/List';
-import { TextField } from 'rmwc/TextField';
 import { Typography } from 'rmwc';
 import { Snackbar } from 'rmwc/Snackbar';
+import { Fab } from 'rmwc/Fab';
 
-import QrCodeExport from './QrCodeExport';
+import RecipeForm from './RecipeForm';
 
 class Recipes extends React.Component {
   constructor(props) {
     super(props);
     this.addRecipe = this.addRecipe.bind(this);
+    this.editRecipe = this.editRecipe.bind(this);
     this.removeRecipeIntent = this.removeRecipeIntent.bind(this);
     this.handleRecipeChange = this.handleRecipeChange.bind(this);
     this.snackbarOnHide = this.snackbarOnHide.bind(this);
@@ -31,24 +31,42 @@ class Recipes extends React.Component {
       isAdding: false,
       name: '',
       recipesToDelete: OrderedSet([]),
-      servings: 0,
+      recipeToEdit: undefined,
+      servings: 1,
       snackbarIsOpen: false,
     };
   }
 
   addRecipe() {
-    const { name, Calories, Protein, Carbs, Fat, servings } = this.state;
-    this.setState({ isAdding: false }, () =>
-      this.props.onAdd({
-        Calories: parseInt(Calories, 10),
-        Carbs: parseInt(Carbs, 10),
-        Fat: parseInt(Fat, 10),
-        Protein: parseInt(Protein, 10),
-        _key: snakeCase(name || '').toUpperCase() + uuid(),
-        name,
-        servings: parseInt(servings, 10),
-      }),
-    );
+    const { props, state } = this;
+
+    this.setState({ isAdding: false }, function addRecipeCallback() {
+      props.onAdd({
+        Calories: parseInt(state.Calories, 10),
+        Carbs: parseInt(state.Carbs, 10),
+        Fat: parseInt(state.Fat, 10),
+        Protein: parseInt(state.Protein, 10),
+        _key: snakeCase(state.name || '').toUpperCase() + uuid(),
+        name: state.name,
+        servings: parseInt(state.servings, 10),
+      });
+    });
+  }
+
+  editRecipe() {
+    const { props, state } = this;
+
+    this.setState({ isEditing: false }, function addRecipeCallback() {
+      props.onEdit({
+        Calories: parseInt(state.Calories, 10),
+        Carbs: parseInt(state.Carbs, 10),
+        Fat: parseInt(state.Fat, 10),
+        Protein: parseInt(state.Protein, 10),
+        _key: snakeCase(state.name || '').toUpperCase() + uuid(),
+        name: state.name,
+        servings: parseInt(state.servings, 10),
+      });
+    });
   }
 
   snackbarOnHide() {
@@ -87,58 +105,42 @@ class Recipes extends React.Component {
     const { recipes } = props;
     return (
       <Card outlined>
-        <CardActions fullBleed>
-          <CardAction onClick={this.toggleAddRecipe}>
-            Recipes ({recipes.length})
-            <span
-              className={
-                state.isAdding || props.hasEnoughRecipes ? '' : 'add-icon'
-              }
-            >
-              <Icon use="add" />
-            </span>
-          </CardAction>
-        </CardActions>
+        <Typography use="subtitle1" tag="div" className="p-4">
+          Recipes ({recipes.length})
+        </Typography>
 
         <ListDivider />
 
-        {state.isAdding && (
-          <React.Fragment>
-            <Typography use="subtitle2" tag="div" className="mx-4 mt-4 mb-0">
-              Enter new recipe information
-            </Typography>
-            <div className="recipeForm">
-              {['name', 'Calories', 'Protein', 'Carbs', 'Fat', 'servings'].map(
-                (attribute, index) => (
-                  <TextField
-                    key={index}
-                    name={attribute}
-                    defaultValue={state[attribute]}
-                    outlined
-                    label={upperFirst(attribute)}
-                    onChange={this.handleRecipeChange}
-                    type={
-                      typeof state[attribute] === 'string' ? 'text' : 'number'
-                    }
-                    rootProps={{
-                      style: {
-                        ...(attribute === 'name'
-                          ? { gridColumn: '1 / 4' }
-                          : {}),
-                      },
-                    }}
-                  />
-                ),
-              )}
-              <footer className="recipeFormFooter">
-                <Button onClick={this.toggleAddRecipe}>cancel</Button>
-                <Button onClick={this.addRecipe}>add recipe</Button>
-              </footer>
-            </div>
-            <ListDivider />
-          </React.Fragment>
-        )}
         <List twoLine dense>
+          {recipes
+            .filter(function filterOutRecipesToDelete(recipe) {
+              return !state.recipesToDelete.includes(recipe._key);
+            })
+            .map(({ _key, name, Calories, Protein, Carbs, Fat, servings }) => (
+              <React.Fragment>
+                <SimpleListItem
+                  key={_key}
+                  text={name}
+                  secondaryText={`${Calories}cal | Protein ${Protein}g | Carbs ${Carbs}g | Fat ${Fat}g | ${servings} servings`}
+                  meta={
+                    <Icon
+                      use="delete"
+                      onClick={() => this.removeRecipeIntent(_key)}
+                    />
+                  }
+                />
+                {_key === getIn(state, 'recipeToEdit._key') && (
+                  <RecipeForm
+                    onCancel={this.toggleAddRecipe}
+                    onChange={this.handleRecipeChange}
+                    onSave={this.addRecipe}
+                  />
+                )}
+              </React.Fragment>
+            ))}
+        </List>
+
+        <div>
           {recipes.length < props.recipesMinimumCount && (
             <React.Fragment>
               <Typography use="body2" tag="div" className="p-4 ">
@@ -151,31 +153,27 @@ class Recipes extends React.Component {
               <ListDivider />
             </React.Fragment>
           )}
-          {recipes
-            .filter(function filterOutRecipesToDelete(recipe) {
-              return !state.recipesToDelete.includes(recipe._key);
-            })
-            .map(({ _key, name, Calories, Protein, Carbs, Fat, servings }) => (
-              <SimpleListItem
-                key={_key}
-                graphic="restaurant"
-                text={name}
-                secondaryText={`${Calories}cal | Protein ${Protein}g | Carbs ${Carbs}g | Fat ${Fat}g | ${servings} servings`}
-                meta={
-                  <Icon
-                    use="delete"
-                    onClick={() => this.removeRecipeIntent(_key)}
-                  />
-                }
-              />
-            ))}
-        </List>
-        <ListDivider />
+        </div>
 
-        <QrCodeExport
-          recipes={props.recipes}
-          importRecipes={props.importRecipes}
-        />
+        {state.isAdding && (
+          <div>
+            <ListDivider />
+            <Typography use="subtitle2" tag="div" className="mx-4 mt-4 mb-0">
+              Enter new recipe information
+            </Typography>
+
+            <RecipeForm
+              onCancel={this.toggleAddRecipe}
+              onChange={this.handleRecipeChange}
+              onSave={this.addRecipe}
+            />
+            <ListDivider />
+          </div>
+        )}
+
+        <div className="flex justify-end pr-4 py-4">
+          <Fab onClick={this.toggleAddRecipe} icon="add" />
+        </div>
 
         <Snackbar
           actionHandler={() =>
@@ -190,34 +188,6 @@ class Recipes extends React.Component {
           onHide={this.snackbarOnHide}
           show={state.snackbarIsOpen}
         />
-        <style jsx>{`
-          .recipeForm {
-            padding: 0 1rem 1rem;
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            grid-column-gap: 1rem;
-          }
-          .recipeFormFooter {
-            display: flex;
-            justify-content: flex-end;
-            grid-column: 1 / 4;
-          }
-          @keyframes bounce {
-            from {
-              transform: scale(1);
-            }
-            to {
-              transform: scale(1.2);
-            }
-          }
-          .add-icon {
-            animation-direction: alternate;
-            animation-duration: 1s;
-            animation-iteration-count: infinite;
-            animation-name: bounce;
-            animation-timing-function: cubic-bezier(0.3, 0.51, 0, 1.38);
-          }
-        `}</style>
       </Card>
     );
   }

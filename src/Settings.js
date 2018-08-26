@@ -4,6 +4,7 @@ import { Typography } from 'rmwc/Typography';
 import { ListDivider } from 'rmwc/List';
 
 const Settings = ({
+  advancedComponents,
   open,
   onChange,
   onClose,
@@ -12,7 +13,10 @@ const Settings = ({
 }) => {
   return (
     <Drawer temporary open={open == undefined ? true : open} onClose={onClose}>
-      <DrawerContent className="flex flex-col justify-center">
+      <DrawerContent>
+        <Typography use="headline5" tag="div" className="p-4">
+          Settings
+        </Typography>
         <Typography use="overline" tag="div" className="px-4">
           Daily targets
         </Typography>
@@ -33,6 +37,13 @@ const Settings = ({
           onChange={onChange}
           className="mx-4"
         />
+
+        <Typography use="overline" tag="div" className="px-4">
+          Advanced
+        </Typography>
+        <ListDivider />
+
+        {advancedComponents}
       </DrawerContent>
     </Drawer>
   );

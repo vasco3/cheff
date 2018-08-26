@@ -55,6 +55,7 @@ window['_fs_namespace'] = 'FS';
         }
         :root {
           --mdc-theme-primary: rgb(253, 103, 33);
+          --mdc-theme-secondary: #6200ee;
         }
       `}</style>
     </React.Fragment>
