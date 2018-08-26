@@ -5,12 +5,13 @@ import uuid from 'uuid/v1';
 import snakeCase from 'lodash/snakeCase';
 import upperFirst from 'lodash/upperFirst';
 import { Button } from 'rmwc/Button';
-import { Card, CardAction, CardActions } from 'rmwc/Card';
+import { Card } from 'rmwc/Card';
 import { Icon } from 'rmwc/Icon';
 import { List, ListDivider, SimpleListItem } from 'rmwc/List';
 import { TextField } from 'rmwc/TextField';
 import { Typography } from 'rmwc';
 import { Snackbar } from 'rmwc/Snackbar';
+import { Fab } from 'rmwc/Fab';
 
 class Recipes extends React.Component {
   constructor(props) {
@@ -85,23 +86,47 @@ class Recipes extends React.Component {
     const { recipes } = props;
     return (
       <Card outlined>
-        <CardActions fullBleed>
-          <CardAction onClick={this.toggleAddRecipe}>
-            Recipes ({recipes.length})
-            <span
-              className={
-                state.isAdding || props.hasEnoughRecipes ? '' : 'add-icon'
-              }
-            >
-              <Icon use="add" />
-            </span>
-          </CardAction>
-        </CardActions>
+        <Typography use="subtitle1" tag="div" className="p-4">
+          Recipes ({recipes.length})
+        </Typography>
 
         <ListDivider />
 
+        <List twoLine dense>
+          {recipes.length < props.recipesMinimumCount && (
+            <React.Fragment>
+              <Typography use="body2" tag="div" className="p-4 ">
+                Add {props.recipesMinimumCount - recipes.length} more recipes{' '}
+                <br /> or import{' '}
+                <Button dense onClick={props.importDemoRecipes}>
+                  demo recipes
+                </Button>
+              </Typography>
+              <ListDivider />
+            </React.Fragment>
+          )}
+          {recipes
+            .filter(function filterOutRecipesToDelete(recipe) {
+              return !state.recipesToDelete.includes(recipe._key);
+            })
+            .map(({ _key, name, Calories, Protein, Carbs, Fat, servings }) => (
+              <SimpleListItem
+                key={_key}
+                graphic="restaurant"
+                text={name}
+                secondaryText={`${Calories}cal | Protein ${Protein}g | Carbs ${Carbs}g | Fat ${Fat}g | ${servings} servings`}
+                meta={
+                  <Icon
+                    use="delete"
+                    onClick={() => this.removeRecipeIntent(_key)}
+                  />
+                }
+              />
+            ))}
+        </List>
         {state.isAdding && (
           <React.Fragment>
+            <ListDivider />
             <Typography use="subtitle2" tag="div" className="mx-4 mt-4 mb-0">
               Enter new recipe information
             </Typography>
@@ -136,44 +161,10 @@ class Recipes extends React.Component {
             <ListDivider />
           </React.Fragment>
         )}
-        <List twoLine dense>
-          {recipes.length < props.recipesMinimumCount && (
-            <React.Fragment>
-              <Typography use="body2" tag="div" className="p-4 ">
-                Add {props.recipesMinimumCount - recipes.length} more recipes{' '}
-                <br /> or import{' '}
-                <Button dense onClick={props.importDemoRecipes}>
-                  demo recipes
-                </Button>
-              </Typography>
-              <ListDivider />
-            </React.Fragment>
-          )}
-          {recipes
-            .filter(function filterOutRecipesToDelete(recipe) {
-              return !state.recipesToDelete.includes(recipe._key);
-            })
-            .map(({ _key, name, Calories, Protein, Carbs, Fat, servings }) => (
-              <SimpleListItem
-                key={_key}
-                graphic="restaurant"
-                text={name}
-                secondaryText={`${Calories}cal | Protein ${Protein}g | Carbs ${Carbs}g | Fat ${Fat}g | ${servings} servings`}
-                meta={
-                  <Icon
-                    use="delete"
-                    onClick={() => this.removeRecipeIntent(_key)}
-                  />
-                }
-              />
-            ))}
-        </List>
-        <ListDivider />
 
-        <QrCodeExport
-          recipes={props.recipes}
-          importRecipes={props.importRecipes}
-        />
+        <div className="flex justify-end pr-4 py-4">
+          <Fab onClick={this.toggleAddRecipe} icon="add" />
+        </div>
 
         <Snackbar
           actionHandler={() =>
@@ -188,6 +179,7 @@ class Recipes extends React.Component {
           onHide={this.snackbarOnHide}
           show={state.snackbarIsOpen}
         />
+
         <style jsx>{`
           .recipeForm {
             padding: 0 1rem 1rem;
@@ -199,21 +191,6 @@ class Recipes extends React.Component {
             display: flex;
             justify-content: flex-end;
             grid-column: 1 / 4;
-          }
-          @keyframes bounce {
-            from {
-              transform: scale(1);
-            }
-            to {
-              transform: scale(1.2);
-            }
-          }
-          .add-icon {
-            animation-direction: alternate;
-            animation-duration: 1s;
-            animation-iteration-count: infinite;
-            animation-name: bounce;
-            animation-timing-function: cubic-bezier(0.3, 0.51, 0, 1.38);
           }
         `}</style>
       </Card>
