@@ -30,7 +30,7 @@ class Recipes extends React.Component {
       isAdding: false,
       name: '',
       recipesToDelete: OrderedSet([]),
-      servings: 0,
+      servings: 1,
       snackbarIsOpen: false,
     };
   }
@@ -93,18 +93,6 @@ class Recipes extends React.Component {
         <ListDivider />
 
         <List twoLine dense>
-          {recipes.length < props.recipesMinimumCount && (
-            <React.Fragment>
-              <Typography use="body2" tag="div" className="p-4 ">
-                Add {props.recipesMinimumCount - recipes.length} more recipes{' '}
-                <br /> or import{' '}
-                <Button dense onClick={props.importDemoRecipes}>
-                  demo recipes
-                </Button>
-              </Typography>
-              <ListDivider />
-            </React.Fragment>
-          )}
           {recipes
             .filter(function filterOutRecipesToDelete(recipe) {
               return !state.recipesToDelete.includes(recipe._key);
@@ -124,8 +112,22 @@ class Recipes extends React.Component {
               />
             ))}
         </List>
+
+        <div>
+          {recipes.length < props.recipesMinimumCount && (
+            <Typography use="body2" tag="div" className="p-4 ">
+              Add {props.recipesMinimumCount - recipes.length} more recipes{' '}
+              <br /> or import{' '}
+              <Button dense onClick={props.importDemoRecipes}>
+                demo recipes
+              </Button>
+            </Typography>
+          )}
+          <ListDivider />
+        </div>
+
         {state.isAdding && (
-          <React.Fragment>
+          <div>
             <ListDivider />
             <Typography use="subtitle2" tag="div" className="mx-4 mt-4 mb-0">
               Enter new recipe information
@@ -159,7 +161,7 @@ class Recipes extends React.Component {
               </footer>
             </div>
             <ListDivider />
-          </React.Fragment>
+          </div>
         )}
 
         <div className="flex justify-end pr-4 py-4">
