@@ -21,7 +21,11 @@ function Plan({
       <Typography use="subtitle1" tag="div" className="p-4">
         Day Meal Plan {menu.length > 0 && `(${menu.length} servings)`}
       </Typography>
+
       <ListDivider />
+      <div className="fab flex justify-end pr-4">
+        <Fab onClick={handleMenuGenerate} icon="autorenew" />
+      </div>
 
       <Typography
         use="subtitle2"
@@ -43,10 +47,12 @@ function Plan({
           />
         ))}
       </List>
-
-      <div className="flex justify-end pr-4 py-4">
-        <Fab onClick={handleMenuGenerate} icon="autorenew" />
-      </div>
+      <style jsx>{`
+        .fab {
+          margin-top: -2rem;
+          margin-bottom: -1.5rem;
+        }
+      `}</style>
     </Card>
   );
 }

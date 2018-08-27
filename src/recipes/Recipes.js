@@ -110,6 +110,26 @@ class Recipes extends React.Component {
 
         <ListDivider />
 
+        <div className="fab flex justify-end pr-4">
+          <Fab onClick={this.toggleAddRecipe} icon="add" />
+        </div>
+
+        {state.isAdding && (
+          <div>
+            <ListDivider />
+            <Typography use="subtitle2" tag="div" className="mx-4 mt-4 mb-0">
+              Enter new recipe information
+            </Typography>
+
+            <RecipeForm
+              onCancel={this.toggleAddRecipe}
+              onChange={this.handleRecipeChange}
+              onSave={this.addRecipe}
+            />
+            <ListDivider />
+          </div>
+        )}
+
         <List twoLine dense>
           {recipes
             .filter(function filterOutRecipesToDelete(recipe) {
@@ -153,26 +173,6 @@ class Recipes extends React.Component {
           )}
         </div>
 
-        {state.isAdding && (
-          <div>
-            <ListDivider />
-            <Typography use="subtitle2" tag="div" className="mx-4 mt-4 mb-0">
-              Enter new recipe information
-            </Typography>
-
-            <RecipeForm
-              onCancel={this.toggleAddRecipe}
-              onChange={this.handleRecipeChange}
-              onSave={this.addRecipe}
-            />
-            <ListDivider />
-          </div>
-        )}
-
-        <div className="flex justify-end pr-4 py-4">
-          <Fab onClick={this.toggleAddRecipe} icon="add" />
-        </div>
-
         <Snackbar
           actionHandler={() =>
             this.setState({
@@ -186,6 +186,11 @@ class Recipes extends React.Component {
           onHide={this.snackbarOnHide}
           show={state.snackbarIsOpen}
         />
+        <style jsx>{`
+          .fab {
+            margin-top: -2rem;
+          }
+        `}</style>
       </Card>
     );
   }
