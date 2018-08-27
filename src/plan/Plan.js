@@ -6,14 +6,16 @@ import { Typography } from 'rmwc/Typography';
 import { List, SimpleListItem } from 'rmwc/List';
 import numeral from 'numeral';
 
-const Menu = ({
-  menu,
-  caloriesTotal,
-  carbsTotal,
-  fatTotal,
-  proteinTotal,
-  onGenerate,
-}) => {
+import { withCoreContext } from '../CoreContext';
+
+function Plan({
+  menu = [],
+  menuCaloriesTotal,
+  menuCarbsTotal,
+  menuFatTotal,
+  menuProteinTotal,
+  handleMenuGenerate,
+}) {
   return (
     <Card outlined>
       <Typography use="subtitle1" tag="div" className="p-4">
@@ -26,8 +28,8 @@ const Menu = ({
         theme="text-secondary-on-background"
         className="px-4 py-2"
       >
-        {numeral(caloriesTotal).format('0,0')} cal, protein {proteinTotal} g,
-        carbs {carbsTotal} g, fat {fatTotal} g
+        {numeral(menuCaloriesTotal).format('0,0')} cal, protein{' '}
+        {menuProteinTotal} g, carbs {menuCarbsTotal} g, fat {menuFatTotal} g
       </Typography>
 
       <ListDivider />
@@ -43,10 +45,10 @@ const Menu = ({
       </List>
 
       <div className="flex justify-end pr-4 py-4">
-        <Fab onClick={onGenerate} icon="autorenew" />
+        <Fab onClick={handleMenuGenerate} icon="autorenew" />
       </div>
     </Card>
   );
-};
+}
 
-export default Menu;
+export default withCoreContext(Plan);
