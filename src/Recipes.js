@@ -117,9 +117,8 @@ class Recipes extends React.Component {
               return !state.recipesToDelete.includes(recipe._key);
             })
             .map(({ _key, name, Calories, Protein, Carbs, Fat, servings }) => (
-              <React.Fragment>
+              <React.Fragment key={_key}>
                 <SimpleListItem
-                  key={_key}
                   text={name}
                   secondaryText={`${Calories}cal | Protein ${Protein}g | Carbs ${Carbs}g | Fat ${Fat}g | ${servings} servings`}
                   meta={
