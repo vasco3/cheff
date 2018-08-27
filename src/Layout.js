@@ -11,6 +11,7 @@ import {
 import CoreContext from './CoreContext';
 import MenuDrawer from './MenuDrawer';
 import { calculateDayMenu, calculateSettings, randomSort } from './util';
+import demoRecipes from '../data/recipes';
 
 class Layout extends Component {
   constructor(props) {
@@ -32,6 +33,10 @@ class Layout extends Component {
       menuFatTotal: 0,
       handleMenuGenerate: this.handleMenuGenerate.bind(this),
       recipes,
+      handleRecipeAdd: this.handleRecipeAdd.bind(this),
+      handleRecipeRemove: this.handleRecipeRemove.bind(this),
+      // handleRecipeEdit: this.handleRecipeEdit.bind(this),
+      handleRecipesImportDemo: this.handleRecipesImportDemo.bind(this),
     };
   }
 
@@ -54,6 +59,45 @@ class Layout extends Component {
       menuFatTotal: fat,
     });
   }
+
+  handleRecipeAdd(recipe) {
+    const recipes = this.state.recipes.push(recipe);
+
+    this.setState({ recipes }, function saveToLocal() {
+      localStorage.setItem('recipes', JSON.stringify(recipes.toArray()));
+    });
+  }
+
+  handleRecipeRemove(recipeKeys) {
+    const recipes = this.state.recipes.filter(
+      recipe => !recipeKeys.includes(recipe._key),
+    );
+
+    this.setState({ recipes }, function saveToLocal() {
+      localStorage.setItem('recipes', JSON.stringify(recipes.toArray()));
+    });
+  }
+
+  handleRecipesImportDemo() {
+    const recipes = List(demoRecipes);
+    this.setState({ recipes }, function saveToLocal() {
+      localStorage.setItem('recipes', JSON.stringify(recipes.toArray()));
+    });
+  }
+
+  // importRecipes(recipesScanned) {
+  //   const recipes = List(recipesScanned);
+
+  //   this.setState({ recipes }, function saveToLocal() {
+  //     localStorage.setItem('recipes', JSON.stringify(recipes.toArray()));
+  //   });
+  // }
+
+  // updateSettings(event) {
+  //   const name = getIn(event, 'target.name');
+  //   const value = getIn(event, 'target.value');
+  //   this.setState({ [name]: parseFloat(value, 10) });
+  // }
 
   toggleDrawer = () => {
     this.setState(prevState => ({ drawerOpen: !prevState.drawerOpen }));

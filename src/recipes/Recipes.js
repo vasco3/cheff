@@ -6,22 +6,20 @@ import snakeCase from 'lodash/snakeCase';
 import { Button } from 'rmwc/Button';
 import { Card } from 'rmwc/Card';
 import { Icon } from 'rmwc/Icon';
+import i from 'immutable';
 import { List, ListDivider, SimpleListItem } from 'rmwc/List';
 import { Typography } from 'rmwc';
 import { Snackbar } from 'rmwc/Snackbar';
 import { Fab } from 'rmwc/Fab';
 
+import { withCoreContext } from '../CoreContext';
 import RecipeForm from './RecipeForm';
+
+import { RECIPES_MINIMUM } from './constants';
 
 class Recipes extends React.Component {
   constructor(props) {
     super(props);
-    this.addRecipe = this.addRecipe.bind(this);
-    this.editRecipe = this.editRecipe.bind(this);
-    this.removeRecipeIntent = this.removeRecipeIntent.bind(this);
-    this.handleRecipeChange = this.handleRecipeChange.bind(this);
-    this.snackbarOnHide = this.snackbarOnHide.bind(this);
-    this.toggleAddRecipe = this.toggleAddRecipe.bind(this);
 
     this.state = {
       Calories: 0,
@@ -37,11 +35,11 @@ class Recipes extends React.Component {
     };
   }
 
-  addRecipe() {
+  addRecipe = () => {
     const { props, state } = this;
 
     this.setState({ isAdding: false }, function addRecipeCallback() {
-      props.onAdd({
+      props.handleRecipeAdd({
         Calories: parseInt(state.Calories, 10),
         Carbs: parseInt(state.Carbs, 10),
         Fat: parseInt(state.Fat, 10),
@@ -51,13 +49,13 @@ class Recipes extends React.Component {
         servings: parseInt(state.servings, 10),
       });
     });
-  }
+  };
 
-  editRecipe() {
+  editRecipe = () => {
     const { props, state } = this;
 
     this.setState({ isEditing: false }, function addRecipeCallback() {
-      props.onEdit({
+      props.handleRecipeEdit({
         Calories: parseInt(state.Calories, 10),
         Carbs: parseInt(state.Carbs, 10),
         Fat: parseInt(state.Fat, 10),
@@ -67,46 +65,47 @@ class Recipes extends React.Component {
         servings: parseInt(state.servings, 10),
       });
     });
-  }
+  };
 
-  snackbarOnHide() {
+  snackbarOnHide = () => {
     const { props, state } = this;
     if (state.recipesToDelete.size) {
       this.setState(
         { snackbarIsOpen: false, recipesToDelete: OrderedSet([]) },
         function afterSnackbarHide() {
-          props.onRemove(state.recipesToDelete);
+          props.handleRecipeRemove(state.recipesToDelete);
         },
       );
     } else {
       this.setState({ snackbarIsOpen: false });
     }
-  }
+  };
 
-  removeRecipeIntent(recipeKey) {
+  removeRecipeIntent = recipeKey => {
     this.setState(prevState => ({
       recipesToDelete: prevState.recipesToDelete.add(recipeKey),
       snackbarIsOpen: true,
     }));
-  }
+  };
 
-  handleRecipeChange(event) {
+  handleRecipeChange = event => {
     const name = getIn(event, 'target.name');
     const value = getIn(event, 'target.value');
     this.setState({ [name]: value });
-  }
+  };
 
-  toggleAddRecipe() {
+  toggleAddRecipe = () => {
     this.setState(prevState => ({ isAdding: !prevState.isAdding }));
-  }
+  };
 
   render() {
     const { state, props } = this;
-    const { recipes } = props;
+    const { recipes = i.List() } = props;
+
     return (
       <Card outlined>
         <Typography use="subtitle1" tag="div" className="p-4">
-          Recipes ({recipes.length})
+          Recipes ({recipes.size})
         </Typography>
 
         <ListDivider />
@@ -140,12 +139,12 @@ class Recipes extends React.Component {
         </List>
 
         <div>
-          {recipes.length < props.recipesMinimumCount && (
+          {recipes.size < RECIPES_MINIMUM && (
             <React.Fragment>
               <Typography use="body2" tag="div" className="p-4 ">
-                Add {props.recipesMinimumCount - recipes.length} more recipes{' '}
-                <br /> or import{' '}
-                <Button dense onClick={props.importDemoRecipes}>
+                Add {RECIPES_MINIMUM - recipes.size} more recipes <br /> or
+                import{' '}
+                <Button dense onClick={props.handleRecipesImportDemo}>
                   demo recipes
                 </Button>
               </Typography>
@@ -192,4 +191,4 @@ class Recipes extends React.Component {
   }
 }
 
-export default Recipes;
+export default withCoreContext(Recipes);
