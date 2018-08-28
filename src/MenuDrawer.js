@@ -9,9 +9,14 @@ import { Typography } from 'rmwc/Typography';
 import { ListDivider } from 'rmwc/List';
 import { Icon, Ripple } from 'rmwc';
 
-const MenuDrawer = ({ open, onClose }) => {
+const MenuDrawer = ({ open, onClose, temporary, persistent }) => {
   return (
-    <Drawer temporary open={open} onClose={onClose}>
+    <Drawer
+      onClose={onClose}
+      open={open}
+      persistent={persistent}
+      temporary={temporary}
+    >
       <DrawerHeader>
         <DrawerHeaderContent>
           <Typography use="headline5" theme="primary">

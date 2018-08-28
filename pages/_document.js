@@ -46,6 +46,15 @@ export default class MyDocument extends Document {
               --mdc-theme-primary: rgb(253, 103, 33);
               --mdc-theme-secondary: #6200ee;
             }
+
+            .mdc-temporary-drawer__drawer {
+              will-change: initial;
+            }
+            .mdc-drawer--persistent {
+              height: calc(100vh - 48px);
+              overflow-y: auto;
+              -webkit-overflow-scrolling: touch;
+            }
           `,
             }}
           />

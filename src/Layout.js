@@ -26,7 +26,8 @@ class Layout extends Component {
     this.state = {
       CALORIES_TOTAL: 2700,
       PROTEIN_TOTAL: 150,
-      drawerOpen: false,
+      drawerIsOpen: false,
+      isMobile: true,
       menu: [],
       menuCaloriesTotal: 0,
       menuCarbsTotal: 0,
@@ -35,9 +36,27 @@ class Layout extends Component {
       recipes,
       handleRecipeAdd: this.handleRecipeAdd.bind(this),
       handleRecipeRemove: this.handleRecipeRemove.bind(this),
-      // handleRecipeEdit: this.handleRecipeEdit.bind(this),
+      handleRecipeEdit: this.handleRecipeEdit.bind(this),
       handleRecipesImportDemo: this.handleRecipesImportDemo.bind(this),
     };
+  }
+
+  componentDidMount() {
+    window.addEventListener('resize', () => this.doSizeCheck());
+    this.doSizeCheck(true);
+  }
+
+  doSizeCheck(initial) {
+    const isMobile = window.innerWidth < 640;
+    const drawerIsOpen =
+      initial && window.innerWidth > 640 ? true : this.state.drawerIsOpen;
+
+    if (
+      this.state.isMobile !== isMobile ||
+      this.state.drawerIsOpen !== drawerIsOpen
+    ) {
+      this.setState({ isMobile, drawerIsOpen });
+    }
   }
 
   handleMenuGenerate() {
@@ -61,11 +80,29 @@ class Layout extends Component {
   }
 
   handleRecipeAdd(recipe) {
-    const recipes = this.state.recipes.push(recipe);
+    const recipes = this.state.recipes.unshift(recipe);
 
     this.setState({ recipes }, function saveToLocal() {
       localStorage.setItem('recipes', JSON.stringify(recipes.toArray()));
     });
+  }
+
+  handleRecipeEdit(recipeToEdit) {
+    const recipeIndex = this.state.recipes.findIndex(
+      recipe => recipe._key === recipeToEdit._key,
+    );
+    if (recipeIndex > -1) {
+      const recipes = this.state.recipes.update(
+        recipeIndex,
+        function updateRecipeInList() {
+          return recipeToEdit;
+        },
+      );
+
+      this.setState({ recipes }, function saveToLocal() {
+        localStorage.setItem('recipes', JSON.stringify(recipes.toArray()));
+      });
+    }
   }
 
   handleRecipeRemove(recipeKeys) {
@@ -100,7 +137,7 @@ class Layout extends Component {
   // }
 
   toggleDrawer = () => {
-    this.setState(prevState => ({ drawerOpen: !prevState.drawerOpen }));
+    this.setState(prevState => ({ drawerIsOpen: !prevState.drawerIsOpen }));
   };
 
   render() {
@@ -125,13 +162,23 @@ class Layout extends Component {
           </TopAppBarRow>
         </TopAppBar>
 
-        <MenuDrawer open={state.drawerOpen} onClose={this.toggleDrawer} />
-
-        <div className="mdc-top-app-bar--dense-fixed-adjust">
+        <div className="mdc-top-app-bar--dense-fixed-adjust appContent">
+          <MenuDrawer
+            open={state.drawerIsOpen}
+            persistent={!state.isMobile}
+            temporary={state.isMobile}
+            onClose={() => this.setState({ drawerIsOpen: false })}
+          />
           <CoreContext.Provider value={this.state}>
             {props.children}
           </CoreContext.Provider>
         </div>
+        <style jsx>{`
+          .appContent {
+            display: grid;
+            grid-template-columns: ${state.isMobile ? '' : 'auto '} 1fr;
+          }
+        `}</style>
       </main>
     );
   }
