@@ -35,34 +35,34 @@ class Recipes extends React.Component {
     };
   }
 
-  addRecipe = () => {
-    const { props, state } = this;
+  addRecipe = recipe => {
+    const { props } = this;
 
     this.setState({ isAdding: false }, function addRecipeCallback() {
       props.handleRecipeAdd({
-        Calories: parseInt(state.Calories, 10),
-        Carbs: parseInt(state.Carbs, 10),
-        Fat: parseInt(state.Fat, 10),
-        Protein: parseInt(state.Protein, 10),
-        _key: snakeCase(state.name || '').toUpperCase() + uuid(),
-        name: state.name,
-        servings: parseInt(state.servings, 10),
+        Calories: parseInt(recipe.Calories, 10),
+        Carbs: parseInt(recipe.Carbs, 10),
+        Fat: parseInt(recipe.Fat, 10),
+        Protein: parseInt(recipe.Protein, 10),
+        _key: snakeCase(recipe.name || '').toUpperCase() + uuid(),
+        name: recipe.name,
+        servings: parseInt(recipe.servings, 10),
       });
     });
   };
 
-  editRecipe = () => {
-    const { props, state } = this;
+  editRecipe = recipe => {
+    const { props } = this;
 
-    this.setState({ isEditing: false }, function addRecipeCallback() {
+    this.setState({ recipeToEdit: undefined }, function editRecipeCallback() {
       props.handleRecipeEdit({
-        Calories: parseInt(state.Calories, 10),
-        Carbs: parseInt(state.Carbs, 10),
-        Fat: parseInt(state.Fat, 10),
-        Protein: parseInt(state.Protein, 10),
-        _key: snakeCase(state.name || '').toUpperCase() + uuid(),
-        name: state.name,
-        servings: parseInt(state.servings, 10),
+        Calories: parseInt(recipe.Calories, 10),
+        Carbs: parseInt(recipe.Carbs, 10),
+        Fat: parseInt(recipe.Fat, 10),
+        Protein: parseInt(recipe.Protein, 10),
+        _key: recipe._key,
+        name: recipe.name,
+        servings: parseInt(recipe.servings, 10),
       });
     });
   };
@@ -96,6 +96,10 @@ class Recipes extends React.Component {
 
   toggleAddRecipe = () => {
     this.setState(prevState => ({ isAdding: !prevState.isAdding }));
+  };
+
+  selectRecipeToEdit = key => {
+    this.setState({ recipeToEdit: key });
   };
 
   render() {
@@ -138,6 +142,7 @@ class Recipes extends React.Component {
             .map(({ _key, name, Calories, Protein, Carbs, Fat, servings }) => (
               <React.Fragment key={_key}>
                 <SimpleListItem
+                  onClick={() => this.selectRecipeToEdit(_key)}
                   text={name}
                   secondaryText={`${Calories}cal | Protein ${Protein}g | Carbs ${Carbs}g | Fat ${Fat}g | ${servings} servings`}
                   meta={
@@ -147,11 +152,20 @@ class Recipes extends React.Component {
                     />
                   }
                 />
-                {_key === getIn(state, 'recipeToEdit._key') && (
+                {_key === state.recipeToEdit && (
                   <RecipeForm
+                    recipe={{
+                      _key,
+                      name,
+                      Calories,
+                      Protein,
+                      Carbs,
+                      Fat,
+                      servings,
+                    }}
                     onCancel={this.toggleAddRecipe}
                     onChange={this.handleRecipeChange}
-                    onSave={this.addRecipe}
+                    onSave={this.editRecipe}
                   />
                 )}
               </React.Fragment>

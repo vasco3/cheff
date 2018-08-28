@@ -35,7 +35,7 @@ class Layout extends Component {
       recipes,
       handleRecipeAdd: this.handleRecipeAdd.bind(this),
       handleRecipeRemove: this.handleRecipeRemove.bind(this),
-      // handleRecipeEdit: this.handleRecipeEdit.bind(this),
+      handleRecipeEdit: this.handleRecipeEdit.bind(this),
       handleRecipesImportDemo: this.handleRecipesImportDemo.bind(this),
     };
   }
@@ -61,11 +61,29 @@ class Layout extends Component {
   }
 
   handleRecipeAdd(recipe) {
-    const recipes = this.state.recipes.push(recipe);
+    const recipes = this.state.recipes.unshift(recipe);
 
     this.setState({ recipes }, function saveToLocal() {
       localStorage.setItem('recipes', JSON.stringify(recipes.toArray()));
     });
+  }
+
+  handleRecipeEdit(recipeToEdit) {
+    const recipeIndex = this.state.recipes.findIndex(
+      recipe => recipe._key === recipeToEdit._key,
+    );
+    if (recipeIndex > -1) {
+      const recipes = this.state.recipes.update(
+        recipeIndex,
+        function updateRecipeInList() {
+          return recipeToEdit;
+        },
+      );
+
+      this.setState({ recipes }, function saveToLocal() {
+        localStorage.setItem('recipes', JSON.stringify(recipes.toArray()));
+      });
+    }
   }
 
   handleRecipeRemove(recipeKeys) {
