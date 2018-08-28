@@ -28,8 +28,8 @@ const MenuDrawer = ({ open, onClose, temporary, persistent }) => {
         <Link href="/">
           <Ripple>
             <Typography use="body1" tag="div" className="p-4 flex">
-              <Icon use="restaurant" className="mr-4" theme="primary" /> Meal
-              Plan
+              <Icon use="settings" className="mr-4" theme="primary" />{' '}
+              Calculator
             </Typography>
           </Ripple>
         </Link>
@@ -41,12 +41,15 @@ const MenuDrawer = ({ open, onClose, temporary, persistent }) => {
             </Typography>
           </Ripple>
         </Link>
+        <Link href="/plan">
+          <Ripple>
+            <Typography use="body1" tag="div" className="p-4 flex">
+              <Icon use="restaurant" className="mr-4" theme="primary" /> Meal
+              Plan
+            </Typography>
+          </Ripple>
+        </Link>
         <ListDivider />
-        {/* <Ripple>
-          <Typography use="body1" tag="div" className="p-4 flex">
-            <Icon use="settings" className="mr-4" /> Settings
-          </Typography>
-        </Ripple> */}
         <Link href="/about">
           <Ripple>
             <Typography use="body1" tag="div" className="p-4 flex">

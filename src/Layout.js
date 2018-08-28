@@ -38,15 +38,30 @@ class Layout extends Component {
       handleRecipeRemove: this.handleRecipeRemove.bind(this),
       handleRecipeEdit: this.handleRecipeEdit.bind(this),
       handleRecipesImportDemo: this.handleRecipesImportDemo.bind(this),
+      handleCalculatorUpdate: this.handleCalculatorUpdate.bind(this),
     };
   }
 
   componentDidMount() {
-    window.addEventListener('resize', () => this.doSizeCheck());
+    window.addEventListener('resize', this.doSizeCheck);
     this.doSizeCheck(true);
   }
 
-  doSizeCheck(initial) {
+  componentDidUpdate(prevProps, prevState) {
+    // a hack to help components layout that depend on window events
+    // The size of the content changes on drawer open and close
+    if (prevState.menuIsOpen !== this.state.menuIsOpen) {
+      setTimeout(() => {
+        window.dispatchEvent(new Event('resize'));
+      }, 300);
+    }
+  }
+
+  componentWillUnMount() {
+    window.removeEventListener('resize', this.doSizeCheck);
+  }
+
+  doSizeCheck = initial => {
     const isMobile = window.innerWidth < 640;
     const drawerIsOpen =
       initial && window.innerWidth > 640 ? true : this.state.drawerIsOpen;
@@ -57,7 +72,7 @@ class Layout extends Component {
     ) {
       this.setState({ isMobile, drawerIsOpen });
     }
-  }
+  };
 
   handleMenuGenerate() {
     const { state } = this;
@@ -130,11 +145,9 @@ class Layout extends Component {
   //   });
   // }
 
-  // updateSettings(event) {
-  //   const name = getIn(event, 'target.name');
-  //   const value = getIn(event, 'target.value');
-  //   this.setState({ [name]: parseFloat(value, 10) });
-  // }
+  handleCalculatorUpdate(settings) {
+    this.setState(settings);
+  }
 
   toggleDrawer = () => {
     this.setState(prevState => ({ drawerIsOpen: !prevState.drawerIsOpen }));

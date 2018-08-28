@@ -126,7 +126,7 @@ class Recipes extends React.Component {
             </Typography>
 
             <RecipeForm
-              onCancel={this.toggleAddRecipe}
+              onCancel={() => this.setState({ isAdding: false })}
               onChange={this.handleRecipeChange}
               onSave={this.addRecipe}
             />
@@ -163,7 +163,7 @@ class Recipes extends React.Component {
                       Fat,
                       servings,
                     }}
-                    onCancel={this.toggleAddRecipe}
+                    onCancel={() => this.setState({ recipeToEdit: undefined })}
                     onChange={this.handleRecipeChange}
                     onSave={this.editRecipe}
                   />
