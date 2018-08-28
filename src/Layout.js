@@ -38,6 +38,7 @@ class Layout extends Component {
       handleRecipeRemove: this.handleRecipeRemove.bind(this),
       handleRecipeEdit: this.handleRecipeEdit.bind(this),
       handleRecipesImportDemo: this.handleRecipesImportDemo.bind(this),
+      handleCalculatorUpdate: this.handleCalculatorUpdate.bind(this),
     };
   }
 
@@ -57,7 +58,7 @@ class Layout extends Component {
     ) {
       this.setState({ isMobile, drawerIsOpen });
     }
-  }
+  };
 
   handleMenuGenerate() {
     const { state } = this;
@@ -130,11 +131,9 @@ class Layout extends Component {
   //   });
   // }
 
-  // updateSettings(event) {
-  //   const name = getIn(event, 'target.name');
-  //   const value = getIn(event, 'target.value');
-  //   this.setState({ [name]: parseFloat(value, 10) });
-  // }
+  handleCalculatorUpdate(settings) {
+    this.setState(settings);
+  }
 
   toggleDrawer = () => {
     this.setState(prevState => ({ drawerIsOpen: !prevState.drawerIsOpen }));

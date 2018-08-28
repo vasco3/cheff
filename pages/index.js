@@ -1,7 +1,7 @@
-import Plan from '../src/plan/Plan';
+import Calculator from '../src/calculator/Calculator';
 
-const HomePage = () => {
-  return <Plan />;
+const CalculatorPage = () => {
+  return <Calculator />;
 };
 
-export default HomePage;
+export default CalculatorPage;
