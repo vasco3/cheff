@@ -43,11 +43,25 @@ class Layout extends Component {
   }
 
   componentDidMount() {
-    window.addEventListener('resize', () => this.doSizeCheck());
+    window.addEventListener('resize', this.doSizeCheck);
     this.doSizeCheck(true);
   }
 
-  doSizeCheck(initial) {
+  componentDidUpdate(prevProps, prevState) {
+    // a hack to help components layout that depend on window events
+    // The size of the content changes on drawer open and close
+    if (prevState.menuIsOpen !== this.state.menuIsOpen) {
+      setTimeout(() => {
+        window.dispatchEvent(new Event('resize'));
+      }, 300);
+    }
+  }
+
+  componentWillUnMount() {
+    window.removeEventListener('resize', this.doSizeCheck);
+  }
+
+  doSizeCheck = initial => {
     const isMobile = window.innerWidth < 640;
     const drawerIsOpen =
       initial && window.innerWidth > 640 ? true : this.state.drawerIsOpen;
