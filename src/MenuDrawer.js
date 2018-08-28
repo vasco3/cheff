@@ -57,6 +57,17 @@ const MenuDrawer = ({ open, onClose, temporary, persistent }) => {
             </Typography>
           </Ripple>
         </Link>
+        <Typography use="overline" tag="div" className="px-4">
+          Advanced
+        </Typography>
+        <ListDivider />
+        <Link href="/sync">
+          <Ripple>
+            <Typography use="body1" tag="div" className="p-4 flex">
+              <Icon use="compare_arrows" className="mr-4" /> Sync
+            </Typography>
+          </Ripple>
+        </Link>
       </DrawerContent>
     </Drawer>
   );
