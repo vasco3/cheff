@@ -9,7 +9,7 @@ import { Typography } from 'rmwc/Typography';
 import { withCoreContext } from '../CoreContext';
 
 class Calculator extends React.Component {
-  state = {};
+  state = { isSaved: false };
   render() {
     const {
       handleCalculatorUpdate,
@@ -26,12 +26,13 @@ class Calculator extends React.Component {
           CALORIES_TOTAL: yup.number().required(),
           PROTEIN_TOTAL: yup.number().required(),
         })}
-        onSubmit={function submitCalculatorValues(values, { setSubmitting }) {
+        onSubmit={(values, { setSubmitting }) => {
           handleCalculatorUpdate({
             CALORIES_TOTAL: parseFloat(values.CALORIES_TOTAL, 10),
             PROTEIN_TOTAL: parseFloat(values.PROTEIN_TOTAL, 10),
           });
           setSubmitting(false);
+          this.setState({ isSaved: true });
         }}
         render={({
           values,
