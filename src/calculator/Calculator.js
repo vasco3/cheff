@@ -3,13 +3,13 @@ import { Formik, Form } from 'formik';
 import * as yup from 'yup';
 import { Button } from 'rmwc/Button';
 import { ListDivider } from 'rmwc/List';
-import { TextField } from 'rmwc/TextField';
+import { TextField, TextFieldHelperText } from 'rmwc/TextField';
 import { Typography } from 'rmwc/Typography';
 
 import { withCoreContext } from '../CoreContext';
 
 class Calculator extends React.Component {
-  state = {};
+  state = { isSaved: false };
   render() {
     const {
       handleCalculatorUpdate,
@@ -26,17 +26,17 @@ class Calculator extends React.Component {
           CALORIES_TOTAL: yup.number().required(),
           PROTEIN_TOTAL: yup.number().required(),
         })}
-        onSubmit={function submitCalculatorValues(values, { setSubmitting }) {
+        onSubmit={(values, { setSubmitting }) => {
           handleCalculatorUpdate({
             CALORIES_TOTAL: parseFloat(values.CALORIES_TOTAL, 10),
             PROTEIN_TOTAL: parseFloat(values.PROTEIN_TOTAL, 10),
           });
           setSubmitting(false);
+          this.setState({ isSaved: true });
         }}
         render={({
           values,
-          // errors,
-          // touched,
+          errors,
           handleBlur,
           handleChange,
           handleReset,
@@ -50,9 +50,7 @@ class Calculator extends React.Component {
               <Typography use="overline" tag="div" className="px-4">
                 Daily targets
               </Typography>
-
               <ListDivider />
-
               <TextField
                 name="CALORIES_TOTAL"
                 value={values.CALORIES_TOTAL}
@@ -62,6 +60,10 @@ class Calculator extends React.Component {
                 onBlur={handleBlur}
                 className="mx-4"
               />
+              <TextFieldHelperText validationMsg persistent>
+                {errors.CALORIES_TOTAL}
+              </TextFieldHelperText>
+
               <TextField
                 name="PROTEIN_TOTAL"
                 value={values.PROTEIN_TOTAL}
@@ -71,7 +73,14 @@ class Calculator extends React.Component {
                 onBlur={handleBlur}
                 className="mx-4"
               />
-              <footer className="flex justify-end mr-4">
+              <TextFieldHelperText persistent validationMsg>
+                {errors.PROTEIN_TOTAL}
+              </TextFieldHelperText>
+
+              <footer className="flex justify-end items-center mr-4">
+                <TextFieldHelperText persistent>
+                  {this.state.isSaved && 'Saved'}
+                </TextFieldHelperText>
                 <Button onClick={handleReset}>reset</Button>
                 <Button type="submit" disabled={isSubmitting}>
                   save

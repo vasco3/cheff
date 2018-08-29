@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import WebTorrent from 'webtorrent';
-import QRCode from 'qrcode';
 import QrReader from 'react-qr-reader';
 import { Button } from 'rmwc/Button';
 import { SimpleDialog } from 'rmwc/Dialog';
@@ -8,41 +7,14 @@ import { Typography } from 'rmwc';
 
 const TORRENT_FILE_NAME = 'cheff recipes';
 
-class QrCodeExport extends Component {
+class Importer extends Component {
   constructor(props) {
     super(props);
-    this.exportRecipesToQRCode = this.exportRecipesToQRCode.bind(this);
     this.importRecipesToQRCode = this.importRecipesToQRCode.bind(this);
     this.handleScan = this.handleScan.bind(this);
     this.handleScanError = this.handleScanError.bind(this);
     this.startTorrentFetching = this.startTorrentFetching.bind(this);
     this.state = {};
-  }
-
-  exportRecipesToQRCode() {
-    const recipesSerialized = JSON.stringify(this.props.recipes);
-
-    const recipesBuffer = Buffer.from(recipesSerialized, 'ascii');
-
-    const client = new WebTorrent();
-
-    client.seed(recipesBuffer, { name: TORRENT_FILE_NAME }, torrent => {
-      console.log('Client is seeding ' + torrent.magnetURI);
-
-      QRCode.toDataURL(torrent.magnetURI)
-        .then(url => {
-          this.setState({
-            exportDialogIsOpen: true,
-            qrCodeDataUrl: url,
-            torrentClient: client,
-          });
-        })
-        .catch(err => {
-          client.destroy();
-          // TODO show snackbar
-          console.error(err);
-        });
-    });
   }
 
   importRecipesToQRCode() {
@@ -88,20 +60,7 @@ class QrCodeExport extends Component {
   render() {
     return (
       <React.Fragment>
-        <Button onClick={this.exportRecipesToQRCode}>Export</Button>
         <Button onClick={this.importRecipesToQRCode}>Import</Button>
-
-        <SimpleDialog
-          title="Export Recipes"
-          open={this.state.exportDialogIsOpen}
-          onClose={() => this.setState({ exportDialogIsOpen: false })}
-          onAccept={() => console.log('accepted')}
-          acceptLabel="Done"
-          onCancel={() => console.log('cancelled')}
-        >
-          <Typography use="subtitle2">QR code generated</Typography>
-          <img src={this.state.qrCodeDataUrl} className="qrImage" />
-        </SimpleDialog>
 
         <SimpleDialog
           title="Import Recipes"
@@ -117,7 +76,7 @@ class QrCodeExport extends Component {
               delay={500}
               onError={this.handleScanError}
               onScan={this.handleScan}
-              style={{ width: '100%' }}
+              style={{ maxWidth: 300, width: '90%' }}
             />
           )}
           <p>{this.state.torrentId && 'Ready'}</p>
@@ -135,4 +94,4 @@ class QrCodeExport extends Component {
   }
 }
 
-export default QrCodeExport;
+export default Importer;

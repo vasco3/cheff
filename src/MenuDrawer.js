@@ -1,4 +1,6 @@
+import React, { Fragment } from 'react';
 import Link from 'next/link';
+import { withRouter } from 'next/router';
 import {
   Drawer,
   DrawerContent,
@@ -9,7 +11,24 @@ import { Typography } from 'rmwc/Typography';
 import { ListDivider } from 'rmwc/List';
 import { Icon, Ripple } from 'rmwc';
 
-const MenuDrawer = ({ open, onClose, temporary, persistent }) => {
+function MenuDrawerItem({ children, href, pathname }) {
+  return (
+    <Link href={href}>
+      <Ripple>
+        <Typography
+          use="body1"
+          tag="div"
+          className={`p-4 flex${href === pathname &&
+            ' mdc-list-item--activated'}`}
+        >
+          {children}
+        </Typography>
+      </Ripple>
+    </Link>
+  );
+}
+
+const MenuDrawer = ({ open, onClose, router, temporary, persistent }) => {
   return (
     <Drawer
       onClose={onClose}
@@ -25,41 +44,43 @@ const MenuDrawer = ({ open, onClose, temporary, persistent }) => {
         </DrawerHeaderContent>
       </DrawerHeader>
       <DrawerContent>
-        <Link href="/">
-          <Ripple>
-            <Typography use="body1" tag="div" className="p-4 flex">
-              <Icon use="settings" className="mr-4" theme="primary" />{' '}
-              Calculator
-            </Typography>
-          </Ripple>
-        </Link>
-        <Link href="/recipes">
-          <Ripple>
-            <Typography use="body1" tag="div" className="p-4 flex">
-              <Icon use="restaurant" className="mr-4" theme="secondary" />{' '}
-              Recipes
-            </Typography>
-          </Ripple>
-        </Link>
-        <Link href="/plan">
-          <Ripple>
-            <Typography use="body1" tag="div" className="p-4 flex">
-              <Icon use="restaurant" className="mr-4" theme="primary" /> Meal
-              Plan
-            </Typography>
-          </Ripple>
-        </Link>
+        <MenuDrawerItem href="/" pathname={router.pathname}>
+          <Fragment>
+            <Icon use="settings" className="mr-4" theme="primary" /> Calculator
+          </Fragment>
+        </MenuDrawerItem>
+        <MenuDrawerItem href="/recipes" pathname={router.pathname}>
+          <Fragment>
+            <Icon use="restaurant" className="mr-4" theme="secondary" /> Recipes
+          </Fragment>
+        </MenuDrawerItem>
+        <MenuDrawerItem href="/plan" pathname={router.pathname}>
+          <Fragment>
+            <Icon use="restaurant" className="mr-4" theme="primary" /> Meal Plan
+          </Fragment>
+        </MenuDrawerItem>
+
         <ListDivider />
-        <Link href="/about">
-          <Ripple>
-            <Typography use="body1" tag="div" className="p-4 flex">
-              <Icon use="help" className="mr-4" /> About
-            </Typography>
-          </Ripple>
-        </Link>
+
+        <MenuDrawerItem href="/about" pathname={router.pathname}>
+          <Fragment>
+            <Icon use="help" className="mr-4" /> About
+          </Fragment>
+        </MenuDrawerItem>
+
+        <Typography use="overline" tag="div" className="px-4">
+          Advanced
+        </Typography>
+        <ListDivider />
+
+        <MenuDrawerItem href="/sync" pathname={router.pathname}>
+          <Fragment>
+            <Icon use="compare_arrows" className="mr-4" /> Sync
+          </Fragment>
+        </MenuDrawerItem>
       </DrawerContent>
     </Drawer>
   );
 };
 
-export default MenuDrawer;
+export default withRouter(MenuDrawer);

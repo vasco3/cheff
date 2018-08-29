@@ -4,9 +4,11 @@ import App, { Container } from 'next/app';
 import Layout from '../src/Layout';
 
 const PAGE_TITLES = {
-  default: 'Meal Plan',
+  default: 'Calculator',
   about: 'About',
+  plan: 'Meal Plan',
   recipes: 'Recipes',
+  sync: 'Sync Data',
 };
 
 class MyApp extends App {
