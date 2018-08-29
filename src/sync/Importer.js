@@ -76,7 +76,7 @@ class Importer extends Component {
               delay={500}
               onError={this.handleScanError}
               onScan={this.handleScan}
-              style={{ width: '100%' }}
+              style={{ maxWidth: 300, width: '90%' }}
             />
           )}
           <p>{this.state.torrentId && 'Ready'}</p>

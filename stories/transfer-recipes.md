@@ -1,6 +1,6 @@
-# Transfer Recipes
+# Sync Data
 
-> Transfer recipes from one device to another.
+> Transfer data peer-to-peer from one device to another.
 
 As a user I would like to use the same recipes in my laptop and smartphone to avoid having to type them twice.
 
@@ -50,5 +50,4 @@ graph TB
   4-->5
   5-->7
   7-->6
-
 ```

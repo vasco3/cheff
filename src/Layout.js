@@ -137,13 +137,13 @@ class Layout extends Component {
     });
   }
 
-  // importRecipes(recipesScanned) {
-  //   const recipes = List(recipesScanned);
+  importRecipes(recipesScanned) {
+    const recipes = List(recipesScanned);
 
-  //   this.setState({ recipes }, function saveToLocal() {
-  //     localStorage.setItem('recipes', JSON.stringify(recipes.toArray()));
-  //   });
-  // }
+    this.setState({ recipes }, function saveToLocal() {
+      localStorage.setItem('recipes', JSON.stringify(recipes.toArray()));
+    });
+  }
 
   handleCalculatorUpdate(settings) {
     this.setState(settings);

@@ -1,17 +1,29 @@
 # Roadmap
 
+- [ ] indicate users that they need to click on generate menu
+- [ ] indicate that there is a minimum of recipes before generating menu
+- [ ] add carbs and fats to calculator and generator
+- [ ] fix import/export torrent
+
+## Forms
+
+- [ ] validate inputs
+- [ ] fix layouts
+
 ## Calculator
 
 - http://calc.kinobody.com/wsp.html
 - http://run.plnkr.co/plunks/p1p1tI/#/kinobody_ggp/lean_bulk/macros_09p_25f/180_lbs
 
-## Torrent
+## Nutrition APIs
 
-- [ ] fix import/export torrent
+- https://ndb.nal.usda.gov/ndb/doc/index
+- https://developer.nutritionix.com/
 
-## Misc
+## graphs
 
-- [ ] validate inputs
+- https://github.com/uber/react-digraph
+- force graph from uber
 
 ## Icebox
 

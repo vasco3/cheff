@@ -8,6 +8,7 @@ const PAGE_TITLES = {
   about: 'About',
   plan: 'Meal Plan',
   recipes: 'Recipes',
+  sync: 'Sync Data',
 };
 
 class MyApp extends App {
