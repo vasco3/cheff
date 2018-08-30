@@ -44,7 +44,7 @@ const MenuDrawer = ({ open, onClose, router, temporary, persistent }) => {
         </DrawerHeaderContent>
       </DrawerHeader>
       <DrawerContent>
-        <MenuDrawerItem href="/" pathname={router.pathname}>
+        <MenuDrawerItem href="/calculator" pathname={router.pathname}>
           <Fragment>
             <Icon use="settings" className="mr-4" theme="primary" /> Calculator
           </Fragment>
@@ -56,7 +56,7 @@ const MenuDrawer = ({ open, onClose, router, temporary, persistent }) => {
         </MenuDrawerItem>
         <MenuDrawerItem href="/plan" pathname={router.pathname}>
           <Fragment>
-            <Icon use="restaurant" className="mr-4" theme="primary" /> Meal Plan
+            <Icon use="list_alt" className="mr-4" theme="primary" /> Meal Plan
           </Fragment>
         </MenuDrawerItem>
 
@@ -64,7 +64,13 @@ const MenuDrawer = ({ open, onClose, router, temporary, persistent }) => {
 
         <MenuDrawerItem href="/about" pathname={router.pathname}>
           <Fragment>
-            <Icon use="help" className="mr-4" /> About
+            <Icon use="info" className="mr-4" /> About
+          </Fragment>
+        </MenuDrawerItem>
+
+        <MenuDrawerItem href="/" pathname={router.pathname}>
+          <Fragment>
+            <Icon use="help_outline" className="mr-4" /> Help
           </Fragment>
         </MenuDrawerItem>
 

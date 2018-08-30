@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Link from 'next/link';
 import { List } from 'immutable';
 import {
   TopAppBar,
@@ -171,6 +172,11 @@ class Layout extends Component {
                 menu
               </TopAppBarActionItem>
               <TopAppBarTitle>{props.pageTitle}</TopAppBarTitle>
+            </TopAppBarSection>
+            <TopAppBarSection alignEnd>
+              <Link href="/">
+                <TopAppBarActionItem alt="help">help</TopAppBarActionItem>
+              </Link>
             </TopAppBarSection>
           </TopAppBarRow>
         </TopAppBar>
