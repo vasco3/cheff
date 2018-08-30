@@ -1,7 +1,5 @@
 # Roadmap
 
-- [ ] indicate users that they need to click on generate menu
-- [ ] indicate that there is a minimum of recipes before generating menu
 - [ ] add carbs and fats to calculator and generator
 - [ ] fix import/export torrent
 
