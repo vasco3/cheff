@@ -13,6 +13,7 @@ export default class MyDocument extends Document {
     return (
       <html lang="en">
         <Head>
+          <title>Cheff - food macro planner</title>
           <meta
             name="viewport"
             content="initial-scale=1.0, width=device-width"
