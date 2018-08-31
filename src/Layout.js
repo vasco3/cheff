@@ -225,6 +225,7 @@ class Layout extends Component {
 
         <div className="mdc-top-app-bar--dense-fixed-adjust appContent">
           <MenuDrawer
+            isMobile={state.isMobile}
             open={state.drawerIsOpen}
             persistent={!state.isMobile}
             temporary={state.isMobile}
