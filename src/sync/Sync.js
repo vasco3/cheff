@@ -8,7 +8,7 @@ class Sync extends Component {
   state = {};
   render() {
     return (
-      <div>
+      <div className="m-4">
         <Typography use="headline6" tag="div">
           Sync your recipe data within your laptop and mobile devices
         </Typography>

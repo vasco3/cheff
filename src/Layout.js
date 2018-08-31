@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Link from 'next/link';
+import getIn from 'lodash/get';
 import { List } from 'immutable';
 import {
   TopAppBar,
@@ -14,25 +15,54 @@ import MenuDrawer from './MenuDrawer';
 import { calculateDayMenu, calculateSettings, randomSort } from './util';
 import demoRecipes from '../data/recipes';
 
+function loadLocalValues() {
+  if (typeof window === 'undefined') {
+    return {
+      menu: [],
+      menuProteinTotal: 0,
+      menuCaloriesTotal: 0,
+      menuCarbsTotal: 0,
+      menuFatTotal: 0,
+      recipes: List(),
+      settings: {},
+    };
+  }
+
+  const recipesJSON = JSON.parse(localStorage.getItem('recipes') || '[]');
+
+  return {
+    menu: JSON.parse(localStorage.getItem('menu') || '[]'),
+    menuCaloriesTotal: localStorage.getItem('menuCaloriesTotal') || 0,
+    menuCarbsTotal: localStorage.getItem('menuCarbsTotal') || 0,
+    menuFatTotal: localStorage.getItem('menuFatTotal') || 0,
+    menuProteinTotal: localStorage.getItem('menuProteinTotal') || 0,
+    recipes: List(recipesJSON),
+    settings: JSON.parse(localStorage.getItem('settings') || '{}'),
+  };
+}
+
 class Layout extends Component {
   constructor(props) {
     super(props);
 
-    const recipesJSON =
-      typeof localStorage === 'undefined'
-        ? []
-        : JSON.parse(localStorage.getItem('recipes') || '[]');
-    const recipes = List(recipesJSON);
+    const {
+      menu,
+      menuCaloriesTotal,
+      menuCarbsTotal,
+      menuFatTotal,
+      menuProteinTotal,
+      recipes,
+      settings,
+    } = loadLocalValues();
 
     this.state = {
-      CALORIES_TOTAL: 2700,
-      PROTEIN_TOTAL: 150,
       drawerIsOpen: false,
       isMobile: true,
-      menu: [],
-      menuCaloriesTotal: 0,
-      menuCarbsTotal: 0,
-      menuFatTotal: 0,
+      menu,
+      menuCaloriesTotal,
+      menuCarbsTotal,
+      menuFatTotal,
+      menuProteinTotal,
       handleMenuGenerate: this.handleMenuGenerate.bind(this),
       recipes,
       handleRecipeAdd: this.handleRecipeAdd.bind(this),
@@ -40,6 +70,7 @@ class Layout extends Component {
       handleRecipeEdit: this.handleRecipeEdit.bind(this),
       handleRecipesImportDemo: this.handleRecipesImportDemo.bind(this),
       handleCalculatorUpdate: this.handleCalculatorUpdate.bind(this),
+      settings,
     };
   }
 
@@ -77,7 +108,7 @@ class Layout extends Component {
 
   handleMenuGenerate() {
     const { state } = this;
-    const { CALORIES_TOTAL, PROTEIN_TOTAL } = state;
+    const { CALORIES_TOTAL, PROTEIN_TOTAL } = getIn(state, 'settings', {});
 
     const settings = calculateSettings({ CALORIES_TOTAL, PROTEIN_TOTAL });
 
@@ -86,13 +117,22 @@ class Layout extends Component {
       settings,
     });
 
-    this.setState({
-      menu,
-      menuProteinTotal: protein,
-      menuCaloriesTotal: calories,
-      menuCarbsTotal: carbs,
-      menuFatTotal: fat,
-    });
+    this.setState(
+      {
+        menu,
+        menuProteinTotal: protein,
+        menuCaloriesTotal: calories,
+        menuCarbsTotal: carbs,
+        menuFatTotal: fat,
+      },
+      function saveMenuToLocal() {
+        localStorage.setItem('menu', JSON.stringify(menu));
+        localStorage.setItem('menuProteinTotal', protein);
+        localStorage.setItem('menuCaloriesTotal', calories);
+        localStorage.setItem('menuCarbsTotal', carbs);
+        localStorage.setItem('menuFatTotal', fat);
+      },
+    );
   }
 
   handleRecipeAdd(recipe) {
@@ -141,13 +181,15 @@ class Layout extends Component {
   importRecipes(recipesScanned) {
     const recipes = List(recipesScanned);
 
-    this.setState({ recipes }, function saveToLocal() {
+    this.setState({ recipes }, function saveRecipesToLocal() {
       localStorage.setItem('recipes', JSON.stringify(recipes.toArray()));
     });
   }
 
   handleCalculatorUpdate(settings) {
-    this.setState(settings);
+    this.setState({ settings }, function saveSettingsToLocal() {
+      localStorage.setItem('settings', JSON.stringify(settings));
+    });
   }
 
   toggleDrawer = () => {
