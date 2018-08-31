@@ -14,6 +14,14 @@ function AboutPage() {
         </a>
         .
       </Typography>
+
+      <Typography use="body2" tag="div" className="mt-4">
+        Contact me at{' '}
+        <a href="https://cuadranteweb.com" target="_blank">
+          cuadranteweb.com
+        </a>
+        .
+      </Typography>
     </div>
   );
 }
