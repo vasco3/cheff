@@ -20,7 +20,6 @@
 
 ## graphs
 
-- https://github.com/uber/react-digraph
 - force graph from uber
 
 ## Icebox

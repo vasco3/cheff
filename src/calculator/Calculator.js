@@ -2,91 +2,127 @@ import React from 'react';
 import { Formik, Form } from 'formik';
 import * as yup from 'yup';
 import { Button } from 'rmwc/Button';
-import { ListDivider } from 'rmwc/List';
+// import { ListDivider } from 'rmwc/List';
+import { Select } from 'rmwc';
 import { TextField, TextFieldHelperText } from 'rmwc/TextField';
 import { Typography } from 'rmwc/Typography';
 
+import { calculateCaloriesTotal, calculateProteinTotal } from './utils';
+import { macroOptions, kinobodyProgramModeOptions } from './constants';
 import { withCoreContext } from '../CoreContext';
-
 class Calculator extends React.Component {
   state = { isSaved: false };
   render() {
-    const {
-      handleCalculatorUpdate,
-      CALORIES_TOTAL,
-      PROTEIN_TOTAL,
-    } = this.props;
+    const { handleCalculatorUpdate, settings = {} } = this.props;
     return (
       <Formik
         initialValues={{
-          CALORIES_TOTAL,
-          PROTEIN_TOTAL,
+          bodyWeight: settings.bodyWeight || 180,
+          bodyWeightIsInLbs: settings.bodyWeightIsInLbs || 'lbs',
+          kinobodyProgram: settings.kinobodyProgram || 'GGP',
+          kinobodyProgramMode: settings.kinobodyProgramMode || 'LEAN_BULK',
+          kinobodyMacroOption:
+            settings.kinobodyMacroOption || 'PROTEIN_DEFAULT',
         }}
         validationSchema={yup.object().shape({
-          CALORIES_TOTAL: yup.number().required(),
-          PROTEIN_TOTAL: yup.number().required(),
+          bodyWeight: yup.number().required(),
+          bodyWeightIsInLbs: yup.string().required(),
+          kinobodyProgram: yup.string().required(),
+          kinobodyProgramMode: yup.string().required(),
+          kinobodyMacroOption: yup.string().required(),
         })}
         onSubmit={(values, { setSubmitting }) => {
+          const CALORIES_TOTAL = calculateCaloriesTotal(values);
+          const PROTEIN_TOTAL = calculateProteinTotal(values, CALORIES_TOTAL);
+
           handleCalculatorUpdate({
-            CALORIES_TOTAL: parseFloat(values.CALORIES_TOTAL, 10),
-            PROTEIN_TOTAL: parseFloat(values.PROTEIN_TOTAL, 10),
+            ...values,
+            bodyWeight: parseInt(values.bodyWeight),
+            CALORIES_TOTAL,
+            PROTEIN_TOTAL,
           });
           setSubmitting(false);
           this.setState({ isSaved: true });
         }}
         render={({
-          values,
           errors,
           handleBlur,
           handleChange,
           handleReset,
           isSubmitting,
+          values,
         }) => {
           return (
-            <Form>
+            <div className="m-4">
               <Typography use="subtitle1" tag="div" className="p-4">
                 Set your daily targets to compute your meal plan
               </Typography>
               <Typography use="overline" tag="div" className="px-4">
-                Daily targets
+                Kinobody Calories / Macros (Daily Targets)
               </Typography>
-              <ListDivider />
-              <TextField
-                name="CALORIES_TOTAL"
-                value={values.CALORIES_TOTAL}
-                outlined
-                label="Total Calories per day"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                className="mx-4"
-              />
-              <TextFieldHelperText validationMsg persistent>
-                {errors.CALORIES_TOTAL}
-              </TextFieldHelperText>
+              <Form>
+                <Select
+                  label="Kinobody Program"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  options={[{ label: 'GGP - Greek God Program', value: 'GGP' }]}
+                  outlined
+                  value={values.kinobodyProgram}
+                />
 
-              <TextField
-                name="PROTEIN_TOTAL"
-                value={values.PROTEIN_TOTAL}
-                outlined
-                label="Total Protein (g) per day"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                className="mx-4"
-              />
-              <TextFieldHelperText persistent validationMsg>
-                {errors.PROTEIN_TOTAL}
-              </TextFieldHelperText>
+                <Select
+                  label="Program Mode"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  options={kinobodyProgramModeOptions}
+                  outlined
+                  name="kinobodyProgramMode"
+                  value={values.kinobodyProgramMode}
+                />
 
-              <footer className="flex justify-end items-center mr-4">
-                <TextFieldHelperText persistent>
-                  {this.state.isSaved && 'Saved'}
+                <Select
+                  label="Macro Options"
+                  name="kinobodyMacroOption"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  options={macroOptions}
+                  outlined
+                  value={values.kinobodyMacroOption}
+                />
+
+                <TextField
+                  label="Body weight"
+                  name="bodyWeight"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  outlined
+                  value={values.bodyWeight}
+                />
+                <TextFieldHelperText validationMsg persistent>
+                  {errors.bodyWeight}
                 </TextFieldHelperText>
-                <Button onClick={handleReset}>reset</Button>
-                <Button type="submit" disabled={isSubmitting}>
-                  save
-                </Button>
-              </footer>
-            </Form>
+
+                <Select
+                  label="units"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  options={['lbs', 'kg']}
+                  outlined
+                  name="bodyWeightIsInLbs"
+                  value={values.bodyWeightIsInLbs}
+                />
+
+                <footer className="flex justify-end items-center mr-4">
+                  <TextFieldHelperText persistent>
+                    {this.state.isSaved && 'Saved'}
+                  </TextFieldHelperText>
+                  <Button onClick={handleReset}>reset</Button>
+                  <Button type="submit" disabled={isSubmitting}>
+                    save
+                  </Button>
+                </footer>
+              </Form>
+            </div>
           );
         }}
       />

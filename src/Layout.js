@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Link from 'next/link';
+import getIn from 'lodash/get';
 import { List } from 'immutable';
 import {
   TopAppBar,
@@ -14,19 +15,29 @@ import MenuDrawer from './MenuDrawer';
 import { calculateDayMenu, calculateSettings, randomSort } from './util';
 import demoRecipes from '../data/recipes';
 
+function loadLocalValues() {
+  if (typeof window === 'undefined') {
+    return {
+      recipes: List(),
+      settings: {},
+    };
+  }
+
+  const recipesJSON = JSON.parse(localStorage.getItem('recipes') || '[]');
+
+  return {
+    recipes: List(recipesJSON),
+    settings: JSON.parse(localStorage.getItem('settings') || '{}'),
+  };
+}
+
 class Layout extends Component {
   constructor(props) {
     super(props);
 
-    const recipesJSON =
-      typeof localStorage === 'undefined'
-        ? []
-        : JSON.parse(localStorage.getItem('recipes') || '[]');
-    const recipes = List(recipesJSON);
+    const { recipes, settings } = loadLocalValues();
 
     this.state = {
-      CALORIES_TOTAL: 2700,
-      PROTEIN_TOTAL: 150,
       drawerIsOpen: false,
       isMobile: true,
       menu: [],
@@ -40,6 +51,7 @@ class Layout extends Component {
       handleRecipeEdit: this.handleRecipeEdit.bind(this),
       handleRecipesImportDemo: this.handleRecipesImportDemo.bind(this),
       handleCalculatorUpdate: this.handleCalculatorUpdate.bind(this),
+      settings,
     };
   }
 
@@ -77,7 +89,7 @@ class Layout extends Component {
 
   handleMenuGenerate() {
     const { state } = this;
-    const { CALORIES_TOTAL, PROTEIN_TOTAL } = state;
+    const { CALORIES_TOTAL, PROTEIN_TOTAL } = getIn(state, 'settings', {});
 
     const settings = calculateSettings({ CALORIES_TOTAL, PROTEIN_TOTAL });
 
@@ -141,13 +153,15 @@ class Layout extends Component {
   importRecipes(recipesScanned) {
     const recipes = List(recipesScanned);
 
-    this.setState({ recipes }, function saveToLocal() {
+    this.setState({ recipes }, function saveRecipesToLocal() {
       localStorage.setItem('recipes', JSON.stringify(recipes.toArray()));
     });
   }
 
   handleCalculatorUpdate(settings) {
-    this.setState(settings);
+    this.setState({ settings }, function saveSettingsToLocal() {
+      localStorage.setItem('settings', JSON.stringify(settings));
+    });
   }
 
   toggleDrawer = () => {
