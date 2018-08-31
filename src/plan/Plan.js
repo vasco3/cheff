@@ -45,7 +45,7 @@ function Plan({
 
       {recipes.size < RECIPES_MINIMUM && (
         <Typography
-          use="headline3"
+          use="headline5"
           theme="text-secondary-on-background"
           className="mx-4 my-2"
         >
