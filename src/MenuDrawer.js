@@ -28,7 +28,14 @@ function MenuDrawerItem({ children, href, pathname }) {
   );
 }
 
-const MenuDrawer = ({ open, onClose, router, temporary, persistent }) => {
+const MenuDrawer = ({
+  isMobile,
+  open,
+  onClose,
+  router,
+  temporary,
+  persistent,
+}) => {
   return (
     <Drawer
       onClose={onClose}
@@ -36,14 +43,21 @@ const MenuDrawer = ({ open, onClose, router, temporary, persistent }) => {
       persistent={persistent}
       temporary={temporary}
     >
-      <DrawerHeader>
-        <DrawerHeaderContent>
-          <Typography use="headline5" theme="primary">
+      {!isMobile && (
+        <DrawerHeader>
+          <DrawerHeaderContent>
+            <Typography use="headline5" theme="primary">
+              Cheff
+            </Typography>
+          </DrawerHeaderContent>
+        </DrawerHeader>
+      )}
+      <DrawerContent>
+        {isMobile && (
+          <Typography use="headline5" theme="primary" tag="div" className="m-4">
             Cheff
           </Typography>
-        </DrawerHeaderContent>
-      </DrawerHeader>
-      <DrawerContent>
+        )}
         <MenuDrawerItem href="/calculator" pathname={router.pathname}>
           <Fragment>
             <Icon use="settings" className="mr-4" theme="primary" /> Calculator
