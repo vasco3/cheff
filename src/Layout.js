@@ -18,6 +18,11 @@ import demoRecipes from '../data/recipes';
 function loadLocalValues() {
   if (typeof window === 'undefined') {
     return {
+      menu: [],
+      menuProteinTotal: 0,
+      menuCaloriesTotal: 0,
+      menuCarbsTotal: 0,
+      menuFatTotal: 0,
       recipes: List(),
       settings: {},
     };
@@ -26,6 +31,11 @@ function loadLocalValues() {
   const recipesJSON = JSON.parse(localStorage.getItem('recipes') || '[]');
 
   return {
+    menu: JSON.parse(localStorage.getItem('menu') || '[]'),
+    menuCaloriesTotal: localStorage.getItem('menuCaloriesTotal') || 0,
+    menuCarbsTotal: localStorage.getItem('menuCarbsTotal') || 0,
+    menuFatTotal: localStorage.getItem('menuFatTotal') || 0,
+    menuProteinTotal: localStorage.getItem('menuProteinTotal') || 0,
     recipes: List(recipesJSON),
     settings: JSON.parse(localStorage.getItem('settings') || '{}'),
   };
@@ -35,15 +45,24 @@ class Layout extends Component {
   constructor(props) {
     super(props);
 
-    const { recipes, settings } = loadLocalValues();
+    const {
+      menu,
+      menuCaloriesTotal,
+      menuCarbsTotal,
+      menuFatTotal,
+      menuProteinTotal,
+      recipes,
+      settings,
+    } = loadLocalValues();
 
     this.state = {
       drawerIsOpen: false,
       isMobile: true,
-      menu: [],
-      menuCaloriesTotal: 0,
-      menuCarbsTotal: 0,
-      menuFatTotal: 0,
+      menu,
+      menuCaloriesTotal,
+      menuCarbsTotal,
+      menuFatTotal,
+      menuProteinTotal,
       handleMenuGenerate: this.handleMenuGenerate.bind(this),
       recipes,
       handleRecipeAdd: this.handleRecipeAdd.bind(this),
@@ -98,13 +117,22 @@ class Layout extends Component {
       settings,
     });
 
-    this.setState({
-      menu,
-      menuProteinTotal: protein,
-      menuCaloriesTotal: calories,
-      menuCarbsTotal: carbs,
-      menuFatTotal: fat,
-    });
+    this.setState(
+      {
+        menu,
+        menuProteinTotal: protein,
+        menuCaloriesTotal: calories,
+        menuCarbsTotal: carbs,
+        menuFatTotal: fat,
+      },
+      function saveMenuToLocal() {
+        localStorage.setItem('menu', JSON.stringify(menu));
+        localStorage.setItem('menuProteinTotal', protein);
+        localStorage.setItem('menuCaloriesTotal', calories);
+        localStorage.setItem('menuCarbsTotal', carbs);
+        localStorage.setItem('menuFatTotal', fat);
+      },
+    );
   }
 
   handleRecipeAdd(recipe) {
