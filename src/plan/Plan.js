@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { Button } from 'rmwc/Button';
 import { Card } from 'rmwc/Card';
-import { Chip, ChipText, ChipIcon, ChipSet } from 'rmwc/Chip';
+import { Chip, ChipText, ChipSet } from 'rmwc/Chip';
 import { Fab } from 'rmwc/Fab';
 import { ListDivider } from 'rmwc/List';
 import { Typography } from 'rmwc/Typography';
@@ -44,7 +44,7 @@ function Plan({
         {numeral(menuCaloriesTotal).format('0,0')} cal
       </Typography>
 
-      <ChipSet className="flex justify-around mb-2">
+      <ChipSet className="flex mb-2">
         <Chip>
           <ChipText>protein {menuProteinTotal || 0}g</ChipText>
         </Chip>
@@ -55,7 +55,6 @@ function Plan({
           <ChipText>fat {menuFatTotal}g</ChipText>
         </Chip>
       </ChipSet>
-      <Typography use="subtitle2" theme="text-secondary-on-background" />
 
       <ListDivider />
 
