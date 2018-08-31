@@ -1,5 +1,6 @@
-import { Typography } from 'rmwc';
 import Link from 'next/link';
+import { Typography } from 'rmwc';
+import { TextField } from 'rmwc/TextField';
 
 const IndexPage = () => {
   return (
@@ -28,6 +29,14 @@ const IndexPage = () => {
           </li>
         </ol>
       </Typography>
+
+      <TextField
+        className="mx-4"
+        label="Suggestions?"
+        name="suggestions"
+        outlined
+        defaultValue=""
+      />
     </div>
   );
 };
