@@ -8,7 +8,12 @@ import { Select } from 'rmwc';
 import { TextField, TextFieldHelperText } from 'rmwc/TextField';
 import { Typography } from 'rmwc/Typography';
 
-import { calculateCaloriesTotal, calculateProteinTotal } from './utils';
+import {
+  calculateCaloriesTotal,
+  calculateCarbsTotal,
+  calculateFatTotal,
+  calculateProteinTotal,
+} from './utils';
 import { macroOptions, kinobodyProgramModeOptions } from './constants';
 import { withCoreContext } from '../CoreContext';
 class Calculator extends React.Component {
@@ -34,16 +39,24 @@ class Calculator extends React.Component {
         })}
         onSubmit={(values, { setSubmitting }) => {
           const CALORIES_TOTAL = calculateCaloriesTotal(values);
+          const FAT_TOTAL = calculateFatTotal(CALORIES_TOTAL);
           const PROTEIN_TOTAL = calculateProteinTotal(values, CALORIES_TOTAL);
+          const CARBS_TOTAL = calculateCarbsTotal({
+            caloriesTotal: CALORIES_TOTAL,
+            fatTotal: FAT_TOTAL,
+            proteinTotal: PROTEIN_TOTAL,
+          });
 
           handleCalculatorUpdate({
             ...values,
             bodyWeight: parseInt(values.bodyWeight),
             CALORIES_TOTAL,
+            CARBS_TOTAL,
+            FAT_TOTAL,
             PROTEIN_TOTAL,
           });
-          setSubmitting(false);
-          this.setState({ isSaved: true });
+
+          this.setState({ isSaved: true }, () => setSubmitting(false));
         }}
         render={({
           errors,

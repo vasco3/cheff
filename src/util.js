@@ -1,12 +1,23 @@
 const { List } = require('immutable');
 
 const CALORIES_TOLERANCE = 50; // calories
+const CARBS_TOLERANCE = 10; // grams
+const FAT_TOLERANCE = 10; // grams
 const PROTEIN_TOLERANCE = 10; // grams
 
-export function calculateSettings({ CALORIES_TOTAL, PROTEIN_TOTAL }) {
+export function calculateSettings({
+  CALORIES_TOTAL,
+  CARBS_TOTAL,
+  FAT_TOTAL,
+  PROTEIN_TOTAL,
+}) {
   return {
     CALORIES_LOWER_BOUND: CALORIES_TOTAL - CALORIES_TOLERANCE,
     CALORIES_UPPER_BOUND: CALORIES_TOTAL + CALORIES_TOLERANCE,
+    CARBS_LOWER_BOUND: CARBS_TOTAL - CARBS_TOLERANCE,
+    CARBS_UPPER_BOUND: CARBS_TOTAL + CARBS_TOLERANCE,
+    FAT_LOWER_BOUND: FAT_TOTAL - FAT_TOLERANCE,
+    FAT_UPPER_BOUND: FAT_TOTAL + FAT_TOLERANCE,
     PROTEIN_LOWER_BOUND: PROTEIN_TOTAL - PROTEIN_TOLERANCE,
     PROTEIN_UPPER_BOUND: PROTEIN_TOTAL + PROTEIN_TOLERANCE,
   };
@@ -36,11 +47,22 @@ export function calculateDayMenu({
       calories < settings.CALORIES_LOWER_BOUND ||
       settings.CALORIES_UPPER_BOUND < calories;
 
+    const isCarbsOutOfBounds =
+      protein < settings.CARBS_LOWER_BOUND ||
+      settings.CARBS_UPPER_BOUND < carbs;
+
+    const isFatOutOfBounds =
+      protein < settings.FAT_LOWER_BOUND || settings.FAT_UPPER_BOUND < fat;
+
     const isProteinOutOfBounds =
       protein < settings.PROTEIN_LOWER_BOUND ||
       settings.PROTEIN_UPPER_BOUND < protein;
 
-    const shouldRestart = isCaloriesOutOfBounds || isProteinOutOfBounds;
+    const shouldRestart =
+      isCaloriesOutOfBounds ||
+      isCarbsOutOfBounds ||
+      isFatOutOfBounds ||
+      isProteinOutOfBounds;
 
     if (shouldRestart) {
       return calculateDayMenu({

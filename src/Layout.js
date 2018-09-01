@@ -112,9 +112,18 @@ class Layout extends Component {
 
   handleMenuGenerate() {
     const { state } = this;
-    const { CALORIES_TOTAL, PROTEIN_TOTAL } = getIn(state, 'settings', {});
+    const { CALORIES_TOTAL, CARBS_TOTAL, FAT_TOTAL, PROTEIN_TOTAL } = getIn(
+      state,
+      'settings',
+      {},
+    );
 
-    const settings = calculateSettings({ CALORIES_TOTAL, PROTEIN_TOTAL });
+    const settings = calculateSettings({
+      CALORIES_TOTAL,
+      CARBS_TOTAL,
+      FAT_TOTAL,
+      PROTEIN_TOTAL,
+    });
 
     const { menu, calories, carbs, fat, protein } = calculateDayMenu({
       recipes: state.recipes.sort(randomSort),
