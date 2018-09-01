@@ -2,6 +2,9 @@ import React from 'react';
 import App, { Container } from 'next/app';
 
 import Layout from '../src/Layout';
+import 'material-components-web/dist/material-components-web.min.css';
+import 'react-vis/dist/style.css';
+import '../styles/style.css';
 
 const PAGE_TITLES = {
   default: 'Cheff',

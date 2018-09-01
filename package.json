@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/vasco3/cheff#readme",
   "dependencies": {
+    "@zeit/next-css": "^0.2.0",
     "formik": "^1.0.3",
     "immutable": "^3.8.2",
     "lodash": "^4.17.10",
@@ -34,6 +35,7 @@
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "react-qr-reader": "^2.1.0",
+    "react-vis": "^1.10.7",
     "rmwc": "^1.8.3",
     "uuid": "^3.3.2",
     "webtorrent": "^0.102.1",
