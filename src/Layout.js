@@ -32,15 +32,19 @@ function loadLocalValues() {
 
   return {
     menu: JSON.parse(localStorage.getItem('menu') || '[]'),
-    menuCaloriesTotal: localStorage.getItem('menuCaloriesTotal') || 0,
-    menuCarbsTotal: localStorage.getItem('menuCarbsTotal') || 0,
-    menuFatTotal: localStorage.getItem('menuFatTotal') || 0,
-    menuProteinTotal: localStorage.getItem('menuProteinTotal') || 0,
+    menuCaloriesTotal: getNumber('menuCaloriesTotal'),
+    menuCarbsTotal: getNumber('menuCarbsTotal'),
+    menuFatTotal: getNumber('menuFatTotal'),
+    menuProteinTotal: getNumber('menuProteinTotal'),
     recipes: List(recipesJSON),
     settings: JSON.parse(localStorage.getItem('settings') || '{}'),
   };
 }
 
+function getNumber(name) {
+  const result = parseInt(localStorage.getItem(name), 10);
+  return Number.isFinite(result) ? result : 0;
+}
 class Layout extends Component {
   constructor(props) {
     super(props);
