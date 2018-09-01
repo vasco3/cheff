@@ -27,6 +27,15 @@ module.exports = [
     servings: 2,
   },
   {
+    Calories: 333,
+    Carbs: 0,
+    Fat: 16,
+    Protein: 42,
+    _key: 'FLANK_STEAK',
+    name: 'Flank Steak',
+    servings: 1,
+  },
+  {
     Calories: 335,
     Carbs: 2.7,
     Fat: 25,
