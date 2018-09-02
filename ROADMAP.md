@@ -1,7 +1,10 @@
 # Roadmap
 
-- [ ] add carbs and fats to calculator and generator
 - [ ] fix import/export torrent
+
+## Plan
+
+- [ ] lock specific menu items
 
 ## Forms
 
@@ -18,14 +21,9 @@
 - https://ndb.nal.usda.gov/ndb/doc/index
 - https://developer.nutritionix.com/
 
-## graphs
-
-- force graph from uber
-
 ## Icebox
 
-- [ ] menu plan like trello https://github.com/STRML/react-grid-layout
-- [ ] lock specific menu items
-- [ ] drag n drop rearrangement of servings as breakfast, lunch, dinner, snacks
-- [ ] fix multi-undo removeRecipe
 - [ ] offline PWA
+- [ ] fix multi-undo removeRecipe
+- [ ] menu plan like trello https://github.com/STRML/react-grid-layout
+- [ ] drag n drop rearrangement of servings as breakfast, lunch, dinner, snacks

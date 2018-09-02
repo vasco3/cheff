@@ -30,35 +30,9 @@ export default class MyDocument extends Document {
             href="https://cdn.jsdelivr.net/npm/tailwindcss/dist/utilities.min.css"
             rel="stylesheet"
           />
-          <link
-            href="https://unpkg.com/material-components-web@0.38.2/dist/material-components-web.min.css"
-            rel="stylesheet"
-          />
 
-          <style
-            dangerouslySetInnerHTML={{
-              __html: `
-            html,
-            body {
-              padding: 0;
-              margin: 0;
-            }
-            :root {
-              --mdc-theme-primary: rgb(253, 103, 33);
-              --mdc-theme-secondary: #6200ee;
-            }
+          <link rel="stylesheet" href="/_next/static/style.css" />
 
-            .mdc-temporary-drawer__drawer {
-              will-change: initial;
-            }
-            .mdc-drawer--persistent {
-              height: calc(100vh - 48px);
-              overflow-y: auto;
-              -webkit-overflow-scrolling: touch;
-            }
-          `,
-            }}
-          />
           <script
             dangerouslySetInnerHTML={{
               __html: `

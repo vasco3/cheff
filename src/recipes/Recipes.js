@@ -179,7 +179,7 @@ class Recipes extends React.Component {
                 Add {RECIPES_MINIMUM - recipes.size} more recipes <br /> or
                 import{' '}
                 <Button dense onClick={props.handleRecipesImportDemo}>
-                  demo recipes
+                  Starter Pack
                 </Button>
               </Typography>
               <ListDivider />

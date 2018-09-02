@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Link from 'next/link';
+import moment from 'moment';
 import getIn from 'lodash/get';
 import { List } from 'immutable';
 import {
@@ -13,64 +14,95 @@ import {
 import CoreContext from './CoreContext';
 import MenuDrawer from './MenuDrawer';
 import { calculateDayMenu, calculateSettings, randomSort } from './util';
+import { convertMacroGramToCalories } from './calculator/utils';
 import demoRecipes from '../data/recipes';
 
 function loadLocalValues() {
   if (typeof window === 'undefined') {
     return {
+      isWorkoutDay: false,
+      macrosRest: {},
+      macrosWorkout: {},
       menu: [],
-      menuProteinTotal: 0,
-      menuCaloriesTotal: 0,
-      menuCarbsTotal: 0,
-      menuFatTotal: 0,
       recipes: List(),
       settings: {},
+      tracker: { calories: 0, carbs: 0, protein: 0, fat: 0 },
     };
   }
 
-  const recipesJSON = JSON.parse(localStorage.getItem('recipes') || '[]');
+  const recipesJSON = getItem('recipes', '[]');
+  const settings = getItem('settings', '{}');
+  const tracker = getItem('tracker', '{}');
 
   return {
-    menu: JSON.parse(localStorage.getItem('menu') || '[]'),
-    menuCaloriesTotal: localStorage.getItem('menuCaloriesTotal') || 0,
-    menuCarbsTotal: localStorage.getItem('menuCarbsTotal') || 0,
-    menuFatTotal: localStorage.getItem('menuFatTotal') || 0,
-    menuProteinTotal: localStorage.getItem('menuProteinTotal') || 0,
+    isWorkoutDay: shouldWorkout(settings),
+    macrosRest: getItem('macrosRest', '{}'),
+    macrosWorkout: getItem('macrosWorkout', '{}'),
+    menu: getItem('menu', '[]'),
     recipes: List(recipesJSON),
-    settings: JSON.parse(localStorage.getItem('settings') || '{}'),
+    settings,
+    tracker: {
+      calories: 0,
+      carbs: 0,
+      fat: 0,
+      protein: 0,
+      ...tracker,
+    },
   };
 }
 
+function getItem(name, defaultValue = '') {
+  return JSON.parse(localStorage.getItem(name) || defaultValue);
+}
+
+function shouldWorkout({
+  workoutOnSunday,
+  workoutOnMonday,
+  workoutOnTuesday,
+  workoutOnWednesday,
+  workoutOnThursday,
+  workoutOnFriday,
+}) {
+  const weekdays = [
+    workoutOnSunday,
+    workoutOnMonday,
+    workoutOnTuesday,
+    workoutOnWednesday,
+    workoutOnThursday,
+    workoutOnFriday,
+  ];
+  return weekdays[moment().day()];
+}
 class Layout extends Component {
   constructor(props) {
     super(props);
 
     const {
       menu,
-      menuCaloriesTotal,
-      menuCarbsTotal,
-      menuFatTotal,
-      menuProteinTotal,
+      macrosRest,
+      macrosWorkout,
       recipes,
       settings,
+      tracker,
     } = loadLocalValues();
 
     this.state = {
       drawerIsOpen: false,
       isMobile: true,
+      isWorkoutDay: shouldWorkout(settings),
+      macrosRest,
+      macrosWorkout,
       menu,
-      menuCaloriesTotal,
-      menuCarbsTotal,
-      menuFatTotal,
-      menuProteinTotal,
       handleMenuGenerate: this.handleMenuGenerate.bind(this),
       recipes,
       handleRecipeAdd: this.handleRecipeAdd.bind(this),
       handleRecipeRemove: this.handleRecipeRemove.bind(this),
       handleRecipeEdit: this.handleRecipeEdit.bind(this),
       handleRecipesImportDemo: this.handleRecipesImportDemo.bind(this),
-      handleCalculatorUpdate: this.handleCalculatorUpdate.bind(this),
+      handleCalculatorSave: this.handleCalculatorSave.bind(this),
+      handleTracker: this.handleTracker.bind(this),
       settings,
+      tracker,
     };
   }
 
@@ -106,33 +138,57 @@ class Layout extends Component {
     }
   };
 
+  handleTracker({ action, macro, value }) {
+    this.setState(
+      prevState => {
+        const macroCalories = convertMacroGramToCalories({ macro, value });
+
+        const calories =
+          action === 'add'
+            ? prevState.tracker.calories + macroCalories
+            : prevState.tracker.calories - macroCalories;
+
+        const newValue =
+          action === 'add'
+            ? prevState.tracker[macro] + value
+            : prevState.tracker[macro] - value;
+
+        const tracker = {
+          ...prevState.tracker,
+          [macro]: newValue,
+          calories,
+        };
+        return { tracker };
+      },
+      () => {
+        localStorage.setItem('tracker', JSON.stringify(this.state.tracker));
+      },
+    );
+  }
+
   handleMenuGenerate() {
     const { state } = this;
-    const { CALORIES_TOTAL, PROTEIN_TOTAL } = getIn(state, 'settings', {});
+    const macros = getIn(
+      state,
+      state.isWorkoutDay ? 'macrosWorkout' : 'macrosRest',
+      {},
+    );
 
-    const settings = calculateSettings({ CALORIES_TOTAL, PROTEIN_TOTAL });
+    const settings = calculateSettings({
+      calories: macros.calories - state.tracker.calories,
+      carbs: macros.carbs - state.tracker.carbs,
+      fat: macros.fat - state.tracker.fat,
+      protein: macros.protein - state.tracker.protein,
+    });
 
-    const { menu, calories, carbs, fat, protein } = calculateDayMenu({
+    const { menu } = calculateDayMenu({
       recipes: state.recipes.sort(randomSort),
       settings,
     });
 
-    this.setState(
-      {
-        menu,
-        menuProteinTotal: protein,
-        menuCaloriesTotal: calories,
-        menuCarbsTotal: carbs,
-        menuFatTotal: fat,
-      },
-      function saveMenuToLocal() {
-        localStorage.setItem('menu', JSON.stringify(menu));
-        localStorage.setItem('menuProteinTotal', protein);
-        localStorage.setItem('menuCaloriesTotal', calories);
-        localStorage.setItem('menuCarbsTotal', carbs);
-        localStorage.setItem('menuFatTotal', fat);
-      },
-    );
+    this.setState({ menu }, function saveMenuToLocal() {
+      localStorage.setItem('menu', JSON.stringify(menu));
+    });
   }
 
   handleRecipeAdd(recipe) {
@@ -186,10 +242,20 @@ class Layout extends Component {
     });
   }
 
-  handleCalculatorUpdate(settings) {
-    this.setState({ settings }, function saveSettingsToLocal() {
-      localStorage.setItem('settings', JSON.stringify(settings));
-    });
+  handleCalculatorSave({ macrosRest, macrosWorkout, settings }) {
+    this.setState(
+      {
+        isWorkoutDay: shouldWorkout(settings),
+        macrosRest,
+        macrosWorkout,
+        settings,
+      },
+      function saveSettingsToLocal() {
+        localStorage.setItem('macrosRest', JSON.stringify(macrosRest));
+        localStorage.setItem('macrosWorkout', JSON.stringify(macrosWorkout));
+        localStorage.setItem('settings', JSON.stringify(settings));
+      },
+    );
   }
 
   toggleDrawer = () => {
