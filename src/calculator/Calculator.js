@@ -28,12 +28,12 @@ class Calculator extends React.Component {
           kinobodyProgramMode: settings.kinobodyProgramMode || 'LEAN_BULK',
           kinobodyMacroOption:
             settings.kinobodyMacroOption || 'PROTEIN_DEFAULT',
-          workoutOnSunday: settings.workoutOnSunday,
-          workoutOnMonday: settings.workoutOnMonday,
-          workoutOnTuesday: settings.workoutOnTuesday,
-          workoutOnWednesday: settings.workoutOnWednesday,
-          workoutOnThursday: settings.workoutOnThursday,
-          workoutOnFriday: settings.workoutOnFriday,
+          workoutOnSunday: settings.workoutOnSunday || false,
+          workoutOnMonday: settings.workoutOnMonday || false,
+          workoutOnTuesday: settings.workoutOnTuesday || false,
+          workoutOnWednesday: settings.workoutOnWednesday || false,
+          workoutOnThursday: settings.workoutOnThursday || false,
+          workoutOnFriday: settings.workoutOnFriday || false,
         }}
         validationSchema={yup.object().shape({
           bodyWeight: yup.number().required(),
@@ -133,62 +133,55 @@ class Calculator extends React.Component {
                 </Typography>
                 <ListDivider />
                 <Checkbox
-                  onBlur={handleBlur}
                   onChange={handleChange}
-                  checked={!!values.workoutOnSunday}
+                  checked={values.workoutOnSunday}
+                  value={values.workoutOnSunday}
                   name="workoutOnSunday"
-                >
-                  Sunday
-                </Checkbox>
+                  label="Sunday"
+                />
 
                 <Checkbox
-                  onBlur={handleBlur}
                   onChange={handleChange}
-                  checked={!!values.workoutOnMonday}
+                  checked={values.workoutOnMonday}
+                  value={values.workoutOnMonday}
                   name="workoutOnMonday"
-                >
-                  Monday
-                </Checkbox>
+                  label="Monday"
+                />
                 <Checkbox
-                  onBlur={handleBlur}
                   onChange={handleChange}
-                  checked={!!values.workoutOnTuesday}
+                  checked={values.workoutOnTuesday}
+                  value={values.workoutOnTuesday}
                   name="workoutOnTuesday"
-                >
-                  Tuesday
-                </Checkbox>
+                  label="Tuesday"
+                />
                 <Checkbox
-                  onBlur={handleBlur}
                   onChange={handleChange}
-                  checked={!!values.workoutOnWednesday}
+                  checked={values.workoutOnWednesday}
+                  value={values.workoutOnWednesday}
                   name="workoutOnWednesday"
-                >
-                  Wednesday
-                </Checkbox>
+                  label="Wednesday"
+                />
                 <Checkbox
-                  onBlur={handleBlur}
                   onChange={handleChange}
-                  checked={!!values.workoutOnThursday}
+                  checked={values.workoutOnThursday}
+                  value={values.workoutOnThursday}
                   name="workoutOnThursday"
-                >
-                  Thursday
-                </Checkbox>
+                  label="Thursday"
+                />
                 <Checkbox
-                  onBlur={handleBlur}
                   onChange={handleChange}
-                  checked={!!values.workoutOnFriday}
+                  checked={values.workoutOnFriday}
+                  value={values.workoutOnFriday}
                   name="workoutOnFriday"
-                >
-                  Friday
-                </Checkbox>
+                  label="Friday"
+                />
                 <Checkbox
-                  onBlur={handleBlur}
                   onChange={handleChange}
-                  checked={!!values.workoutOnSaturday}
+                  checked={values.workoutOnSaturday}
+                  value={values.workoutOnSaturday}
                   name="workoutOnSaturday"
-                >
-                  Saturday
-                </Checkbox>
+                  label="Saturday"
+                />
 
                 <Typography use="overline" tag="div" className="mx-4">
                   Preview

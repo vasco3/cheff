@@ -295,9 +295,11 @@ class Layout extends Component {
         >
           <TopAppBarRow>
             <TopAppBarSection>
-              <TopAppBarActionItem alt="Menu" onClick={this.toggleDrawer}>
-                menu
-              </TopAppBarActionItem>
+              {state.isMobile && (
+                <TopAppBarActionItem alt="Menu" onClick={this.toggleDrawer}>
+                  menu
+                </TopAppBarActionItem>
+              )}
               <TopAppBarTitle>{props.pageTitle}</TopAppBarTitle>
             </TopAppBarSection>
             <TopAppBarSection alignEnd>
@@ -311,10 +313,8 @@ class Layout extends Component {
         <div className="mdc-top-app-bar--dense-fixed-adjust appContent">
           <MenuDrawer
             isMobile={state.isMobile}
-            open={state.drawerIsOpen}
-            persistent={!state.isMobile}
-            temporary={state.isMobile}
             onClose={() => this.setState({ drawerIsOpen: false })}
+            open={state.drawerIsOpen}
           />
           <CoreContext.Provider value={this.state}>
             {props.children}
