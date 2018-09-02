@@ -25,7 +25,7 @@ function calculateData({ name, total, target }) {
     {
       ...ring,
       amount: ringSurplus * 2 * Math.PI,
-      color: 'rgba(0,0,0,0.3)',
+      color: ringSurplus ? 'rgba(0,0,0,0)' : 'rgba(0,0,0,0.3)',
     },
   ];
 }

@@ -14,6 +14,7 @@ import {
 import CoreContext from './CoreContext';
 import MenuDrawer from './MenuDrawer';
 import { calculateDayMenu, calculateSettings, randomSort } from './util';
+import { convertMacroGramToCalories } from './calculator/utils';
 import demoRecipes from '../data/recipes';
 
 function loadLocalValues() {
@@ -25,11 +26,13 @@ function loadLocalValues() {
       menu: [],
       recipes: List(),
       settings: {},
+      tracker: { calories: 0, carbs: 0, protein: 0, fat: 0 },
     };
   }
 
   const recipesJSON = getItem('recipes', '[]');
   const settings = getItem('settings', '{}');
+  const tracker = getItem('tracker', '{}');
 
   return {
     isWorkoutDay: shouldWorkout(settings),
@@ -38,6 +41,13 @@ function loadLocalValues() {
     menu: getItem('menu', '[]'),
     recipes: List(recipesJSON),
     settings,
+    tracker: {
+      calories: 0,
+      carbs: 0,
+      fat: 0,
+      protein: 0,
+      ...tracker,
+    },
   };
 }
 
@@ -73,6 +83,7 @@ class Layout extends Component {
       macrosWorkout,
       recipes,
       settings,
+      tracker,
     } = loadLocalValues();
 
     this.state = {
@@ -89,7 +100,9 @@ class Layout extends Component {
       handleRecipeEdit: this.handleRecipeEdit.bind(this),
       handleRecipesImportDemo: this.handleRecipesImportDemo.bind(this),
       handleCalculatorSave: this.handleCalculatorSave.bind(this),
+      handleTracker: this.handleTracker.bind(this),
       settings,
+      tracker,
     };
   }
 
@@ -125,19 +138,47 @@ class Layout extends Component {
     }
   };
 
+  handleTracker({ action, macro, value }) {
+    this.setState(
+      prevState => {
+        const macroCalories = convertMacroGramToCalories({ macro, value });
+
+        const calories =
+          action === 'add'
+            ? prevState.tracker.calories + macroCalories
+            : prevState.tracker.calories - macroCalories;
+
+        const newValue =
+          action === 'add'
+            ? prevState.tracker[macro] + value
+            : prevState.tracker[macro] - value;
+
+        const tracker = {
+          ...prevState.tracker,
+          [macro]: newValue,
+          calories,
+        };
+        return { tracker };
+      },
+      () => {
+        localStorage.setItem('tracker', JSON.stringify(this.state.tracker));
+      },
+    );
+  }
+
   handleMenuGenerate() {
     const { state } = this;
-    const { calories, carbs, fat, protein } = getIn(
+    const macros = getIn(
       state,
       state.isWorkoutDay ? 'macrosWorkout' : 'macrosRest',
       {},
     );
 
     const settings = calculateSettings({
-      calories,
-      carbs,
-      fat,
-      protein,
+      calories: macros.calories - state.tracker.calories,
+      carbs: macros.carbs - state.tracker.carbs,
+      fat: macros.fat - state.tracker.fat,
+      protein: macros.protein - state.tracker.protein,
     });
 
     const { menu } = calculateDayMenu({

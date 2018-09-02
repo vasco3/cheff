@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import numeral from 'numeral';
 import { Button } from 'rmwc/Button';
 import { Card } from 'rmwc/Card';
 import { Fab } from 'rmwc/Fab';
@@ -16,6 +17,7 @@ import Macro from './Macro';
 function Plan({
   menu = [],
   handleMenuGenerate,
+  handleTracker,
   recipes = [],
   macrosRest = {},
   macrosWorkout = {},
@@ -38,7 +40,11 @@ function Plan({
         <Fab onClick={handleMenuGenerate} icon="autorenew" />
       </div>
 
-      <div className="flex justify-center">
+      <Typography use="headline4" tag="div" className="m-4">
+        {numeral(tracker.calories).format('0,0')} /{' '}
+        {numeral(macros.calories).format('0,0')} cal
+      </Typography>
+      <div className="">
         <MacrosRings
           calories={{ total: tracker.calories, target: macros.calories }}
           carbs={{ total: tracker.carbs, target: macros.carbs }}
@@ -48,9 +54,27 @@ function Plan({
       </div>
 
       <div>
-        <Macro name="carbs" target={tracker.carbs} total={macros.carbs} />
-        <Macro name="protein" target={tracker.protein} total={macros.protein} />
-        <Macro name="fat" target={tracker.fat} total={macros.fat} />
+        <Macro
+          increment={10}
+          name="carbs"
+          target={macros.carbs}
+          total={tracker.carbs}
+          onAction={handleTracker}
+        />
+        <Macro
+          increment={5}
+          name="protein"
+          target={macros.protein}
+          total={tracker.protein}
+          onAction={handleTracker}
+        />
+        <Macro
+          increment={5}
+          name="fat"
+          target={macros.fat}
+          total={tracker.fat}
+          onAction={handleTracker}
+        />
       </div>
 
       <ListDivider />

@@ -28,6 +28,18 @@ export const FAT_CALORIES_PER_GRAM = 9;
 export const CARBS_CALORIES_PER_GRAM = 4;
 export const PROTEIN_CALORIES_PER_GRAM = 4;
 
+export function convertMacroGramToCalories({ macro, value }) {
+  switch (macro) {
+    case 'carbs':
+      return value * CARBS_CALORIES_PER_GRAM;
+    case 'fat':
+      return value * FAT_CALORIES_PER_GRAM;
+    case 'protein':
+      return value * PROTEIN_CALORIES_PER_GRAM;
+  }
+  return value;
+}
+
 export function calculateCarbs({ calories, fat, protein }) {
   const caloriesRemaining =
     calories -
