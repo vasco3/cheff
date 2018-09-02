@@ -16,16 +16,25 @@ const IndexPage = () => {
       <Typography use="body1" tag="div" className="mx-4">
         <ol>
           <li>
-            Set your macro targets in <Link href="/calculator">Calculator</Link>{' '}
+            Set your macro targets in{' '}
+            <Link href="/calculator">
+              <a>Calculator</a>
+            </Link>{' '}
           </li>
           <li>
-            In <Link href="/recipes">Recipes</Link> add 10 or more food recipes
-            that you normally eat
+            In{' '}
+            <Link href="/recipes">
+              <a>Recipes</a>
+            </Link>{' '}
+            add 10 or more food recipes that you normally eat
           </li>
           <li>
-            In <Link href="/plan">Meal Plan</Link> Click the generate button to
-            randomly generate combinations of your recipes to hit your calories
-            and macro goals per day
+            In{' '}
+            <Link href="/plan">
+              <a>Meal Plan</a>
+            </Link>{' '}
+            Click the generate button to randomly generate combinations of your
+            recipes to hit your calories and macro goals per day
           </li>
         </ol>
       </Typography>

@@ -139,31 +139,50 @@ class Layout extends Component {
   };
 
   handleTracker({ action, macro, value }) {
-    this.setState(
-      prevState => {
-        const macroCalories = convertMacroGramToCalories({ macro, value });
+    const macroCalories = convertMacroGramToCalories({ macro, value });
 
-        const calories =
-          action === 'add'
-            ? prevState.tracker.calories + macroCalories
-            : prevState.tracker.calories - macroCalories;
+    switch (action) {
+      case 'reset': {
+        const tracker = { calories: 0, carbs: 0, fat: 0, protein: 0 };
+        this.setState({ tracker }, () =>
+          localStorage.setItem('tracker', JSON.stringify(tracker)),
+        );
+        break;
+      }
 
-        const newValue =
-          action === 'add'
-            ? prevState.tracker[macro] + value
-            : prevState.tracker[macro] - value;
+      case 'add':
+        this.setState(
+          prevState => {
+            const tracker = {
+              ...prevState.tracker,
+              [macro]: prevState.tracker[macro] + value,
+              calories: prevState.tracker.calories + macroCalories,
+            };
+            return { tracker };
+          },
+          () => {
+            localStorage.setItem('tracker', JSON.stringify(this.state.tracker));
+          },
+        );
+        break;
 
-        const tracker = {
-          ...prevState.tracker,
-          [macro]: newValue,
-          calories,
-        };
-        return { tracker };
-      },
-      () => {
-        localStorage.setItem('tracker', JSON.stringify(this.state.tracker));
-      },
-    );
+      case 'subtract':
+        this.setState(
+          prevState => {
+            const tracker = {
+              ...prevState.tracker,
+              [macro]: prevState.tracker[macro] - value,
+              calories: prevState.tracker.calories - macroCalories,
+            };
+            return { tracker };
+          },
+          () => {
+            localStorage.setItem('tracker', JSON.stringify(this.state.tracker));
+          },
+        );
+      default:
+        break;
+    }
   }
 
   handleMenuGenerate() {
@@ -276,9 +295,11 @@ class Layout extends Component {
         >
           <TopAppBarRow>
             <TopAppBarSection>
-              <TopAppBarActionItem alt="Menu" onClick={this.toggleDrawer}>
-                menu
-              </TopAppBarActionItem>
+              {state.isMobile && (
+                <TopAppBarActionItem alt="Menu" onClick={this.toggleDrawer}>
+                  menu
+                </TopAppBarActionItem>
+              )}
               <TopAppBarTitle>{props.pageTitle}</TopAppBarTitle>
             </TopAppBarSection>
             <TopAppBarSection alignEnd>
@@ -292,10 +313,8 @@ class Layout extends Component {
         <div className="mdc-top-app-bar--dense-fixed-adjust appContent">
           <MenuDrawer
             isMobile={state.isMobile}
-            open={state.drawerIsOpen}
-            persistent={!state.isMobile}
-            temporary={state.isMobile}
             onClose={() => this.setState({ drawerIsOpen: false })}
+            open={state.drawerIsOpen}
           />
           <CoreContext.Provider value={this.state}>
             {props.children}

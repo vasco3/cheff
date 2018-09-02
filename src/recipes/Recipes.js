@@ -147,7 +147,7 @@ class Recipes extends React.Component {
                   secondaryText={`${Calories}cal | Protein ${Protein}g | Carbs ${Carbs}g | Fat ${Fat}g | ${servings} servings`}
                   meta={
                     <Icon
-                      use="delete"
+                      icon="delete"
                       onClick={() => this.removeRecipeIntent(_key)}
                     />
                   }
