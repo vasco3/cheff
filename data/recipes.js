@@ -9,6 +9,15 @@ module.exports = [
     servings: 2,
   },
   {
+    Calories: 153,
+    Carbs: 12,
+    Fat: 0,
+    Protein: 1,
+    _key: 'BEER',
+    name: 'Beer',
+    servings: 2,
+  },
+  {
     Calories: 86,
     Carbs: 0,
     Fat: 2,
@@ -99,5 +108,14 @@ module.exports = [
     _key: 'TOSTADA',
     name: 'Tostada shell',
     servings: 6,
+  },
+  {
+    Calories: 150,
+    Carbs: 25,
+    Fat: 2,
+    Protein: 6,
+    _key: 'YOGURT',
+    name: 'Yogurt',
+    servings: 2,
   },
 ];
