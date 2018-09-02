@@ -1,7 +1,7 @@
 const { List } = require('immutable');
 
-const CALORIES_TOLERANCE = 50; // calories
-const CARBS_TOLERANCE = 10; // grams
+const CALORIES_TOLERANCE = 200; // calories
+const CARBS_TOLERANCE = 100; // grams
 const FAT_TOLERANCE = 10; // grams
 const PROTEIN_TOLERANCE = 10; // grams
 
@@ -48,11 +48,10 @@ export function calculateDayMenu({
       settings.CALORIES_UPPER_BOUND < calories;
 
     const isCarbsOutOfBounds =
-      protein < settings.CARBS_LOWER_BOUND ||
-      settings.CARBS_UPPER_BOUND < carbs;
+      carbs < settings.CARBS_LOWER_BOUND || settings.CARBS_UPPER_BOUND < carbs;
 
     const isFatOutOfBounds =
-      protein < settings.FAT_LOWER_BOUND || settings.FAT_UPPER_BOUND < fat;
+      fat < settings.FAT_LOWER_BOUND || settings.FAT_UPPER_BOUND < fat;
 
     const isProteinOutOfBounds =
       protein < settings.PROTEIN_LOWER_BOUND ||
@@ -83,7 +82,9 @@ export function calculateDayMenu({
 
   const shouldSkipRecipe =
     caloriesCounted > settings.CALORIES_UPPER_BOUND ||
-    proteinCounted > settings.PROTEIN_UPPER_BOUND + 10 ||
+    carbsCounted > settings.CARBS_UPPER_BOUND ||
+    fatCounted > settings.FAT_UPPER_BOUND ||
+    proteinCounted > settings.PROTEIN_UPPER_BOUND ||
     hasServingsLeft;
 
   if (shouldSkipRecipe) {
