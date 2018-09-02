@@ -16,8 +16,9 @@ export default class MyDocument extends Document {
           <title>Cheff - food macro planner</title>
           <meta
             name="viewport"
-            content="initial-scale=1.0, width=device-width"
+            content="initial-scale=1.0, width=device-width, user-scalable=no"
           />
+          <link rel="manifest" href="/static/manifest.json" />
           <link
             href="https://fonts.googleapis.com/css?family=Roboto"
             rel="stylesheet"
