@@ -17,7 +17,10 @@ function AboutPage() {
           kinobody
         </a>{' '}
         I picked my favorite recipes and created a script (
-        <a href="https://gist.github.com/vasco3/81a782437f1790638610d815cf1743a0">
+        <a
+          href="https://gist.github.com/vasco3/81a782437f1790638610d815cf1743a0"
+          target="_blank"
+        >
           Here is the source code
         </a>
         ) to generate a daily menu that hits the amount of total calories and
