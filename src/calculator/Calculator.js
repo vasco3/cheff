@@ -193,11 +193,11 @@ class Calculator extends React.Component {
                   <Typography use="body1" theme="onPrimary">
                     Saved! Now continue to{' '}
                     <Link href="/recipes">
-                      <a className="link">Recipes</a>
+                      <Button>Recipes</Button>
                     </Link>{' '}
                     or{' '}
                     <Link href="/plan">
-                      <a className="link">Meal Plan</a>
+                      <Button>Meal Plan</Button>
                     </Link>
                   </Typography>
                 </div>
@@ -247,9 +247,6 @@ class Calculator extends React.Component {
                   opacity: 1;
                   height: auto;
                   padding: 1rem;
-                }
-                .link {
-                  color: white;
                 }
                 .max {
                   max-width: 400px;
