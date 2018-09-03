@@ -303,8 +303,10 @@ class Layout extends Component {
               <TopAppBarTitle>{props.pageTitle}</TopAppBarTitle>
             </TopAppBarSection>
             <TopAppBarSection alignEnd>
-              <Link href="/">
-                <TopAppBarActionItem alt="help">help</TopAppBarActionItem>
+              <Link href="/plan">
+                <TopAppBarActionItem alt="menu plan">
+                  list_alt
+                </TopAppBarActionItem>
               </Link>
             </TopAppBarSection>
           </TopAppBarRow>

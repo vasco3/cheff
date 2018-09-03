@@ -1,7 +1,7 @@
 const PROTEIN_DEFAULT = 'PROTEIN_DEFAULT';
 const PROTEIN_LESS = 'PROTEIN_LESS';
 const PROTEIN_MORE = 'PROTEIN_MORE';
-const PROTEIN_BALANCED = 'PROTEIN_BALANCED';
+// const PROTEIN_BALANCED = 'PROTEIN_BALANCED';
 
 export const macroValues = {
   [PROTEIN_DEFAULT]: 0.9,
@@ -22,10 +22,10 @@ export const macroOptions = [
     label: 'More Protein (1 g/lbs)',
     value: PROTEIN_MORE,
   },
-  {
-    label: '30% protein, 30% fat, 40% carbs',
-    value: PROTEIN_BALANCED,
-  },
+  // {
+  //   label: '30% protein, 30% fat, 40% carbs',
+  //   value: PROTEIN_BALANCED,
+  // },
 ];
 
 const LEAN_BULK = 'LEAN_BULK';

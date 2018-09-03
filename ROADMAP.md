@@ -1,7 +1,11 @@
 # Roadmap
 
 - [ ] lock specific menu items
+- [ ] add FAQs
 - [ ] WSP2
+- [ ] add unit tests snapshots for calculations
+- [ ] fix macro calc protein30%
+- [ ] enable kg
 - [ ] fix import/export torrent
 
 ## Plan

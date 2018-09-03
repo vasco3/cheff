@@ -37,7 +37,7 @@ class Plan extends React.Component {
     const showMacros = isMobile ? activeTab === 0 : true;
     const showFood = isMobile ? activeTab === 1 : true;
     return (
-      <div>
+      <div className="plan">
         {isWorkoutDay && (
           <div className="banner text-center">
             <Typography use="subtitle1" theme="onSecondary">
@@ -113,7 +113,7 @@ class Plan extends React.Component {
                   <Fab
                     onClick={handleMenuGenerate}
                     icon="autorenew"
-                    label="combine"
+                    label="shuffle"
                   />
                 </div>
 
@@ -160,6 +160,9 @@ class Plan extends React.Component {
           )}
         </Grid>
         <style jsx>{`
+          .plan {
+            touch-action: manipulation;
+          }
           .banner {
             background-color: var(--mdc-theme-secondary);
           }
