@@ -2,6 +2,9 @@
 
 - [ ] lock specific menu items
 - [ ] WSP2
+- [ ] add unit tests snapshots for calculations
+- [ ] fix macro calc protein30%
+- [ ] enable kg
 - [ ] fix import/export torrent
 
 ## Plan
