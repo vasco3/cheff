@@ -8,7 +8,7 @@
     "build": "next build",
     "preexport": "npm run build",
     "export": "next export",
-    "postexport": "cp static/sw.js dist && cp static/robots.txt dist && npm run build:rss && npm run build:sitemap",
+    "postexport": "cp static/sw.js out && cp static/robots.txt out",
     "deploy": "now out",
     "postdeploy": "npm run alias",
     "start": "next start",
