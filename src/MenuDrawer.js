@@ -36,7 +36,7 @@ const MenuDrawer = ({ isMobile, open, onClose }) => {
           />
         </Link>
         <Link href="/calculator">
-          <SimpleListItem graphic="settings" text="Calculator" />
+          <SimpleListItem graphic="dialpad" text="Calculator" />
         </Link>
 
         <ListDivider />
