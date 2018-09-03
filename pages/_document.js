@@ -97,7 +97,7 @@ export default class MyDocument extends Document {
 
           <meta
             name="viewport"
-            content="initial-scale=1.0, width=device-width, user-scalable=no"
+            content="initial-scale=1.0, width=device-width"
           />
           <link
             href="https://fonts.googleapis.com/css?family=Roboto"
