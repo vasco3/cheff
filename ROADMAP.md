@@ -1,6 +1,5 @@
 # Roadmap
 
-- [ ] favicon enlarge
 - [ ] lock specific menu items
 - [ ] WSP2
 - [ ] instalation instructions (add to homepage)
