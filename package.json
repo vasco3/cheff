@@ -6,9 +6,13 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "export": "next export",
     "preexport": "npm run build",
+    "export": "next export",
+    "postexport": "cp static/sw.js dist && cp static/robots.txt dist && npm run build:rss && npm run build:sitemap",
+    "deploy": "now out",
+    "postdeploy": "npm run alias",
     "start": "next start",
+    "start:static": "serve -p 3000",
     "test": "test"
   },
   "repository": {
@@ -41,5 +45,8 @@
     "uuid": "^3.3.2",
     "webtorrent": "^0.102.1",
     "yup": "^0.26.2"
+  },
+  "devDependencies": {
+    "serve": "^10.0.0"
   }
 }
