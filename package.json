@@ -6,9 +6,12 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "export": "next export",
     "preexport": "npm run build",
+    "export": "next export",
+    "postexport": "cp static/sw.js out && cp static/robots.txt out",
+    "deploy": "now out",
     "start": "next start",
+    "start:static": "serve -p 3000",
     "test": "test"
   },
   "repository": {
@@ -37,8 +40,12 @@
     "react-qr-reader": "^2.1.0",
     "react-vis": "^1.10.7",
     "rmwc": "^1.9.2",
+    "tailwindcss": "^0.6.5",
     "uuid": "^3.3.2",
     "webtorrent": "^0.102.1",
     "yup": "^0.26.2"
+  },
+  "devDependencies": {
+    "serve": "^10.0.0"
   }
 }

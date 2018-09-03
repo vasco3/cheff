@@ -5,7 +5,7 @@ import * as yup from 'yup';
 import { Button } from 'rmwc/Button';
 import { Checkbox } from 'rmwc/Checkbox';
 import { ListDivider } from 'rmwc/List';
-import { Select } from 'rmwc';
+import { Select, Grid, GridCell } from 'rmwc';
 import { TextField, TextFieldHelperText } from 'rmwc/TextField';
 import { Typography } from 'rmwc/Typography';
 
@@ -70,154 +70,183 @@ class Calculator extends React.Component {
               <Typography use="subtitle1" tag="div" className="p-4">
                 Set your daily targets to compute your meal plan
               </Typography>
-              <Typography use="overline" tag="div" className="px-4">
-                Kinobody Calories / Macros
-              </Typography>
-              <ListDivider />
               <Form>
-                <div className="form max m-4">
-                  <Select
-                    label="Kinobody Program"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    options={[
-                      { label: 'GGP - Greek God Program', value: 'GGP' },
-                    ]}
-                    outlined
-                    value={values.kinobodyProgram}
-                  />
-                  <Select
-                    label="Program Mode"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    options={kinobodyProgramModeOptions}
-                    outlined
-                    name="kinobodyProgramMode"
-                    value={values.kinobodyProgramMode}
-                  />
-                  <Select
-                    label="Macro Options"
-                    name="kinobodyMacroOption"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    options={macroOptions}
-                    outlined
-                    value={values.kinobodyMacroOption}
-                  />
-                  <TextField
-                    label="Body weight"
-                    name="bodyWeight"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    outlined
-                    value={values.bodyWeight}
-                  />
-                  {errors.bodyWeight && (
-                    <TextFieldHelperText validationMsg persistent>
-                      {errors.bodyWeight}
-                    </TextFieldHelperText>
-                  )}
-                  <Select
-                    label="units"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    options={['lbs', 'kg']}
-                    outlined
-                    name="bodyWeightIsInLbs"
-                    value={values.bodyWeightIsInLbs}
-                  />
+                <Grid>
+                  <GridCell span="6">
+                    <Typography use="overline" tag="div">
+                      Kinobody Calories / Macros
+                    </Typography>
+                    <ListDivider />
+                    <Select
+                      className="my-4 mr-4"
+                      label="Kinobody Program"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      options={[
+                        { label: 'GGP - Greek God Program', value: 'GGP' },
+                      ]}
+                      outlined
+                      value={values.kinobodyProgram}
+                    />
+                    <Select
+                      className="mb-4 mr-4"
+                      label="Program Mode"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      options={kinobodyProgramModeOptions}
+                      outlined
+                      name="kinobodyProgramMode"
+                      value={values.kinobodyProgramMode}
+                    />
+                    <Select
+                      className="mb-4 mr-4"
+                      label="Macro Options"
+                      name="kinobodyMacroOption"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      options={macroOptions}
+                      outlined
+                      value={values.kinobodyMacroOption}
+                    />
+                    <TextField
+                      className="mb-4 mr-4"
+                      label="Body weight"
+                      name="bodyWeight"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      outlined
+                      value={values.bodyWeight}
+                    />
+                    {errors.bodyWeight && (
+                      <TextFieldHelperText validationMsg persistent>
+                        {errors.bodyWeight}
+                      </TextFieldHelperText>
+                    )}
+                    <Select
+                      className="mb-4 mr-4"
+                      label="units"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      options={['lbs']}
+                      outlined
+                      name="bodyWeightIsInLbs"
+                      value={values.bodyWeightIsInLbs}
+                    />
+                  </GridCell>
+
+                  <GridCell span="6">
+                    <Typography use="overline" tag="div">
+                      Workout days
+                    </Typography>
+                    <ListDivider />
+                    <Checkbox
+                      onChange={handleChange}
+                      value={values.workoutOnSunday}
+                      name="workoutOnSunday"
+                      label="Sunday"
+                    />
+
+                    <Checkbox
+                      onChange={handleChange}
+                      value={values.workoutOnMonday}
+                      name="workoutOnMonday"
+                      label="Monday"
+                    />
+                    <Checkbox
+                      onChange={handleChange}
+                      value={values.workoutOnTuesday}
+                      name="workoutOnTuesday"
+                      label="Tuesday"
+                    />
+                    <Checkbox
+                      onChange={handleChange}
+                      value={values.workoutOnWednesday}
+                      name="workoutOnWednesday"
+                      label="Wednesday"
+                    />
+                    <Checkbox
+                      onChange={handleChange}
+                      value={values.workoutOnThursday}
+                      name="workoutOnThursday"
+                      label="Thursday"
+                    />
+                    <Checkbox
+                      onChange={handleChange}
+                      value={values.workoutOnFriday}
+                      name="workoutOnFriday"
+                      label="Friday"
+                    />
+                    <Checkbox
+                      onChange={handleChange}
+                      value={values.workoutOnSaturday}
+                      name="workoutOnSaturday"
+                      label="Saturday"
+                    />
+                  </GridCell>
+                </Grid>
+
+                <div
+                  className={`banner text-center${
+                    this.state.isSaved ? ' banner-open' : ''
+                  }`}
+                >
+                  <Typography use="body1" theme="onPrimary">
+                    Saved! Now continue to{' '}
+                    <Link href="/recipes">
+                      <a className="link">Recipes</a>
+                    </Link>{' '}
+                    or{' '}
+                    <Link href="/plan">
+                      <a className="link">Meal Plan</a>
+                    </Link>
+                  </Typography>
                 </div>
-
-                <Typography use="overline" tag="div" className="mx-4">
-                  Workout days
-                </Typography>
-                <ListDivider />
-                <Checkbox
-                  onChange={handleChange}
-                  checked={values.workoutOnSunday}
-                  value={values.workoutOnSunday}
-                  name="workoutOnSunday"
-                  label="Sunday"
-                />
-
-                <Checkbox
-                  onChange={handleChange}
-                  checked={values.workoutOnMonday}
-                  value={values.workoutOnMonday}
-                  name="workoutOnMonday"
-                  label="Monday"
-                />
-                <Checkbox
-                  onChange={handleChange}
-                  checked={values.workoutOnTuesday}
-                  value={values.workoutOnTuesday}
-                  name="workoutOnTuesday"
-                  label="Tuesday"
-                />
-                <Checkbox
-                  onChange={handleChange}
-                  checked={values.workoutOnWednesday}
-                  value={values.workoutOnWednesday}
-                  name="workoutOnWednesday"
-                  label="Wednesday"
-                />
-                <Checkbox
-                  onChange={handleChange}
-                  checked={values.workoutOnThursday}
-                  value={values.workoutOnThursday}
-                  name="workoutOnThursday"
-                  label="Thursday"
-                />
-                <Checkbox
-                  onChange={handleChange}
-                  checked={values.workoutOnFriday}
-                  value={values.workoutOnFriday}
-                  name="workoutOnFriday"
-                  label="Friday"
-                />
-                <Checkbox
-                  onChange={handleChange}
-                  checked={values.workoutOnSaturday}
-                  value={values.workoutOnSaturday}
-                  name="workoutOnSaturday"
-                  label="Saturday"
-                />
-
-                <Typography use="overline" tag="div" className="mx-4">
-                  Preview
-                </Typography>
-                <ListDivider />
-
-                <Typography use="headline6" tag="div" className="mx-4">
-                  Macros Rest
-                </Typography>
-                <Preview {...computeMacros(values)} />
-
-                <Typography use="headline6" tag="div" className="mx-4">
-                  Macros Workout
-                </Typography>
-                <Preview {...computeMacros(values, true)} />
-
-                <ListDivider />
-
-                <footer className="flex max justify-end mt-4 mb-8">
+                <footer className="flex justify-end mt-4 mb-8">
                   <Button onClick={handleReset}>reset</Button>
                   <Button type="submit" disabled={isSubmitting}>
                     save
                   </Button>
                 </footer>
-                {this.state.isSaved && (
-                  <Typography use="headline6" tag="div">
-                    Saved! Now continue to <Link href="/recipes">Recipes</Link>{' '}
-                    or <Link href="/plan">Meal Plan</Link>
-                  </Typography>
-                )}
+                <Typography use="headline5" tag="div" className="mx-4 mt-4">
+                  Preview Macros
+                </Typography>
+
+                <Grid>
+                  <GridCell span="6">
+                    <Typography use="overline" tag="div">
+                      Rest
+                    </Typography>
+                    <ListDivider />
+                    <Preview {...computeMacros(values)} />
+                  </GridCell>
+                  <GridCell span="6">
+                    <Typography use="overline" tag="div">
+                      Workout
+                    </Typography>
+                    <ListDivider />
+                    <Preview {...computeMacros(values, true)} />
+                  </GridCell>
+                </Grid>
+
+                <ListDivider />
               </Form>
+
               <style jsx>{`
-                .form {
-                  display: grid;
-                  grid-template-columns: 1fr;
-                  grid-gap: 1rem;
+                .banner {
+                  background-color: var(--mdc-theme-secondary);
+                  opacity: 0;
+                  height: 0;
+                  padding: 0;
+                  margin: 0;
+                }
+                .banner-open {
+                  transition: all 0.3s ease-in;
+                  opacity: 1;
+                  height: auto;
+                  padding: 1rem;
+                }
+                .link {
+                  color: white;
                 }
                 .max {
                   max-width: 400px;

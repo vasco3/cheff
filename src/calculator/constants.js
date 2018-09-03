@@ -32,7 +32,7 @@ const LEAN_BULK = 'LEAN_BULK';
 const RECOMP = 'RECOMP';
 
 export const kinobodyProgramModeValues = {
-  [LEAN_BULK]: 16,
+  [LEAN_BULK]: 15,
   [RECOMP]: 15,
 };
 
@@ -41,8 +41,8 @@ export const kinobodyProgramModeOptions = [
     label: 'Lean Bulk',
     value: LEAN_BULK,
   },
-  {
-    label: 'Recomp',
-    value: RECOMP,
-  },
+  // {
+  //   label: 'Recomp',
+  //   value: RECOMP,
+  // },
 ];

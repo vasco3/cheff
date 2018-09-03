@@ -2,16 +2,24 @@ import React from 'react';
 
 import Link from 'next/link';
 
-import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from 'rmwc/Drawer';
+import {
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerSubtitle,
+} from 'rmwc/Drawer';
 import { ListDivider, SimpleListItem } from 'rmwc/List';
 import { Typography } from 'rmwc/Typography';
 import { Icon } from 'rmwc';
+import meta from './meta';
 
 const MenuDrawer = ({ isMobile, open, onClose }) => {
   return (
     <Drawer onClose={onClose} open={open} modal={isMobile}>
       <DrawerHeader>
-        <DrawerTitle theme="primary">Cheff</DrawerTitle>
+        <DrawerTitle theme="primary">{meta.title}</DrawerTitle>
+        <DrawerSubtitle>{meta.subtitle}</DrawerSubtitle>
       </DrawerHeader>
 
       <DrawerContent>
@@ -28,7 +36,7 @@ const MenuDrawer = ({ isMobile, open, onClose }) => {
           />
         </Link>
         <Link href="/calculator">
-          <SimpleListItem graphic="settings" text="Calculator" />
+          <SimpleListItem graphic="dialpad" text="Calculator" />
         </Link>
 
         <ListDivider />
