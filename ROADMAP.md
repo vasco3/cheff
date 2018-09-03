@@ -1,15 +1,14 @@
 # Roadmap
 
+- [ ] lock specific menu items
+- [ ] WSP2
 - [ ] fix import/export torrent
 
 ## Plan
 
-- [ ] lock specific menu items
-
 ## Forms
 
 - [ ] validate inputs
-- [ ] fix layouts
 
 ## Calculator
 
@@ -23,7 +22,6 @@
 
 ## Icebox
 
-- [ ] offline PWA
 - [ ] fix multi-undo removeRecipe
 - [ ] menu plan like trello https://github.com/STRML/react-grid-layout
 - [ ] drag n drop rearrangement of servings as breakfast, lunch, dinner, snacks

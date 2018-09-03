@@ -3,6 +3,8 @@ import App, { Container } from 'next/app';
 
 import Layout from '../src/Layout';
 
+import withSW from '../lib/with-sw';
+
 import 'tailwindcss/dist/utilities.min.css';
 import 'material-components-web/dist/material-components-web.min.css';
 import 'react-vis/dist/style.css';
@@ -45,4 +47,4 @@ class MyApp extends App {
   }
 }
 
-export default MyApp;
+export default withSW(MyApp);

@@ -193,20 +193,23 @@ class Calculator extends React.Component {
                   <Typography use="body1" theme="onPrimary">
                     Saved! Now continue to{' '}
                     <Link href="/recipes">
-                      <a className="link">Recipes</a>
+                      <Button>Recipes</Button>
                     </Link>{' '}
                     or{' '}
                     <Link href="/plan">
-                      <a className="link">Meal Plan</a>
+                      <Button>Meal Plan</Button>
                     </Link>
                   </Typography>
                 </div>
-                <footer className="flex justify-end mt-4 mb-8">
-                  <Button onClick={handleReset}>reset</Button>
-                  <Button type="submit" disabled={isSubmitting}>
+                <footer className="flex justify-end mt-4 mb-8 pr-4">
+                  <Button className="mr-4" onClick={handleReset}>
+                    reset
+                  </Button>
+                  <Button type="submit" raised disabled={isSubmitting}>
                     save
                   </Button>
                 </footer>
+
                 <Typography use="headline5" tag="div" className="mx-4 mt-4">
                   Preview Macros
                 </Typography>
@@ -214,14 +217,14 @@ class Calculator extends React.Component {
                 <Grid>
                   <GridCell span="6">
                     <Typography use="overline" tag="div">
-                      Rest
+                      Rest Day
                     </Typography>
                     <ListDivider />
                     <Preview {...computeMacros(values)} />
                   </GridCell>
                   <GridCell span="6">
                     <Typography use="overline" tag="div">
-                      Workout
+                      Workout Day
                     </Typography>
                     <ListDivider />
                     <Preview {...computeMacros(values, true)} />
@@ -244,9 +247,6 @@ class Calculator extends React.Component {
                   opacity: 1;
                   height: auto;
                   padding: 1rem;
-                }
-                .link {
-                  color: white;
                 }
                 .max {
                   max-width: 400px;
