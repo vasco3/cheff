@@ -1,10 +1,18 @@
 import Link from 'next/link';
-import { Typography } from 'rmwc';
+import { Typography, ListDivider } from 'rmwc';
 import { TextField } from 'rmwc/TextField';
 
 const IndexPage = () => {
   return (
     <div>
+      <Typography use="headline4" tag="div" className="mx-4 my-4">
+        Installation
+      </Typography>
+      <Typography use="body1" tag="div" className="mx-4">
+        Minimal. This is a web app. Which means you can save it at your
+        homescreen or bookmark it. Nothing else required.
+      </Typography>
+
       <Typography use="headline4" tag="div" className="mx-4 my-4">
         Usage
       </Typography>
@@ -39,12 +47,18 @@ const IndexPage = () => {
         </ol>
       </Typography>
 
+      <ListDivider />
+
+      <Typography use="headline5" tag="div" className="m-4">
+        Thoughts or suggestions?
+      </Typography>
       <TextField
         className="mx-4"
-        label="Suggestions?"
+        label="Suggestions"
         name="suggestions"
-        outlined
         defaultValue=""
+        textarea
+        rows="1"
       />
     </div>
   );

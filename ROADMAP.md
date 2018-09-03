@@ -2,7 +2,6 @@
 
 - [ ] lock specific menu items
 - [ ] WSP2
-- [ ] instalation instructions (add to homepage)
 - [ ] fix import/export torrent
 
 ## Plan
