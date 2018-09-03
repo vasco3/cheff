@@ -7,6 +7,9 @@ import { Typography } from 'rmwc';
 
 import MacroRing from './MacroRing';
 
+function formatNumber(number) {
+  return numeral(number).format('0');
+}
 class Macro extends Component {
   state = {};
   render() {
@@ -19,7 +22,7 @@ class Macro extends Component {
           <Typography use="subtitle1">{upperFirst(name)}</Typography>{' '}
           <Typography use="caption">{percent}</Typography>
           <Typography use="body1" tag="div">
-            {total} / {target} g
+            {formatNumber(total)} / {formatNumber(target)} g
           </Typography>
         </div>
         <Fab
