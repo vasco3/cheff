@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { Button } from 'rmwc/Button';
 import { Typography, ListDivider } from 'rmwc';
 import { TextField } from 'rmwc/TextField';
 
@@ -26,20 +27,20 @@ const IndexPage = () => {
           <li>
             Set your macro targets in{' '}
             <Link href="/calculator">
-              <a>Calculator</a>
+              <Button>Calculator</Button>
             </Link>{' '}
           </li>
           <li>
             In{' '}
             <Link href="/recipes">
-              <a>Recipes</a>
+              <Button theme="secondary">Recipes</Button>
             </Link>{' '}
             add 10 or more food recipes that you normally eat
           </li>
           <li>
             In{' '}
             <Link href="/plan">
-              <a>Meal Plan</a>
+              <Button>Meal Plan</Button>
             </Link>{' '}
             Click the generate button to randomly generate combinations of your
             recipes to hit your calories and macro goals per day

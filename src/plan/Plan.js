@@ -127,7 +127,9 @@ class Plan extends React.Component {
                   >
                     Need {RECIPES_MINIMUM - recipes.size} more recipes to be
                     able to calculate.{' '}
-                    <Link href="/recipes">Add more recipes</Link>
+                    <Link href="/recipes">
+                      <Button>Add more recipes</Button>
+                    </Link>
                   </Typography>
                 )}
                 <List twoLine dense>
