@@ -121,7 +121,7 @@ class Calculator extends React.Component {
                     label="units"
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    options={['lbs', 'kg']}
+                    options={['lbs']}
                     outlined
                     name="bodyWeightIsInLbs"
                     value={values.bodyWeightIsInLbs}
