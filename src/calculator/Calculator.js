@@ -201,20 +201,42 @@ class Calculator extends React.Component {
 
                 <ListDivider />
 
+                <div
+                  className={`banner p-4 text-center${
+                    this.state.isSaved ? ' banner-open' : ''
+                  }`}
+                >
+                  <Typography use="body1" theme="onPrimary">
+                    Saved! Now continue to{' '}
+                    <Link href="/recipes">
+                      <a className="link">Recipes</a>
+                    </Link>{' '}
+                    or{' '}
+                    <Link href="/plan">
+                      <a className="link">Meal Plan</a>
+                    </Link>
+                  </Typography>
+                </div>
                 <footer className="flex max justify-end mt-4 mb-8">
                   <Button onClick={handleReset}>reset</Button>
                   <Button type="submit" disabled={isSubmitting}>
                     save
                   </Button>
                 </footer>
-                {this.state.isSaved && (
-                  <Typography use="headline6" tag="div">
-                    Saved! Now continue to <Link href="/recipes">Recipes</Link>{' '}
-                    or <Link href="/plan">Meal Plan</Link>
-                  </Typography>
-                )}
               </Form>
+
               <style jsx>{`
+                .banner {
+                  background-color: var(--mdc-theme-secondary);
+                  opacity: 0;
+                }
+                .banner-open {
+                  transition: all 0.3s ease-in;
+                  opacity: 1;
+                }
+                .link {
+                  color: white;
+                }
                 .max {
                   max-width: 400px;
                 }
