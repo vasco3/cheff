@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import numeral from 'numeral';
+import { List, SimpleListItem } from 'rmwc/List';
 
 function formatNumber(number, format) {
   return numeral(number).format(format || '0');
@@ -9,11 +10,20 @@ class Preview extends Component {
   render() {
     const { calories, carbs, fat, protein } = this.props;
     return (
-      <div className="m-4">
-        calories {formatNumber(calories, '0,0')}, carbs {formatNumber(carbs)}
-        g, fat {formatNumber(fat)}
-        g, protein {formatNumber(protein)}g
-      </div>
+      <List>
+        <SimpleListItem graphic="trip_origin">
+          {formatNumber(calories, '0,0')} cal
+        </SimpleListItem>
+        <SimpleListItem graphic="trip_origin">
+          Carbs {formatNumber(carbs)}g
+        </SimpleListItem>
+        <SimpleListItem graphic="trip_origin">
+          Fat {formatNumber(fat)} g
+        </SimpleListItem>
+        <SimpleListItem graphic="trip_origin">
+          Protein {formatNumber(protein)}g
+        </SimpleListItem>
+      </List>
     );
   }
 }
