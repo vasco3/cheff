@@ -113,7 +113,7 @@ class Plan extends React.Component {
                   <Fab
                     onClick={handleMenuGenerate}
                     icon="autorenew"
-                    label="combine"
+                    label="shuffle"
                   />
                 </div>
 
