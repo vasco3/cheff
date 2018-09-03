@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { withRouter } from 'next/router';
 import Link from 'next/link';
 
 import {
@@ -14,7 +15,17 @@ import { Typography } from 'rmwc/Typography';
 import { Icon } from 'rmwc';
 import meta from './meta';
 
-const MenuDrawer = ({ isMobile, open, onClose }) => {
+const PATHS = {
+  about: '/about',
+  calculator: '/calculator',
+  help: '/',
+  plan: '/plan',
+  recipes: '/recipes',
+  sync: '/sync',
+};
+
+const MenuDrawer = ({ isMobile, open, onClose, router = {} }) => {
+  const { pathname = '' } = router;
   return (
     <Drawer onClose={onClose} open={open} modal={isMobile}>
       <DrawerHeader>
@@ -23,29 +34,43 @@ const MenuDrawer = ({ isMobile, open, onClose }) => {
       </DrawerHeader>
 
       <DrawerContent>
-        <Link href="/plan">
+        <Link href={PATHS.plan}>
           <SimpleListItem
             graphic={<Icon icon="list_alt" theme="primary" />}
             text="Meal Plan"
+            selected={pathname === PATHS.plan}
           />
         </Link>
-        <Link href="/recipes">
+        <Link href={PATHS.recipes}>
           <SimpleListItem
             graphic={<Icon icon="restaurant" theme="secondary" />}
             text="Recipes"
+            selected={pathname === PATHS.recipes}
           />
         </Link>
-        <Link href="/calculator">
-          <SimpleListItem graphic="dialpad" text="Calculator" />
+        <Link href={PATHS.calculator}>
+          <SimpleListItem
+            graphic="dialpad"
+            text="Calculator"
+            selected={pathname === PATHS.calculator}
+          />
         </Link>
 
         <ListDivider />
 
-        <Link href="/about">
-          <SimpleListItem graphic="info" text="About" />
+        <Link href={PATHS.about}>
+          <SimpleListItem
+            graphic="info"
+            text="About"
+            selected={pathname === PATHS.about}
+          />
         </Link>
-        <Link href="/">
-          <SimpleListItem graphic="help_outline" text="Help" />
+        <Link href={PATHS.help}>
+          <SimpleListItem
+            graphic="help_outline"
+            text="Help"
+            selected={pathname === PATHS.help}
+          />
         </Link>
 
         <Typography use="overline" tag="div" className="px-4">
@@ -53,12 +78,16 @@ const MenuDrawer = ({ isMobile, open, onClose }) => {
         </Typography>
         <ListDivider />
 
-        <Link href="/sync">
-          <SimpleListItem graphic="compare_arrows" text="Sync" />
+        <Link href={PATHS.sync}>
+          <SimpleListItem
+            graphic="compare_arrows"
+            text="Sync"
+            selected={pathname === PATHS.sync}
+          />
         </Link>
       </DrawerContent>
     </Drawer>
   );
 };
 
-export default MenuDrawer;
+export default withRouter(MenuDrawer);
