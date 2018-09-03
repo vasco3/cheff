@@ -207,6 +207,7 @@ class Calculator extends React.Component {
                     save
                   </Button>
                 </footer>
+
                 <Typography use="headline5" tag="div" className="mx-4 mt-4">
                   Preview Macros
                 </Typography>
@@ -214,14 +215,14 @@ class Calculator extends React.Component {
                 <Grid>
                   <GridCell span="6">
                     <Typography use="overline" tag="div">
-                      Rest
+                      Rest Day
                     </Typography>
                     <ListDivider />
                     <Preview {...computeMacros(values)} />
                   </GridCell>
                   <GridCell span="6">
                     <Typography use="overline" tag="div">
-                      Workout
+                      Workout Day
                     </Typography>
                     <ListDivider />
                     <Preview {...computeMacros(values, true)} />
