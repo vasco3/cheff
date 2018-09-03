@@ -201,9 +201,11 @@ class Calculator extends React.Component {
                     </Link>
                   </Typography>
                 </div>
-                <footer className="flex justify-end mt-4 mb-8">
-                  <Button onClick={handleReset}>reset</Button>
-                  <Button type="submit" disabled={isSubmitting}>
+                <footer className="flex justify-end mt-4 mb-8 pr-4">
+                  <Button className="mr-4" onClick={handleReset}>
+                    reset
+                  </Button>
+                  <Button type="submit" raised disabled={isSubmitting}>
                     save
                   </Button>
                 </footer>
