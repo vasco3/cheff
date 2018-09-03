@@ -3,7 +3,7 @@ import * as yup from 'yup';
 import { TextField } from 'rmwc/TextField';
 import { Button } from 'rmwc/Button';
 
-const recipeAttributes = [
+const RECIPE_ATTRIBUTES = [
   { name: 'name', label: 'Recipe name', defaultValue: 'New Recipe' },
   { name: 'Calories', label: 'Calories', defaultValue: 1 },
   { name: 'Protein', label: 'Protein (g)', defaultValue: 1 },
@@ -40,52 +40,44 @@ const RecipeForm = ({ recipe = {}, onCancel, onSave }) => {
       render={({
         values,
         // errors,
-        // touched,
         handleChange,
         handleBlur,
         isSubmitting,
       }) => {
         return (
-          <Form className="recipeForm">
-            {recipeAttributes.map(function mapRecipeForm(
-              { name, label, defaultValue },
-              index,
-            ) {
-              return (
-                <TextField
-                  key={index}
-                  name={name}
-                  value={values[name]}
-                  onBlur={handleBlur}
-                  outlined
-                  label={label}
-                  onChange={handleChange}
-                  type={typeof defaultValue === 'string' ? 'text' : 'number'}
-                  rootProps={{
-                    style: {
-                      ...(name === 'name' ? { gridColumn: '1 / 4' } : {}),
-                    },
-                  }}
-                />
-              );
-            })}
-            <footer className="recipeFormFooter">
-              <Button onClick={onCancel}>cancel</Button>
-              <Button type="submit" disabled={isSubmitting}>
-                save recipe
+          <Form>
+            <div className="flex flex-wrap p-4">
+              {RECIPE_ATTRIBUTES.map(function mapRecipeForm(
+                { name, label, defaultValue },
+                index,
+              ) {
+                return (
+                  <TextField
+                    className="mb-4 mr-4"
+                    key={index}
+                    name={name}
+                    value={values[name]}
+                    onBlur={handleBlur}
+                    outlined
+                    label={label}
+                    onChange={handleChange}
+                    type={typeof defaultValue === 'string' ? 'text' : 'number'}
+                  />
+                );
+              })}
+            </div>
+            <footer className="recipeFormFooter pr-4 mb-4">
+              <Button className="mr-4" onClick={onCancel}>
+                cancel
+              </Button>
+              <Button type="submit" raised disabled={isSubmitting}>
+                add recipe
               </Button>
             </footer>
             <style jsx>{`
-              .recipeForm {
-                padding: 0 1rem 1rem;
-                display: grid;
-                grid-template-columns: 1fr 1fr 1fr;
-                grid-column-gap: 1rem;
-              }
               .recipeFormFooter {
                 display: flex;
                 justify-content: flex-end;
-                grid-column: 1 / 4;
               }
             `}</style>
           </Form>

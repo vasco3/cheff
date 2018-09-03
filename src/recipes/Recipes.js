@@ -115,24 +115,23 @@ class Recipes extends React.Component {
         <ListDivider />
 
         <div className="fab flex justify-end pr-4">
-          <Fab onClick={this.toggleAddRecipe} icon="add" />
+          <span className={`addIcon${state.isAdding ? ' rotate' : ''}`}>
+            <Fab onClick={this.toggleAddRecipe} icon="add" />
+          </span>
         </div>
 
-        {state.isAdding && (
-          <div>
-            <ListDivider />
-            <Typography use="subtitle2" tag="div" className="mx-4 mt-4 mb-0">
-              Enter new recipe information
-            </Typography>
+        <div className={`addingSection${state.isAdding ? ' adding-open' : ''}`}>
+          <Typography use="subtitle2" tag="div" className="mx-4 mb-0">
+            Enter new recipe information
+          </Typography>
 
-            <RecipeForm
-              onCancel={() => this.setState({ isAdding: false })}
-              onChange={this.handleRecipeChange}
-              onSave={this.addRecipe}
-            />
-            <ListDivider />
-          </div>
-        )}
+          <RecipeForm
+            onCancel={() => this.setState({ isAdding: false })}
+            onChange={this.handleRecipeChange}
+            onSave={this.addRecipe}
+          />
+          <ListDivider />
+        </div>
 
         <List twoLine dense>
           {recipes
@@ -203,6 +202,22 @@ class Recipes extends React.Component {
         <style jsx>{`
           .fab {
             margin-top: -2rem;
+          }
+          .addIcon {
+            transition: all 0.3s ease-in-out;
+          }
+          .rotate {
+            transform: rotateZ(45deg);
+          }
+
+          .addingSection {
+            height: 0;
+            opacity: 0;
+            transition: opacity 0.2s ease-in-out;
+          }
+          .adding-open {
+            height: auto;
+            opacity: 1;
           }
         `}</style>
       </Card>
