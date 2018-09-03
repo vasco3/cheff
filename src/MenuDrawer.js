@@ -26,6 +26,7 @@ const PATHS = {
 
 const MenuDrawer = ({ isMobile, open, onClose, router = {} }) => {
   const { pathname = '' } = router;
+  const contentProps = isMobile ? { onClick: onClose } : {};
   return (
     <Drawer onClose={onClose} open={open} modal={isMobile}>
       <DrawerHeader>
@@ -33,7 +34,7 @@ const MenuDrawer = ({ isMobile, open, onClose, router = {} }) => {
         <DrawerSubtitle>{meta.subtitle}</DrawerSubtitle>
       </DrawerHeader>
 
-      <DrawerContent>
+      <DrawerContent {...contentProps}>
         <Link href={PATHS.plan}>
           <SimpleListItem
             graphic={<Icon icon="list_alt" theme="primary" />}
