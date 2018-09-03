@@ -75,8 +75,9 @@ class Calculator extends React.Component {
               </Typography>
               <ListDivider />
               <Form>
-                <div className="form max m-4">
+                <div className="max m-4">
                   <Select
+                    className="mb-4 mr-4"
                     label="Kinobody Program"
                     onBlur={handleBlur}
                     onChange={handleChange}
@@ -87,6 +88,7 @@ class Calculator extends React.Component {
                     value={values.kinobodyProgram}
                   />
                   <Select
+                    className="mb-4 mr-4"
                     label="Program Mode"
                     onBlur={handleBlur}
                     onChange={handleChange}
@@ -96,6 +98,7 @@ class Calculator extends React.Component {
                     value={values.kinobodyProgramMode}
                   />
                   <Select
+                    className="mb-4 mr-4"
                     label="Macro Options"
                     name="kinobodyMacroOption"
                     onBlur={handleBlur}
@@ -105,6 +108,7 @@ class Calculator extends React.Component {
                     value={values.kinobodyMacroOption}
                   />
                   <TextField
+                    className="mb-4 mr-4"
                     label="Body weight"
                     name="bodyWeight"
                     onBlur={handleBlur}
@@ -118,6 +122,7 @@ class Calculator extends React.Component {
                     </TextFieldHelperText>
                   )}
                   <Select
+                    className="mb-4 mr-4"
                     label="units"
                     onBlur={handleBlur}
                     onChange={handleChange}
@@ -132,6 +137,7 @@ class Calculator extends React.Component {
                   Workout days
                 </Typography>
                 <ListDivider />
+
                 <Checkbox
                   onChange={handleChange}
                   checked={values.workoutOnSunday}
@@ -214,11 +220,6 @@ class Calculator extends React.Component {
                 )}
               </Form>
               <style jsx>{`
-                .form {
-                  display: grid;
-                  grid-template-columns: 1fr;
-                  grid-gap: 1rem;
-                }
                 .max {
                   max-width: 400px;
                 }
