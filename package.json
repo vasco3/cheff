@@ -4,14 +4,12 @@
   "description": "Meal Planner",
   "main": "index.js",
   "scripts": {
-    "alias": "now alias",
     "dev": "next",
     "build": "next build",
     "preexport": "npm run build",
     "export": "next export",
     "postexport": "cp static/sw.js out && cp static/robots.txt out",
     "deploy": "now out",
-    "postdeploy": "npm run alias",
     "start": "next start",
     "start:static": "serve -p 3000",
     "test": "test"
