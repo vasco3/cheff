@@ -4,6 +4,7 @@
   "description": "Meal Planner",
   "main": "index.js",
   "scripts": {
+    "alias": "now alias",
     "dev": "next",
     "build": "next build",
     "preexport": "npm run build",
