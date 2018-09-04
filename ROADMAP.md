@@ -1,5 +1,6 @@
 # Roadmap
 
+- [ ] failsafe on stackoverflow
 - [ ] lock specific menu items
 - [ ] add FAQs
 - [ ] WSP2
@@ -7,6 +8,7 @@
 - [ ] fix macro calc protein30%
 - [ ] enable kg
 - [ ] fix import/export torrent
+- [ ] newsletter - https://app.tinyletter.com/
 
 ## Plan
 

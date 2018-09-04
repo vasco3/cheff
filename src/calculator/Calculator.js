@@ -74,6 +74,55 @@ class Calculator extends React.Component {
                 <Grid>
                   <GridCell span="6">
                     <Typography use="overline" tag="div">
+                      Workout days
+                    </Typography>
+                    <ListDivider />
+                    <Checkbox
+                      onChange={handleChange}
+                      value={values.workoutOnSunday}
+                      name="workoutOnSunday"
+                      label="Sunday"
+                    />
+
+                    <Checkbox
+                      onChange={handleChange}
+                      value={values.workoutOnMonday}
+                      name="workoutOnMonday"
+                      label="Monday"
+                    />
+                    <Checkbox
+                      onChange={handleChange}
+                      value={values.workoutOnTuesday}
+                      name="workoutOnTuesday"
+                      label="Tuesday"
+                    />
+                    <Checkbox
+                      onChange={handleChange}
+                      value={values.workoutOnWednesday}
+                      name="workoutOnWednesday"
+                      label="Wednesday"
+                    />
+                    <Checkbox
+                      onChange={handleChange}
+                      value={values.workoutOnThursday}
+                      name="workoutOnThursday"
+                      label="Thursday"
+                    />
+                    <Checkbox
+                      onChange={handleChange}
+                      value={values.workoutOnFriday}
+                      name="workoutOnFriday"
+                      label="Friday"
+                    />
+                    <Checkbox
+                      onChange={handleChange}
+                      value={values.workoutOnSaturday}
+                      name="workoutOnSaturday"
+                      label="Saturday"
+                    />
+                  </GridCell>
+                  <GridCell span="6">
+                    <Typography use="overline" tag="div">
                       Kinobody Calories / Macros
                     </Typography>
                     <ListDivider />
@@ -131,56 +180,6 @@ class Calculator extends React.Component {
                       outlined
                       name="bodyWeightIsInLbs"
                       value={values.bodyWeightIsInLbs}
-                    />
-                  </GridCell>
-
-                  <GridCell span="6">
-                    <Typography use="overline" tag="div">
-                      Workout days
-                    </Typography>
-                    <ListDivider />
-                    <Checkbox
-                      onChange={handleChange}
-                      value={values.workoutOnSunday}
-                      name="workoutOnSunday"
-                      label="Sunday"
-                    />
-
-                    <Checkbox
-                      onChange={handleChange}
-                      value={values.workoutOnMonday}
-                      name="workoutOnMonday"
-                      label="Monday"
-                    />
-                    <Checkbox
-                      onChange={handleChange}
-                      value={values.workoutOnTuesday}
-                      name="workoutOnTuesday"
-                      label="Tuesday"
-                    />
-                    <Checkbox
-                      onChange={handleChange}
-                      value={values.workoutOnWednesday}
-                      name="workoutOnWednesday"
-                      label="Wednesday"
-                    />
-                    <Checkbox
-                      onChange={handleChange}
-                      value={values.workoutOnThursday}
-                      name="workoutOnThursday"
-                      label="Thursday"
-                    />
-                    <Checkbox
-                      onChange={handleChange}
-                      value={values.workoutOnFriday}
-                      name="workoutOnFriday"
-                      label="Friday"
-                    />
-                    <Checkbox
-                      onChange={handleChange}
-                      value={values.workoutOnSaturday}
-                      name="workoutOnSaturday"
-                      label="Saturday"
                     />
                   </GridCell>
                 </Grid>
