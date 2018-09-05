@@ -17,9 +17,7 @@ import MacrosRings from './MacrosRings';
 import Macro from './Macro';
 
 class Plan extends React.Component {
-  state = {
-    activeTab: 0,
-  };
+  state = { activeTab: 0 };
   render() {
     const {
       isMobile = false,
@@ -32,10 +30,15 @@ class Plan extends React.Component {
       macrosWorkout = {},
       tracker = {},
     } = this.props;
+
     const { activeTab } = this.state;
+
     const macros = isWorkoutDay ? macrosWorkout : macrosRest;
     const showMacros = isMobile ? activeTab === 0 : true;
     const showFood = isMobile ? activeTab === 1 : true;
+
+    const hasRecipesMinimum = recipes.size < RECIPES_MINIMUM;
+
     return (
       <div className="plan">
         {isWorkoutDay && (
@@ -119,7 +122,7 @@ class Plan extends React.Component {
 
                 <ListDivider />
 
-                {recipes.size < RECIPES_MINIMUM && (
+                {hasRecipesMinimum && (
                   <Typography
                     use="headline5"
                     theme="text-secondary-on-background"
@@ -133,18 +136,19 @@ class Plan extends React.Component {
                   </Typography>
                 )}
                 <List twoLine dense>
-                  {!menu.length && (
-                    <div className="text-center">
-                      <Typography
-                        use="headline6"
-                        tag="div"
-                        className="flex justify-center p-4"
-                      >
-                        Randomly generate a menu plan for the day
-                      </Typography>
-                      <Button onClick={handleMenuGenerate}>Generate</Button>
-                    </div>
-                  )}
+                  {hasRecipesMinimum &&
+                    !menu.length && (
+                      <div className="text-center">
+                        <Typography
+                          use="headline6"
+                          tag="div"
+                          className="flex justify-center p-4"
+                        >
+                          Randomly generate a menu plan for the day
+                        </Typography>
+                        <Button onClick={handleMenuGenerate}>Generate</Button>
+                      </div>
+                    )}
                   {menu.map(
                     ({ _key, name, Calories, Protein, Carbs, Fat }, index) => (
                       <SimpleListItem

@@ -4,6 +4,7 @@
 - [ ] lock specific menu items
 - [ ] add FAQs
 - [ ] WSP2
+- [ ] add AFL
 - [ ] add unit tests snapshots for calculations
 - [ ] fix macro calc protein30%
 - [ ] enable kg
