@@ -8,6 +8,8 @@ import { List, SimpleListItem } from 'rmwc/List';
 import { ListDivider } from 'rmwc/List';
 import { Typography } from 'rmwc/Typography';
 
+import { RECIPES_MINIMUM } from '../recipes/constants';
+
 function Food({
   menu,
   handleMenuGenerate,
