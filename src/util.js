@@ -24,6 +24,20 @@ export function randomSort() {
   return 0;
 }
 
+export function prioritizeAndSort(recipes, recipesFavoriteKeys) {
+  const favoriteKeys = recipes.filter(
+    filterFavoriteRecipes(recipesFavoriteKeys),
+  );
+  const nonFavorite = recipes
+    .filterNot(filterFavoriteRecipes(recipesFavoriteKeys))
+    .sort(randomSort);
+  return favoriteKeys.concat(nonFavorite);
+}
+
+function filterFavoriteRecipes(recipesFavoriteKeys) {
+  return recipe => recipesFavoriteKeys.has(recipe._key);
+}
+
 // Find the combinations of recipes that amount 2,800 cal
 export function calculateDayMenu({
   calories = 0,

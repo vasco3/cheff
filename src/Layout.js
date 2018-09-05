@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Link from 'next/link';
 import moment from 'moment';
 import getIn from 'lodash/get';
-import { List } from 'immutable';
+import { List, Set as iSet } from 'immutable';
 import {
   TopAppBar,
   TopAppBarRow,
@@ -13,7 +13,7 @@ import {
 
 import CoreContext from './CoreContext';
 import MenuDrawer from './MenuDrawer';
-import { calculateDayMenu, calculateSettings, randomSort } from './util';
+import { calculateDayMenu, calculateSettings, prioritizeAndSort } from './util';
 import { convertMacroGramToCalories } from './calculator/utils';
 import demoRecipes from '../data/recipes';
 
@@ -25,12 +25,14 @@ function loadLocalValues() {
       macrosWorkout: {},
       menu: [],
       recipes: List(),
+      recipesFavoriteKeys: iSet(),
       settings: {},
       tracker: { calories: 0, carbs: 0, protein: 0, fat: 0 },
     };
   }
 
   const recipesJSON = getItem('recipes', '[]');
+  const recipesFavoriteKeysJSON = getItem('recipesFavoriteKeys', '[]');
   const settings = getItem('settings', '{}');
   const tracker = getItem('tracker', '{}');
 
@@ -40,6 +42,7 @@ function loadLocalValues() {
     macrosWorkout: getItem('macrosWorkout', '{}'),
     menu: getItem('menu', '[]'),
     recipes: List(recipesJSON),
+    recipesFavoriteKeys: iSet(recipesFavoriteKeysJSON),
     settings,
     tracker: {
       calories: 0,
@@ -82,6 +85,7 @@ class Layout extends Component {
       macrosRest,
       macrosWorkout,
       recipes,
+      recipesFavoriteKeys,
       settings,
       tracker,
     } = loadLocalValues();
@@ -95,6 +99,8 @@ class Layout extends Component {
       menu,
       handleMenuGenerate: this.handleMenuGenerate.bind(this),
       recipes,
+      recipesFavoriteKeys,
+      handleRecipeFavoriteToggle: this.handleRecipeFavoriteToggle.bind(this),
       handleRecipeAdd: this.handleRecipeAdd.bind(this),
       handleRecipeRemove: this.handleRecipeRemove.bind(this),
       handleRecipeEdit: this.handleRecipeEdit.bind(this),
@@ -202,7 +208,7 @@ class Layout extends Component {
 
     try {
       const { menu } = calculateDayMenu({
-        recipes: state.recipes.sort(randomSort),
+        recipes: prioritizeAndSort(state.recipes, state.recipesFavoriteKeys),
         settings,
       });
 
@@ -212,6 +218,19 @@ class Layout extends Component {
     } catch (err) {
       console.error(err);
     }
+  }
+
+  handleRecipeFavoriteToggle({ action = 'add', recipeKey }) {
+    this.setState(prevState => {
+      const recipesFavoriteKeys = prevState.recipesFavoriteKeys[action](
+        recipeKey,
+      );
+      localStorage.setItem(
+        'recipesFavoriteKeys',
+        JSON.stringify(recipesFavoriteKeys.toArray()),
+      );
+      return { recipesFavoriteKeys };
+    });
   }
 
   handleRecipeAdd(recipe) {

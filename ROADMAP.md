@@ -1,7 +1,6 @@
 # Roadmap
 
 - [ ] snackbar is clipped by drawer
-- [ ] lock specific menu items
 - [ ] increase tolerance when stackoverflow
 - [ ] add unit tests
 - [ ] add unit tests snapshots for calculations
