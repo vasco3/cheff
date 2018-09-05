@@ -200,14 +200,18 @@ class Layout extends Component {
       protein: macros.protein - state.tracker.protein,
     });
 
-    const { menu } = calculateDayMenu({
-      recipes: state.recipes.sort(randomSort),
-      settings,
-    });
+    try {
+      const { menu } = calculateDayMenu({
+        recipes: state.recipes.sort(randomSort),
+        settings,
+      });
 
-    this.setState({ menu }, function saveMenuToLocal() {
-      localStorage.setItem('menu', JSON.stringify(menu));
-    });
+      this.setState({ menu }, function saveMenuToLocal() {
+        localStorage.setItem('menu', JSON.stringify(menu));
+      });
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   handleRecipeAdd(recipe) {
