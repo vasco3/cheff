@@ -1,5 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
+import Router from 'next/router';
+
 import { Formik, Form } from 'formik';
 import * as yup from 'yup';
 import { Button } from 'rmwc/Button';
@@ -18,7 +20,7 @@ import Preview from './Preview';
 class Calculator extends React.Component {
   state = { isSaved: false };
   render() {
-    const { handleCalculatorSave, settings = {} } = this.props;
+    const { handleCalculatorSave, settings = {}, recipes } = this.props;
     return (
       <Formik
         initialValues={{
@@ -55,7 +57,11 @@ class Calculator extends React.Component {
             macrosWorkout,
           });
 
-          this.setState({ isSaved: true }, () => setSubmitting(false));
+          if (recipes.size > 0) {
+            Router.push('/plan');
+          } else {
+            Router.push('/recipes');
+          }
         }}
         render={({
           errors,
@@ -184,22 +190,6 @@ class Calculator extends React.Component {
                   </GridCell>
                 </Grid>
 
-                <div
-                  className={`banner text-center${
-                    this.state.isSaved ? ' banner-open' : ''
-                  }`}
-                >
-                  <Typography use="body1" theme="onPrimary">
-                    Saved! Now continue to{' '}
-                    <Link href="/recipes">
-                      <Button>Recipes</Button>
-                    </Link>{' '}
-                    or{' '}
-                    <Link href="/plan">
-                      <Button>Meal Plan</Button>
-                    </Link>
-                  </Typography>
-                </div>
                 <footer className="flex justify-end mt-4 mb-8 pr-4">
                   <Button className="mr-4" onClick={handleReset}>
                     reset
@@ -232,25 +222,6 @@ class Calculator extends React.Component {
 
                 <ListDivider />
               </Form>
-
-              <style jsx>{`
-                .banner {
-                  background-color: var(--mdc-theme-secondary);
-                  opacity: 0;
-                  height: 0;
-                  padding: 0;
-                  margin: 0;
-                }
-                .banner-open {
-                  transition: all 0.3s ease-in;
-                  opacity: 1;
-                  height: auto;
-                  padding: 1rem;
-                }
-                .max {
-                  max-width: 400px;
-                }
-              `}</style>
             </div>
           );
         }}
