@@ -1,21 +1,23 @@
 # Roadmap
 
-- [ ] lock specific menu items
-- [ ] add FAQs
-- [ ] WSP2
+- [ ] snackbar is clipped by drawer
+- [ ] increase tolerance when stackoverflow
+- [ ] add unit tests
 - [ ] add unit tests snapshots for calculations
-- [ ] fix macro calc protein30%
-- [ ] enable kg
+
+## Low Priority
+
 - [ ] fix import/export torrent
-
-## Plan
-
-## Forms
-
+- [ ] enable kg
+- [ ] add FAQs
+- [ ] newsletter - https://app.tinyletter.com/
 - [ ] validate inputs
 
 ## Calculator
 
+- [ ] fix macro calc protein30%
+- [ ] WSP2
+- [ ] add AFL
 - http://calc.kinobody.com/wsp.html
 - http://run.plnkr.co/plunks/p1p1tI/#/kinobody_ggp/lean_bulk/macros_09p_25f/180_lbs
 
