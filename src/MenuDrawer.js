@@ -18,7 +18,7 @@ import meta from './meta';
 const PATHS = {
   about: '/about',
   calculator: '/calculator',
-  help: '/',
+  help: '/onboarding',
   plan: '/plan',
   recipes: '/recipes',
   sync: '/sync',
