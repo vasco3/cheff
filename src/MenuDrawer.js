@@ -18,23 +18,22 @@ import meta from './meta';
 const PATHS = {
   about: '/about',
   calculator: '/calculator',
-  help: '/',
+  help: '/onboarding',
   plan: '/plan',
   recipes: '/recipes',
   sync: '/sync',
 };
 
-const MenuDrawer = ({ isMobile, open, onClose, router = {} }) => {
+const MenuDrawer = ({ open, onClose, router = {} }) => {
   const { pathname = '' } = router;
-  const contentProps = isMobile ? { onClick: onClose } : {};
   return (
-    <Drawer onClose={onClose} open={open} modal={isMobile}>
+    <Drawer onClose={onClose} open={open} modal>
       <DrawerHeader>
         <DrawerTitle theme="primary">{meta.title}</DrawerTitle>
         <DrawerSubtitle>{meta.subtitle}</DrawerSubtitle>
       </DrawerHeader>
 
-      <DrawerContent {...contentProps}>
+      <DrawerContent onClick={onClose}>
         <Link href={PATHS.plan}>
           <SimpleListItem
             graphic={<Icon icon="list_alt" theme="primary" />}

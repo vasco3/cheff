@@ -65,6 +65,7 @@ function shouldWorkout({
   workoutOnWednesday,
   workoutOnThursday,
   workoutOnFriday,
+  workoutOnSaturday,
 }) {
   const weekdays = [
     workoutOnSunday,
@@ -73,6 +74,7 @@ function shouldWorkout({
     workoutOnWednesday,
     workoutOnThursday,
     workoutOnFriday,
+    workoutOnSaturday,
   ];
   return weekdays[moment().day()];
 }
@@ -92,7 +94,6 @@ class Layout extends Component {
 
     this.state = {
       drawerIsOpen: false,
-      isMobile: true,
       isWorkoutDay: shouldWorkout(settings),
       macrosRest,
       macrosWorkout,
@@ -111,38 +112,6 @@ class Layout extends Component {
       tracker,
     };
   }
-
-  componentDidMount() {
-    window.addEventListener('resize', this.doSizeCheck);
-    this.doSizeCheck(true);
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    // a hack to help components layout that depend on window events
-    // The size of the content changes on drawer open and close
-    if (prevState.menuIsOpen !== this.state.menuIsOpen) {
-      setTimeout(() => {
-        window.dispatchEvent(new Event('resize'));
-      }, 300);
-    }
-  }
-
-  componentWillUnMount() {
-    window.removeEventListener('resize', this.doSizeCheck);
-  }
-
-  doSizeCheck = initial => {
-    const isMobile = window.innerWidth < 640;
-    const drawerIsOpen =
-      initial && window.innerWidth > 640 ? true : this.state.drawerIsOpen;
-
-    if (
-      this.state.isMobile !== isMobile ||
-      this.state.drawerIsOpen !== drawerIsOpen
-    ) {
-      this.setState({ isMobile, drawerIsOpen });
-    }
-  };
 
   handleTracker({ action, macro, value }) {
     const macroCalories = convertMacroGramToCalories({ macro, value });
@@ -209,6 +178,7 @@ class Layout extends Component {
     try {
       const { menu } = calculateDayMenu({
         recipes: prioritizeAndSort(state.recipes, state.recipesFavoriteKeys),
+        recipesFavoriteKeys: state.recipesFavoriteKeys,
         settings,
       });
 
@@ -318,11 +288,9 @@ class Layout extends Component {
         >
           <TopAppBarRow>
             <TopAppBarSection>
-              {state.isMobile && (
-                <TopAppBarActionItem alt="Menu" onClick={this.toggleDrawer}>
-                  menu
-                </TopAppBarActionItem>
-              )}
+              <TopAppBarActionItem alt="Menu" onClick={this.toggleDrawer}>
+                menu
+              </TopAppBarActionItem>
               <TopAppBarTitle>{props.pageTitle}</TopAppBarTitle>
             </TopAppBarSection>
             <TopAppBarSection alignEnd>
@@ -335,9 +303,8 @@ class Layout extends Component {
           </TopAppBarRow>
         </TopAppBar>
 
-        <div className="mdc-top-app-bar--dense-fixed-adjust appContent">
+        <div className="mdc-top-app-bar--dense-fixed-adjust">
           <MenuDrawer
-            isMobile={state.isMobile}
             onClose={() => this.setState({ drawerIsOpen: false })}
             open={state.drawerIsOpen}
           />
@@ -345,12 +312,6 @@ class Layout extends Component {
             {props.children}
           </CoreContext.Provider>
         </div>
-        <style jsx>{`
-          .appContent {
-            display: grid;
-            grid-template-columns: ${state.isMobile ? '' : 'auto '} 1fr;
-          }
-        `}</style>
       </main>
     );
   }

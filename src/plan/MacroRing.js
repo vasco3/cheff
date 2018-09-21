@@ -30,7 +30,8 @@ function calculateData({ name, total, target }) {
   ];
 }
 
-const dimension = 16 * 4;
+const REM = 16;
+const dimension = REM * 4;
 class MacroRing extends Component {
   state = {};
   render() {

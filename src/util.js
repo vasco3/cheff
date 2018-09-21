@@ -47,10 +47,12 @@ export function calculateDayMenu({
   protein = 0,
   recipeIndex = 0,
   recipes = List([]),
+  recipesFavoriteKeys,
   consumedServings = 0,
   settings = {},
 }) {
   const shouldExit = recipeIndex >= recipes.size;
+
   if (shouldExit) {
     const isCaloriesOutOfBounds =
       calories < settings.CALORIES_LOWER_BOUND ||
@@ -74,7 +76,8 @@ export function calculateDayMenu({
 
     if (shouldRestart) {
       return calculateDayMenu({
-        recipes: recipes.sort(randomSort),
+        recipes: prioritizeAndSort(recipes, recipesFavoriteKeys),
+        recipesFavoriteKeys,
         settings,
       });
     }
@@ -105,6 +108,7 @@ export function calculateDayMenu({
       protein,
       recipeIndex: recipeIndex + 1,
       recipes,
+      recipesFavoriteKeys,
       consumedServings: 0,
       settings,
     });
@@ -118,6 +122,7 @@ export function calculateDayMenu({
     protein: proteinCounted,
     recipeIndex,
     recipes,
+    recipesFavoriteKeys,
     consumedServings: consumedServings + 1,
     settings,
   });

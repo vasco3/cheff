@@ -18,10 +18,10 @@ const RecipeForm = ({ recipe = {}, onCancel, onSave }) => {
       initialValues={{
         _key: recipe._key,
         name: recipe.name || 'New Recipe',
-        Calories: recipe.Calories || 100,
-        Protein: recipe.Protein || 20,
-        Carbs: recipe.Carbs || 30,
-        Fat: recipe.Fat || 8,
+        Calories: recipe.Calories || 0,
+        Protein: recipe.Protein || 0,
+        Carbs: recipe.Carbs || 0,
+        Fat: recipe.Fat || 0,
         servings: recipe.servings || 1,
       }}
       validationSchema={yup.object().shape({
@@ -67,11 +67,11 @@ const RecipeForm = ({ recipe = {}, onCancel, onSave }) => {
               })}
             </div>
             <footer className="recipeFormFooter pr-4 mb-4">
-              <Button className="mr-4" onClick={onCancel}>
+              <Button type="reset" className="mr-4" onClick={onCancel}>
                 cancel
               </Button>
               <Button type="submit" raised disabled={isSubmitting}>
-                add recipe
+                save
               </Button>
             </footer>
             <style jsx>{`
