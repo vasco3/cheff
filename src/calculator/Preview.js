@@ -1,32 +1,77 @@
 import React, { Component } from 'react';
 import numeral from 'numeral';
-import { List, SimpleListItem } from 'rmwc/List';
+
+import {
+  DataTable,
+  DataTableContent,
+  DataTableHead,
+  DataTableBody,
+  DataTableHeadCell,
+  DataTableRow,
+  DataTableCell,
+} from '@rmwc/data-table';
 
 function formatNumber(number, format) {
   return numeral(number).format(format || '0');
 }
 class Preview extends Component {
-  state = {};
   render() {
-    const { bodyWeightLbs, calories, carbs, fat, protein } = this.props;
+    const { bodyLbs, rest, workout } = this.props;
     return (
-      <List>
-        <SimpleListItem graphic="trip_origin">
-          {formatNumber(calories / bodyWeightLbs, '0,0')} cal / body-lb
-        </SimpleListItem>
-        <SimpleListItem graphic="trip_origin">
-          {formatNumber(calories, '0,0')} cal
-        </SimpleListItem>
-        <SimpleListItem graphic="trip_origin">
-          Carbs {formatNumber(carbs)}g
-        </SimpleListItem>
-        <SimpleListItem graphic="trip_origin">
-          Fat {formatNumber(fat)} g
-        </SimpleListItem>
-        <SimpleListItem graphic="trip_origin">
-          Protein {formatNumber(protein)}g
-        </SimpleListItem>
-      </List>
+      <DataTable>
+        <DataTableContent>
+          <DataTableHead>
+            <DataTableRow>
+              <DataTableHeadCell>Nutrient</DataTableHeadCell>
+              <DataTableHeadCell alignEnd>Rest Day</DataTableHeadCell>
+              <DataTableHeadCell alignEnd>Workout Day</DataTableHeadCell>
+            </DataTableRow>
+          </DataTableHead>
+          <DataTableBody>
+            <DataTableRow>
+              <DataTableCell>cal / body-lb</DataTableCell>
+              <DataTableCell alignEnd>
+                {formatNumber(rest.calories / bodyLbs, '0,0')}
+              </DataTableCell>
+              <DataTableCell alignEnd>
+                {formatNumber(workout.calories / bodyLbs, '0,0')}
+              </DataTableCell>
+            </DataTableRow>
+            <DataTableRow activated>
+              <DataTableCell>calories</DataTableCell>
+              <DataTableCell alignEnd>
+                {formatNumber(rest.calories, '0,0')}
+              </DataTableCell>
+              <DataTableCell alignEnd>
+                {formatNumber(workout.calories, '0,0')}
+              </DataTableCell>
+            </DataTableRow>
+            <DataTableRow>
+              <DataTableCell>Carbs</DataTableCell>
+              <DataTableCell alignEnd>{formatNumber(rest.carbs)}</DataTableCell>
+              <DataTableCell alignEnd>
+                {formatNumber(workout.carbs)}
+              </DataTableCell>
+            </DataTableRow>
+            <DataTableRow>
+              <DataTableCell>Fat</DataTableCell>
+              <DataTableCell alignEnd>{formatNumber(rest.fat)}</DataTableCell>
+              <DataTableCell alignEnd>
+                {formatNumber(workout.fat)}
+              </DataTableCell>
+            </DataTableRow>
+            <DataTableRow>
+              <DataTableCell>Protein</DataTableCell>
+              <DataTableCell alignEnd>
+                {formatNumber(rest.protein)}
+              </DataTableCell>
+              <DataTableCell alignEnd>
+                {formatNumber(workout.protein)}
+              </DataTableCell>
+            </DataTableRow>
+          </DataTableBody>
+        </DataTableContent>
+      </DataTable>
     );
   }
 }

@@ -3,6 +3,7 @@ import Router from 'next/router';
 
 import { Formik, Form } from 'formik';
 import * as yup from 'yup';
+
 import { Button } from 'rmwc/Button';
 import { Checkbox } from 'rmwc/Checkbox';
 import { ListDivider } from 'rmwc/List';
@@ -229,32 +230,18 @@ class Calculator extends React.Component {
                   </Button>
                 </footer>
 
-                <Typography use="headline5" tag="div" className="mx-4 mt-4">
+                <Typography use="overline" tag="div" className="mx-4 mt-4">
                   Preview Macros
                 </Typography>
+                <ListDivider />
 
-                <Grid>
-                  <GridCell span="6">
-                    <Typography use="overline" tag="div">
-                      Rest Day
-                    </Typography>
-                    <ListDivider />
-                    <Preview
-                      {...computeMacros(values)}
-                      bodyWeightLbs={values.bodyWeight}
-                    />
-                  </GridCell>
-                  <GridCell span="6">
-                    <Typography use="overline" tag="div">
-                      Workout Day
-                    </Typography>
-                    <ListDivider />
-                    <Preview
-                      {...computeMacros(values, true)}
-                      bodyWeightLbs={values.bodyWeight}
-                    />
-                  </GridCell>
-                </Grid>
+                <div className="m-4">
+                  <Preview
+                    rest={computeMacros(values)}
+                    workout={computeMacros(values, true)}
+                    bodyLbs={values.bodyWeight}
+                  />
+                </div>
 
                 <ListDivider />
               </Form>
