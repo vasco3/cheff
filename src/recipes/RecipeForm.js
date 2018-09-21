@@ -18,10 +18,10 @@ const RecipeForm = ({ recipe = {}, onCancel, onSave }) => {
       initialValues={{
         _key: recipe._key,
         name: recipe.name || 'New Recipe',
-        Calories: recipe.Calories || 100,
-        Protein: recipe.Protein || 20,
-        Carbs: recipe.Carbs || 30,
-        Fat: recipe.Fat || 8,
+        Calories: recipe.Calories || 0,
+        Protein: recipe.Protein || 0,
+        Carbs: recipe.Carbs || 0,
+        Fat: recipe.Fat || 0,
         servings: recipe.servings || 1,
       }}
       validationSchema={yup.object().shape({
