@@ -6,12 +6,11 @@ import * as yup from 'yup';
 import { Button } from 'rmwc/Button';
 import { Checkbox } from 'rmwc/Checkbox';
 import { ListDivider } from 'rmwc/List';
-import { Select, Grid, GridCell } from 'rmwc';
+import { Grid, GridCell } from 'rmwc';
 import { TextField, TextFieldHelperText } from 'rmwc/TextField';
 import { Typography } from 'rmwc/Typography';
 
 import { computeMacros } from './utils';
-import { macroOptions, kinobodyProgramModeOptions } from './constants';
 import { withCoreContext } from '../CoreContext';
 
 import Preview from './Preview';
@@ -24,11 +23,12 @@ class Calculator extends React.Component {
       <Formik
         initialValues={{
           bodyWeight: settings.bodyWeight || 180,
-          bodyWeightIsInLbs: settings.bodyWeightIsInLbs || 'lbs',
-          kinobodyProgram: settings.kinobodyProgram || 'GGP',
-          kinobodyProgramMode: settings.kinobodyProgramMode || 'LEAN_BULK',
-          kinobodyMacroOption:
-            settings.kinobodyMacroOption || 'PROTEIN_DEFAULT',
+          calories: settings.calories || 2200,
+          caloriesExtraForWorkoutDay:
+            settings.caloriesExtraForWorkoutDay || 100,
+          fatCaloriesRatio: settings.fatCaloriesRatio || 25,
+          proteinGramsPerBodyWeightLb:
+            settings.proteinGramsPerBodyWeight || 0.8,
           workoutOnSunday: settings.workoutOnSunday || false,
           workoutOnMonday: settings.workoutOnMonday || false,
           workoutOnTuesday: settings.workoutOnTuesday || false,
@@ -38,12 +38,13 @@ class Calculator extends React.Component {
         }}
         validationSchema={yup.object().shape({
           bodyWeight: yup.number().required(),
-          bodyWeightIsInLbs: yup.string().required(),
-          kinobodyProgram: yup.string().required(),
-          kinobodyProgramMode: yup.string().required(),
-          kinobodyMacroOption: yup.string().required(),
+          calories: yup.number().required(),
+          caloriesExtraForWorkoutDay: yup.number().required(),
+          fatCaloriesRatio: yup.number().required(),
+          proteinGramsPerBodyWeightLb: yup.number().required(),
         })}
         onSubmit={(values, { setSubmitting }) => {
+          setSubmitting(false);
           const macrosRest = computeMacros(values);
           const macrosWorkout = computeMacros(values, true);
 
@@ -51,6 +52,14 @@ class Calculator extends React.Component {
             settings: {
               ...values,
               bodyWeight: parseInt(values.bodyWeight),
+              calories: parseInt(values.calories),
+              caloriesExtraForWorkoutDay: parseInt(
+                values.caloriesExtraForWorkoutDay,
+              ),
+              fatCaloriesRatio: parseInt(values.fatCaloriesRatio),
+              proteinGramsPerBodyWeightLb: parseFloat(
+                values.proteinGramsPerBodyWeightLb,
+              ),
             },
             macrosRest,
             macrosWorkout,
@@ -127,44 +136,61 @@ class Calculator extends React.Component {
                     />
                   </GridCell>
                   <GridCell span="6">
-                    <Typography use="overline" tag="div">
-                      Kinobody Calories / Macros
-                    </Typography>
-                    <ListDivider />
-                    <Select
-                      className="my-4 mr-4"
-                      label="Kinobody Program"
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      options={[
-                        { label: 'GGP - Greek God Program', value: 'GGP' },
-                      ]}
-                      outlined
-                      value={values.kinobodyProgram}
-                    />
-                    <Select
-                      className="mb-4 mr-4"
-                      label="Program Mode"
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      options={kinobodyProgramModeOptions}
-                      outlined
-                      name="kinobodyProgramMode"
-                      value={values.kinobodyProgramMode}
-                    />
-                    <Select
-                      className="mb-4 mr-4"
-                      label="Macro Options"
-                      name="kinobodyMacroOption"
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      options={macroOptions}
-                      outlined
-                      value={values.kinobodyMacroOption}
-                    />
+                    <div className="mb-4">
+                      <Typography use="overline" tag="div">
+                        Calories / Macros
+                      </Typography>
+                      <ListDivider />
+                    </div>
+
                     <TextField
                       className="mb-4 mr-4"
-                      label="Body weight"
+                      label="Total Calories"
+                      name="calories"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      outlined
+                      value={values.calories}
+                    />
+                    {errors.calories && (
+                      <TextFieldHelperText validationMsg persistent>
+                        {errors.calories}
+                      </TextFieldHelperText>
+                    )}
+
+                    <TextField
+                      className="mb-4 mr-4"
+                      label="Workoutday Extra Calories"
+                      name="caloriesExtraForWorkoutDay"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      outlined
+                      value={values.caloriesExtraForWorkoutDay}
+                    />
+                    {errors.caloriesExtraForWorkoutDay && (
+                      <TextFieldHelperText validationMsg persistent>
+                        {errors.caloriesExtraForWorkoutDay}
+                      </TextFieldHelperText>
+                    )}
+
+                    <TextField
+                      className="mb-4 mr-4"
+                      label="Fat % from calories"
+                      name="fatCaloriesRatio"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      outlined
+                      value={values.fatCaloriesRatio}
+                    />
+                    {errors.fatCaloriesRatio && (
+                      <TextFieldHelperText validationMsg persistent>
+                        {errors.fatCaloriesRatio}
+                      </TextFieldHelperText>
+                    )}
+
+                    <TextField
+                      className="mb-4 mr-4"
+                      label="Body weight (lbs)"
                       name="bodyWeight"
                       onBlur={handleBlur}
                       onChange={handleChange}
@@ -176,21 +202,26 @@ class Calculator extends React.Component {
                         {errors.bodyWeight}
                       </TextFieldHelperText>
                     )}
-                    <Select
+
+                    <TextField
                       className="mb-4 mr-4"
-                      label="units"
+                      label="Protein (g) per Body (lb)"
+                      name="proteinGramsPerBodyWeightLb"
                       onBlur={handleBlur}
                       onChange={handleChange}
-                      options={['lbs']}
                       outlined
-                      name="bodyWeightIsInLbs"
-                      value={values.bodyWeightIsInLbs}
+                      value={values.proteinGramsPerBodyWeightLb}
                     />
+                    {errors.proteinGramsPerBodyWeightLb && (
+                      <TextFieldHelperText validationMsg persistent>
+                        {errors.proteinGramsPerBodyWeightLb}
+                      </TextFieldHelperText>
+                    )}
                   </GridCell>
                 </Grid>
 
                 <footer className="flex justify-end mt-4 mb-8 pr-4">
-                  <Button className="mr-4" onClick={handleReset}>
+                  <Button type="reset" className="mr-4" onClick={handleReset}>
                     reset
                   </Button>
                   <Button type="submit" raised disabled={isSubmitting}>
