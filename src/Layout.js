@@ -178,6 +178,7 @@ class Layout extends Component {
     try {
       const { menu } = calculateDayMenu({
         recipes: prioritizeAndSort(state.recipes, state.recipesFavoriteKeys),
+        recipesFavoriteKeys: state.recipesFavoriteKeys,
         settings,
       });
 
