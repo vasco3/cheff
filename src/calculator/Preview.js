@@ -14,58 +14,64 @@ import {
 function formatNumber(number, format) {
   return numeral(number).format(format || '0');
 }
+const center = { textAlign: 'center' };
+const styleWorkoutCell = { ...center, color: 'var(--mdc-theme-primary)' };
 class Preview extends Component {
   render() {
     const { bodyLbs, rest, workout } = this.props;
     return (
       <DataTable>
-        <DataTableContent>
+        <DataTableContent style={{ textAlign: 'left', width: '100%' }}>
           <DataTableHead>
             <DataTableRow>
               <DataTableHeadCell>Nutrient</DataTableHeadCell>
-              <DataTableHeadCell alignEnd>Rest Day</DataTableHeadCell>
-              <DataTableHeadCell alignEnd>Workout Day</DataTableHeadCell>
+              <DataTableHeadCell style={center}>Rest Day</DataTableHeadCell>
+              <DataTableHeadCell style={center}>Workout Day</DataTableHeadCell>
             </DataTableRow>
           </DataTableHead>
           <DataTableBody>
             <DataTableRow>
               <DataTableCell>cal / body-lb</DataTableCell>
-              <DataTableCell alignEnd>
+              <DataTableCell style={center}>
                 {formatNumber(rest.calories / bodyLbs, '0,0')}
               </DataTableCell>
-              <DataTableCell alignEnd>
+              <DataTableCell style={styleWorkoutCell}>
                 {formatNumber(workout.calories / bodyLbs, '0,0')}
               </DataTableCell>
             </DataTableRow>
-            <DataTableRow activated>
+            <DataTableRow>
               <DataTableCell>calories</DataTableCell>
-              <DataTableCell alignEnd>
+              <DataTableCell style={center}>
                 {formatNumber(rest.calories, '0,0')}
               </DataTableCell>
-              <DataTableCell alignEnd>
+              <DataTableCell style={styleWorkoutCell}>
                 {formatNumber(workout.calories, '0,0')}
               </DataTableCell>
             </DataTableRow>
             <DataTableRow>
-              <DataTableCell>Carbs</DataTableCell>
-              <DataTableCell alignEnd>{formatNumber(rest.carbs)}</DataTableCell>
-              <DataTableCell alignEnd>
+              <DataTableCell>carbs</DataTableCell>
+              <DataTableCell style={center}>
+                {formatNumber(rest.carbs)}
+              </DataTableCell>
+              <DataTableCell style={styleWorkoutCell}>
                 {formatNumber(workout.carbs)}
               </DataTableCell>
             </DataTableRow>
             <DataTableRow>
-              <DataTableCell>Fat</DataTableCell>
-              <DataTableCell alignEnd>{formatNumber(rest.fat)}</DataTableCell>
-              <DataTableCell alignEnd>
+              <DataTableCell>fat</DataTableCell>
+              <DataTableCell style={center}>
+                {formatNumber(rest.fat)}
+              </DataTableCell>
+              <DataTableCell style={styleWorkoutCell}>
                 {formatNumber(workout.fat)}
               </DataTableCell>
             </DataTableRow>
             <DataTableRow>
-              <DataTableCell>Protein</DataTableCell>
-              <DataTableCell alignEnd>
+              <DataTableCell>protein</DataTableCell>
+              <DataTableCell style={center}>
                 {formatNumber(rest.protein)}
               </DataTableCell>
-              <DataTableCell alignEnd>
+              <DataTableCell style={styleWorkoutCell}>
                 {formatNumber(workout.protein)}
               </DataTableCell>
             </DataTableRow>

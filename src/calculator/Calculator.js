@@ -143,7 +143,8 @@ class Calculator extends React.Component {
                       </Typography>
                       <ListDivider />
                     </div>
-
+                  </GridCell>
+                  <GridCell span="4">
                     <TextField
                       className="mb-4 mr-4"
                       label="Total Calories"
@@ -151,6 +152,7 @@ class Calculator extends React.Component {
                       onBlur={handleBlur}
                       onChange={handleChange}
                       outlined
+                      type="number"
                       value={values.calories}
                     />
                     {errors.calories && (
@@ -158,7 +160,8 @@ class Calculator extends React.Component {
                         {errors.calories}
                       </TextFieldHelperText>
                     )}
-
+                  </GridCell>
+                  <GridCell span="4">
                     <TextField
                       className="mb-4 mr-4"
                       label="Workoutday Extra Calories"
@@ -166,6 +169,7 @@ class Calculator extends React.Component {
                       onBlur={handleBlur}
                       onChange={handleChange}
                       outlined
+                      type="number"
                       value={values.caloriesExtraForWorkoutDay}
                     />
                     {errors.caloriesExtraForWorkoutDay && (
@@ -173,7 +177,8 @@ class Calculator extends React.Component {
                         {errors.caloriesExtraForWorkoutDay}
                       </TextFieldHelperText>
                     )}
-
+                  </GridCell>
+                  <GridCell span="4">
                     <TextField
                       className="mb-4 mr-4"
                       label="Fat % from calories"
@@ -181,6 +186,7 @@ class Calculator extends React.Component {
                       onBlur={handleBlur}
                       onChange={handleChange}
                       outlined
+                      type="number"
                       value={values.fatCaloriesRatio}
                     />
                     {errors.fatCaloriesRatio && (
@@ -188,7 +194,8 @@ class Calculator extends React.Component {
                         {errors.fatCaloriesRatio}
                       </TextFieldHelperText>
                     )}
-
+                  </GridCell>
+                  <GridCell span="4">
                     <TextField
                       className="mb-4 mr-4"
                       label="Body weight (lbs)"
@@ -196,6 +203,7 @@ class Calculator extends React.Component {
                       onBlur={handleBlur}
                       onChange={handleChange}
                       outlined
+                      type="number"
                       value={values.bodyWeight}
                     />
                     {errors.bodyWeight && (
@@ -203,7 +211,8 @@ class Calculator extends React.Component {
                         {errors.bodyWeight}
                       </TextFieldHelperText>
                     )}
-
+                  </GridCell>
+                  <GridCell span="4">
                     <TextField
                       className="mb-4 mr-4"
                       label="Protein (g) per Body (lb)"
@@ -211,6 +220,7 @@ class Calculator extends React.Component {
                       onBlur={handleBlur}
                       onChange={handleChange}
                       outlined
+                      type="number"
                       value={values.proteinGramsPerBodyWeightLb}
                     />
                     {errors.proteinGramsPerBodyWeightLb && (
@@ -221,18 +231,10 @@ class Calculator extends React.Component {
                   </GridCell>
                 </Grid>
 
-                <footer className="flex justify-end mt-4 mb-8 pr-4">
-                  <Button type="reset" className="mr-4" onClick={handleReset}>
-                    reset
-                  </Button>
-                  <Button type="submit" raised disabled={isSubmitting}>
-                    save
-                  </Button>
-                </footer>
-
                 <Typography use="overline" tag="div" className="mx-4 mt-4">
                   Preview Macros
                 </Typography>
+
                 <ListDivider />
 
                 <div className="m-4">
@@ -244,6 +246,15 @@ class Calculator extends React.Component {
                 </div>
 
                 <ListDivider />
+
+                <footer className="flex justify-end mt-8 mb-8 pr-4">
+                  <Button type="reset" className="mr-4" onClick={handleReset}>
+                    reset
+                  </Button>
+                  <Button type="submit" raised disabled={isSubmitting}>
+                    save
+                  </Button>
+                </footer>
               </Form>
             </div>
           );
