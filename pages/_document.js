@@ -14,7 +14,7 @@ export default class MyDocument extends Document {
     return (
       <html lang="en">
         <Head>
-          <meta charset="UTF-8" />
+          <meta charSet="UTF-8" />
           <title>{meta.title}</title>
           <meta name="description" content={meta.description} />
 
