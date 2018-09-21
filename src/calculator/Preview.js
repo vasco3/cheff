@@ -8,9 +8,12 @@ function formatNumber(number, format) {
 class Preview extends Component {
   state = {};
   render() {
-    const { calories, carbs, fat, protein } = this.props;
+    const { bodyWeightLbs, calories, carbs, fat, protein } = this.props;
     return (
       <List>
+        <SimpleListItem graphic="trip_origin">
+          {formatNumber(calories / bodyWeightLbs, '0,0')} cal / body-lb
+        </SimpleListItem>
         <SimpleListItem graphic="trip_origin">
           {formatNumber(calories, '0,0')} cal
         </SimpleListItem>

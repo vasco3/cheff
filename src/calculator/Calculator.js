@@ -239,14 +239,20 @@ class Calculator extends React.Component {
                       Rest Day
                     </Typography>
                     <ListDivider />
-                    <Preview {...computeMacros(values)} />
+                    <Preview
+                      {...computeMacros(values)}
+                      bodyWeightLbs={values.bodyWeight}
+                    />
                   </GridCell>
                   <GridCell span="6">
                     <Typography use="overline" tag="div">
                       Workout Day
                     </Typography>
                     <ListDivider />
-                    <Preview {...computeMacros(values, true)} />
+                    <Preview
+                      {...computeMacros(values, true)}
+                      bodyWeightLbs={values.bodyWeight}
+                    />
                   </GridCell>
                 </Grid>
 
