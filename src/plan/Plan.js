@@ -62,8 +62,8 @@ class Plan extends React.Component {
               <Card outlined>
                 <div className="flex justify-between px-4 py-6 items-center">
                   <Typography use="headline5">
-                    {numeral(tracker.calories).format('0,0')} /{' '}
-                    {numeral(macros.calories).format('0,0')} cal
+                    {numeral(macros.calories - tracker.calories).format('0,0')}{' '}
+                    to {numeral(macros.calories).format('0,0')} cal
                   </Typography>
                   <Button onClick={() => handleTracker({ action: 'reset' })}>
                     Reset
@@ -82,6 +82,7 @@ class Plan extends React.Component {
                 />
 
                 <Macro
+                  decrement={1}
                   increment={10}
                   name="carbs"
                   target={macros.carbs}
@@ -89,6 +90,7 @@ class Plan extends React.Component {
                   onAction={handleTracker}
                 />
                 <Macro
+                  decrement={1}
                   increment={5}
                   name="protein"
                   target={macros.protein}
@@ -96,6 +98,7 @@ class Plan extends React.Component {
                   onAction={handleTracker}
                 />
                 <Macro
+                  decrement={1}
                   increment={5}
                   name="fat"
                   target={macros.fat}
