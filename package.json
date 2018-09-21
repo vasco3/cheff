@@ -39,7 +39,7 @@
     "react-dom": "^16.5.2",
     "react-qr-reader": "^2.1.0",
     "react-vis": "^1.10.7",
-    "rmwc": "^1.9.2",
+    "rmwc": "^2.2.0",
     "tailwindcss": "^0.6.5",
     "uuid": "^3.3.2",
     "webtorrent": "^0.102.1",

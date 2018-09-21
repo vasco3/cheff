@@ -1,5 +1,4 @@
 import React from 'react';
-import Link from 'next/link';
 import Router from 'next/router';
 
 import { Formik, Form } from 'formik';
@@ -85,44 +84,44 @@ class Calculator extends React.Component {
                     <ListDivider />
                     <Checkbox
                       onChange={handleChange}
-                      value={values.workoutOnSunday}
+                      checked={values.workoutOnSunday}
                       name="workoutOnSunday"
                       label="Sunday"
                     />
 
                     <Checkbox
                       onChange={handleChange}
-                      value={values.workoutOnMonday}
+                      checked={values.workoutOnMonday}
                       name="workoutOnMonday"
                       label="Monday"
                     />
                     <Checkbox
                       onChange={handleChange}
-                      value={values.workoutOnTuesday}
+                      checked={values.workoutOnTuesday}
                       name="workoutOnTuesday"
                       label="Tuesday"
                     />
                     <Checkbox
                       onChange={handleChange}
-                      value={values.workoutOnWednesday}
+                      checked={values.workoutOnWednesday}
                       name="workoutOnWednesday"
                       label="Wednesday"
                     />
                     <Checkbox
                       onChange={handleChange}
-                      value={values.workoutOnThursday}
+                      checked={values.workoutOnThursday}
                       name="workoutOnThursday"
                       label="Thursday"
                     />
                     <Checkbox
                       onChange={handleChange}
-                      value={values.workoutOnFriday}
+                      checked={values.workoutOnFriday}
                       name="workoutOnFriday"
                       label="Friday"
                     />
                     <Checkbox
                       onChange={handleChange}
-                      value={values.workoutOnSaturday}
+                      checked={values.workoutOnSaturday}
                       name="workoutOnSaturday"
                       label="Saturday"
                     />
