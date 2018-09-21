@@ -67,7 +67,7 @@ const RecipeForm = ({ recipe = {}, onCancel, onSave }) => {
               })}
             </div>
             <footer className="recipeFormFooter pr-4 mb-4">
-              <Button className="mr-4" onClick={onCancel}>
+              <Button type="reset" className="mr-4" onClick={onCancel}>
                 cancel
               </Button>
               <Button type="submit" raised disabled={isSubmitting}>
