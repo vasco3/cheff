@@ -19,7 +19,7 @@ function Food({
   recipesFavoriteKeys,
 }) {
   return (
-    <GridCell span="6" mobile="12">
+    <GridCell span="6">
       <Card outlined>
         <div className="flex justify-between p-4 items-center">
           <Typography use="headline5">

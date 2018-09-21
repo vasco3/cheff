@@ -18,7 +18,6 @@ class Plan extends React.Component {
   state = { activeTab: 0 };
   render() {
     const {
-      isMobile = false,
       isWorkoutDay = false,
       menu = [],
       handleMenuGenerate,
@@ -34,8 +33,8 @@ class Plan extends React.Component {
     const { activeTab } = this.state;
 
     const macros = isWorkoutDay ? macrosWorkout : macrosRest;
-    const showMacros = isMobile ? activeTab === 0 : true;
-    const showFood = isMobile ? activeTab === 1 : true;
+    const showMacros = activeTab === 0;
+    const showFood = activeTab === 1;
 
     const hasRecipesMinimum = recipes.size < RECIPES_MINIMUM;
 
@@ -48,18 +47,18 @@ class Plan extends React.Component {
             </Typography>
           </div>
         )}
-        {isMobile && (
-          <TabBar
-            activeTabIndex={activeTab}
-            onActivate={evt => this.setState({ activeTab: evt.detail.index })}
-          >
-            <Tab>Macros</Tab>
-            <Tab>Food</Tab>
-          </TabBar>
-        )}
         <Grid>
+          <GridCell span="12">
+            <TabBar
+              activeTabIndex={activeTab}
+              onActivate={evt => this.setState({ activeTab: evt.detail.index })}
+            >
+              <Tab>Macros</Tab>
+              <Tab>Food</Tab>
+            </TabBar>
+          </GridCell>
           {showMacros && (
-            <GridCell span="6" mobile="12">
+            <GridCell span="12">
               <Card outlined>
                 <div className="flex justify-between px-4 py-6 items-center">
                   <Typography use="headline5">
