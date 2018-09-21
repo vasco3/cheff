@@ -108,8 +108,6 @@ export default class MyDocument extends Document {
             rel="stylesheet"
           />
 
-          <link rel="stylesheet" href="/_next/static/style.css" />
-
           {/* <meta property="og:url" content={meta.url} />
           <meta property="og:title" content={meta.title || ''} />
           <meta property="og:description" content={meta.description || ''} />
