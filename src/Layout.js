@@ -337,7 +337,6 @@ class Layout extends Component {
 
         <div className="mdc-top-app-bar--dense-fixed-adjust appContent">
           <MenuDrawer
-            isMobile={state.isMobile}
             onClose={() => this.setState({ drawerIsOpen: false })}
             open={state.drawerIsOpen}
           />
