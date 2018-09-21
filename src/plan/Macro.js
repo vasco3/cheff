@@ -22,7 +22,7 @@ class Macro extends Component {
           <Typography use="subtitle1">{upperFirst(name)}</Typography>{' '}
           <Typography use="caption">{percent}</Typography>
           <Typography use="body1" tag="div">
-            {formatNumber(total)} / {formatNumber(target)} g
+            {formatNumber(target - total)} for {formatNumber(target)} g
           </Typography>
         </div>
         <Fab
