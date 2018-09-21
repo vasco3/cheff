@@ -71,7 +71,7 @@ const RecipeForm = ({ recipe = {}, onCancel, onSave }) => {
                 cancel
               </Button>
               <Button type="submit" raised disabled={isSubmitting}>
-                add recipe
+                save
               </Button>
             </footer>
             <style jsx>{`
