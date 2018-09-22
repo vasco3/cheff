@@ -40,13 +40,14 @@ class Plan extends React.Component {
 
     return (
       <div className="plan">
-        {isWorkoutDay && (
-          <div className="banner text-center">
-            <Typography use="subtitle1" theme="onSecondary">
-              Workout Day
-            </Typography>
-          </div>
-        )}
+        <div
+          className="banner text-center"
+          style={isWorkoutDay ? { display: 'none' } : {}}
+        >
+          <Typography use="subtitle1" theme="onSecondary">
+            Workout Day
+          </Typography>
+        </div>
         <Grid>
           <GridCell span="12">
             <TabBar
