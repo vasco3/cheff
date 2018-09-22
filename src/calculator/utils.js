@@ -31,7 +31,7 @@ export function calculateCarbs({ calories, fat, protein }) {
 
 export function calculateFat(calories, fatCaloriesRatio) {
   const fat =
-    (parseInt(calories) * (parseInt(fatCaloriesRatio, 10) / 100)) /
+    (parseInt(calories, 10) * (parseInt(fatCaloriesRatio, 10) / 100)) /
     FAT_CALORIES_PER_GRAM;
   return Math.round(fat);
 }
