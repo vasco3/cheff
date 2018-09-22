@@ -152,8 +152,7 @@ class Calculator extends React.Component {
                       onBlur={handleBlur}
                       onChange={handleChange}
                       outlined
-                      type="number"
-                      value={values.calories}
+                      defaultValue={values.calories}
                     />
                     {errors.calories && (
                       <TextFieldHelperText validationMsg persistent>
@@ -169,29 +168,11 @@ class Calculator extends React.Component {
                       onBlur={handleBlur}
                       onChange={handleChange}
                       outlined
-                      type="number"
-                      value={values.caloriesExtraForWorkoutDay}
+                      defaultValue={values.caloriesExtraForWorkoutDay}
                     />
                     {errors.caloriesExtraForWorkoutDay && (
                       <TextFieldHelperText validationMsg persistent>
                         {errors.caloriesExtraForWorkoutDay}
-                      </TextFieldHelperText>
-                    )}
-                  </GridCell>
-                  <GridCell span="4">
-                    <TextField
-                      className="mb-4 mr-4"
-                      label="Fat % from calories"
-                      name="fatCaloriesRatio"
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      outlined
-                      type="number"
-                      value={values.fatCaloriesRatio}
-                    />
-                    {errors.fatCaloriesRatio && (
-                      <TextFieldHelperText validationMsg persistent>
-                        {errors.fatCaloriesRatio}
                       </TextFieldHelperText>
                     )}
                   </GridCell>
@@ -203,12 +184,27 @@ class Calculator extends React.Component {
                       onBlur={handleBlur}
                       onChange={handleChange}
                       outlined
-                      type="number"
-                      value={values.bodyWeight}
+                      defaultValue={values.bodyWeight}
                     />
                     {errors.bodyWeight && (
                       <TextFieldHelperText validationMsg persistent>
                         {errors.bodyWeight}
+                      </TextFieldHelperText>
+                    )}
+                  </GridCell>
+                  <GridCell span="4">
+                    <TextField
+                      className="mb-4 mr-4"
+                      label="Fat % from calories"
+                      name="fatCaloriesRatio"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      outlined
+                      defaultValue={values.fatCaloriesRatio}
+                    />
+                    {errors.fatCaloriesRatio && (
+                      <TextFieldHelperText validationMsg persistent>
+                        {errors.fatCaloriesRatio}
                       </TextFieldHelperText>
                     )}
                   </GridCell>
@@ -220,8 +216,7 @@ class Calculator extends React.Component {
                       onBlur={handleBlur}
                       onChange={handleChange}
                       outlined
-                      type="number"
-                      value={values.proteinGramsPerBodyWeightLb}
+                      defaultValue={values.proteinGramsPerBodyWeightLb}
                     />
                     {errors.proteinGramsPerBodyWeightLb && (
                       <TextFieldHelperText validationMsg persistent>
