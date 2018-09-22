@@ -38,7 +38,7 @@ class Plan extends React.Component {
 
     const hasRecipesMinimum = recipes.size < RECIPES_MINIMUM;
 
-    const styleBanner = isWorkoutDay ? { style: { display: 'none' } } : {};
+    const styleBanner = isWorkoutDay ? {} : { style: { display: 'none' } };
     return (
       <div className="plan">
         <div className="banner text-center" {...styleBanner}>

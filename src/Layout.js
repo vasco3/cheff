@@ -76,13 +76,14 @@ function shouldWorkout({
     workoutOnFriday,
     workoutOnSaturday,
   ];
-  return weekdays[moment().day()];
+  return weekdays[moment().day()] || false;
 }
 class Layout extends Component {
   constructor(props) {
     super(props);
 
     const {
+      isWorkoutDay,
       menu,
       macrosRest,
       macrosWorkout,
@@ -94,7 +95,7 @@ class Layout extends Component {
 
     this.state = {
       drawerIsOpen: false,
-      isWorkoutDay: shouldWorkout(settings),
+      isWorkoutDay,
       macrosRest,
       macrosWorkout,
       menu,
@@ -115,6 +116,7 @@ class Layout extends Component {
 
   componentDidMount() {
     const {
+      isWorkoutDay,
       macrosRest,
       macrosWorkout,
       menu,
@@ -125,7 +127,7 @@ class Layout extends Component {
     } = loadLocalValues();
 
     this.setState({
-      isWorkoutDay: shouldWorkout(settings),
+      isWorkoutDay,
       macrosRest,
       macrosWorkout,
       menu,
