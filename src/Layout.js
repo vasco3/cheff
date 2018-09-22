@@ -17,8 +17,8 @@ import { calculateDayMenu, calculateSettings, prioritizeAndSort } from './util';
 import { convertMacroGramToCalories } from './calculator/utils';
 import demoRecipes from '../data/recipes';
 
-function loadLocalValues() {
-  if (typeof window === 'undefined') {
+function loadLocalValues(isSSR) {
+  if (isSSR) {
     return {
       isWorkoutDay: false,
       macrosRest: {},
@@ -90,7 +90,7 @@ class Layout extends Component {
       recipesFavoriteKeys,
       settings,
       tracker,
-    } = loadLocalValues();
+    } = loadLocalValues(true);
 
     this.state = {
       drawerIsOpen: false,
@@ -111,6 +111,29 @@ class Layout extends Component {
       settings,
       tracker,
     };
+  }
+
+  componentDidMount() {
+    const {
+      macrosRest,
+      macrosWorkout,
+      menu,
+      recipes,
+      recipesFavoriteKeys,
+      settings,
+      tracker,
+    } = loadLocalValues();
+
+    this.setState({
+      isWorkoutDay: shouldWorkout(settings),
+      macrosRest,
+      macrosWorkout,
+      menu,
+      recipes,
+      recipesFavoriteKeys,
+      settings,
+      tracker,
+    });
   }
 
   handleTracker({ action, macro, value }) {
