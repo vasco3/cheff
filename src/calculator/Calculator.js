@@ -23,13 +23,11 @@ class Calculator extends React.Component {
     return (
       <Formik
         initialValues={{
-          bodyWeight: settings.bodyWeight || 180,
-          calories: settings.calories || 2200,
-          caloriesExtraForWorkoutDay:
-            settings.caloriesExtraForWorkoutDay || 100,
-          fatCaloriesRatio: settings.fatCaloriesRatio || 25,
-          proteinGramsPerBodyWeightLb:
-            settings.proteinGramsPerBodyWeight || 0.8,
+          bodyWeight: settings.bodyWeight,
+          calories: settings.calories,
+          caloriesExtraForWorkoutDay: settings.caloriesExtraForWorkoutDay,
+          fatCaloriesRatio: settings.fatCaloriesRatio,
+          proteinGramsPerBodyWeightLb: settings.proteinGramsPerBodyWeightLb,
           workoutOnSunday: settings.workoutOnSunday || false,
           workoutOnMonday: settings.workoutOnMonday || false,
           workoutOnTuesday: settings.workoutOnTuesday || false,
@@ -52,14 +50,16 @@ class Calculator extends React.Component {
           handleCalculatorSave({
             settings: {
               ...values,
-              bodyWeight: parseInt(values.bodyWeight),
-              calories: parseInt(values.calories),
+              bodyWeight: parseInt(values.bodyWeight, 10),
+              calories: parseInt(values.calories, 10),
               caloriesExtraForWorkoutDay: parseInt(
                 values.caloriesExtraForWorkoutDay,
+                10,
               ),
-              fatCaloriesRatio: parseInt(values.fatCaloriesRatio),
+              fatCaloriesRatio: parseInt(values.fatCaloriesRatio, 10),
               proteinGramsPerBodyWeightLb: parseFloat(
                 values.proteinGramsPerBodyWeightLb,
+                10,
               ),
             },
             macrosRest,
