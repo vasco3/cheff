@@ -18,6 +18,7 @@ export default class MyDocument extends Document {
           <title>{meta.title}</title>
           <meta name="description" content={meta.description} />
 
+          <link rel="apple-touch-startup-image" href="/static/launch.png" />
           <link
             rel="apple-touch-icon"
             sizes="57x57"
