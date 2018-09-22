@@ -48,7 +48,7 @@ const RecipeForm = ({ recipe = {}, onCancel, onSave }) => {
           <Form>
             <div className="flex flex-wrap p-4">
               {RECIPE_ATTRIBUTES.map(function mapRecipeForm(
-                { name, label, defaultValue },
+                { name, label },
                 index,
               ) {
                 return (
@@ -56,12 +56,11 @@ const RecipeForm = ({ recipe = {}, onCancel, onSave }) => {
                     className="mb-4 mr-4"
                     key={index}
                     name={name}
-                    value={values[name]}
+                    defaultValue={values[name]}
                     onBlur={handleBlur}
                     outlined
                     label={label}
                     onChange={handleChange}
-                    type={typeof defaultValue === 'string' ? 'text' : 'number'}
                   />
                 );
               })}

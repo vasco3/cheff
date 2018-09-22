@@ -38,15 +38,14 @@ class Plan extends React.Component {
 
     const hasRecipesMinimum = recipes.size < RECIPES_MINIMUM;
 
+    const styleBanner = isWorkoutDay ? {} : { style: { display: 'none' } };
     return (
       <div className="plan">
-        {isWorkoutDay && (
-          <div className="banner text-center">
-            <Typography use="subtitle1" theme="onSecondary">
-              Workout Day
-            </Typography>
-          </div>
-        )}
+        <div className="banner text-center" {...styleBanner}>
+          <Typography use="subtitle1" theme="onSecondary">
+            Workout Day
+          </Typography>
+        </div>
         <Grid>
           <GridCell span="12">
             <TabBar
@@ -63,7 +62,9 @@ class Plan extends React.Component {
                 <div className="flex justify-between px-4 py-6 items-center">
                   <Typography use="headline5">
                     {numeral(macros.calories - tracker.calories).format('0,0')}{' '}
-                    to {numeral(macros.calories).format('0,0')} cal
+                    <Typography use="subtitle1">
+                      to {numeral(macros.calories).format('0,0')} cal
+                    </Typography>
                   </Typography>
                   <Button onClick={() => handleTracker({ action: 'reset' })}>
                     Reset
@@ -83,7 +84,8 @@ class Plan extends React.Component {
 
                 <Macro
                   decrement={1}
-                  increment={10}
+                  incrementLow={5}
+                  incrementHigh={10}
                   name="carbs"
                   target={macros.carbs}
                   total={tracker.carbs}
@@ -91,7 +93,8 @@ class Plan extends React.Component {
                 />
                 <Macro
                   decrement={1}
-                  increment={5}
+                  incrementLow={5}
+                  incrementHigh={10}
                   name="protein"
                   target={macros.protein}
                   total={tracker.protein}
@@ -99,7 +102,8 @@ class Plan extends React.Component {
                 />
                 <Macro
                   decrement={1}
-                  increment={5}
+                  incrementLow={5}
+                  incrementHigh={10}
                   name="fat"
                   target={macros.fat}
                   total={tracker.fat}

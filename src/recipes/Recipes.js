@@ -143,7 +143,7 @@ class Recipes extends React.Component {
                 <SimpleListItem
                   onClick={() => this.selectRecipeToEdit(_key)}
                   text={name}
-                  secondaryText={`${Calories}cal | Protein ${Protein}g | Carbs ${Carbs}g | Fat ${Fat}g | ${servings} servings`}
+                  secondaryText={`Protein ${Protein}g Carbs ${Carbs}g Fat ${Fat}g ${servings} servings`}
                   meta={
                     <Icon
                       icon="delete"
