@@ -24,31 +24,44 @@ const { className, styles } = css.resolve`span {
 }`;
 
 class Macro extends Component {
-  state = {};
   render() {
-    const { decrement, increment, onAction, name, target, total } = this.props;
-    const percent = numeral(total / target).format('0%');
+    const {
+      decrement,
+      incrementLow,
+      incrementHigh,
+      onAction,
+      name,
+      target,
+      total,
+    } = this.props;
     return (
-      <div>
-        <Typography use="overline" className="pl-4">
-          {upperFirst(name)}
-        </Typography>{' '}
-        <Typography use="body1">
-          {formatNumber(target - total)} to {formatNumber(target)}g
-        </Typography>
+      <div className="mb-4">
+        <div className="title px-4">
+          <div>
+            <Typography use="headline6">
+              {formatNumber(target - total)}g
+            </Typography>
+            <Typography use="caption"> to {formatNumber(target)}g</Typography>
+          </div>
+          <Typography use="overline" className="pl-4">
+            {upperFirst(name)}
+          </Typography>
+        </div>
+
         <ListDivider />
-        <div className="macro">
+
+        <div className="macro mt-4">
           <div className="chart">
             <MacroRing name={name} total={total} target={target} />
 
             <Typography className={className} use="caption">
-              {percent}
+              {formatNumber(total)}g
             </Typography>
           </div>
 
           <div>
             <Fab
-              className="mr-4"
+              className="mr-2"
               onClick={function handleMacroActionRemove() {
                 onAction({ action: 'subtract', macro: name, value: decrement });
               }}
@@ -56,11 +69,19 @@ class Macro extends Component {
               icon="remove"
             />
             <Fab
-              className="mr-4"
-              onClick={function handleMacroActionAdd() {
-                onAction({ action: 'add', macro: name, value: increment });
+              className="mr-2"
+              onClick={function handleMacroActionAddLow() {
+                onAction({ action: 'add', macro: name, value: incrementLow });
               }}
-              label={`${increment}`}
+              label={`${incrementLow}`}
+              icon="add"
+            />
+            <Fab
+              className="mr-2"
+              onClick={function handleMacroActionAddHigh() {
+                onAction({ action: 'add', macro: name, value: incrementHigh });
+              }}
+              label={`${incrementHigh}`}
               icon="add"
             />
           </div>
@@ -73,6 +94,10 @@ class Macro extends Component {
           .macro {
             display: flex;
             align-items: center;
+            justify-content: space-between;
+          }
+          .title {
+            display: flex;
             justify-content: space-between;
           }
         `}</style>
