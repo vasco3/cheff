@@ -13,7 +13,7 @@ class Sync extends Component {
           Sync your recipe data within your laptop and mobile devices
         </Typography>
         <Exporter recipes={this.props.recipes} />
-        <Importer importRecipes={this.props.importRecipes} />
+        <Importer importRecipes={this.props.handleRecipesTorrentImport} />
       </div>
     );
   }

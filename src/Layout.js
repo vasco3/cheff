@@ -107,6 +107,7 @@ class Layout extends Component {
       handleRecipeRemove: this.handleRecipeRemove.bind(this),
       handleRecipeEdit: this.handleRecipeEdit.bind(this),
       handleRecipesImportDemo: this.handleRecipesImportDemo.bind(this),
+      handleRecipesTorrentImport: this.handleRecipesTorrentImport.bind(this),
       handleCalculatorSave: this.handleCalculatorSave.bind(this),
       handleTracker: this.handleTracker.bind(this),
       settings,
@@ -271,7 +272,7 @@ class Layout extends Component {
     });
   }
 
-  importRecipes(recipesScanned) {
+  handleRecipesTorrentImport(recipesScanned) {
     const recipes = List(recipesScanned);
 
     this.setState({ recipes }, function saveRecipesToLocal() {

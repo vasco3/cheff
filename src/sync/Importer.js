@@ -5,57 +5,65 @@ import { Button } from 'rmwc/Button';
 import { SimpleDialog } from 'rmwc/Dialog';
 import { Typography } from 'rmwc';
 
-const TORRENT_FILE_NAME = 'cheff recipes';
+import { TORRENT_FILE_NAME } from './constants';
 
 class Importer extends Component {
   constructor(props) {
     super(props);
-    this.importRecipesToQRCode = this.importRecipesToQRCode.bind(this);
-    this.handleScan = this.handleScan.bind(this);
-    this.handleScanError = this.handleScanError.bind(this);
-    this.startTorrentFetching = this.startTorrentFetching.bind(this);
     this.state = {};
   }
 
-  importRecipesToQRCode() {
+  importRecipesToQRCode = () => {
     this.setState({ importDialogIsOpen: true });
-  }
+  };
 
-  startTorrentFetching() {
+  startTorrentFetching = () => {
+    const self = this;
     const client = new WebTorrent();
 
-    client.add(this.state.torrentId, torrent => {
-      torrent.on('done', () => {
-        console.log('torrent download finished');
+    if (this.state.torrentId) {
+      client.add(this.state.torrentId, torrent => {
+        torrent.on('done', () => {
+          console.log('torrent download finished');
 
-        torrent.files
-          .find(file => file.name === TORRENT_FILE_NAME)
-          .getBuffer((err, buf) => {
-            if (err) throw err;
-            const recipesSerialized = buf.toString('ascii');
-            if (recipesSerialized) {
-              try {
-                const recipes = JSON.parse(recipesSerialized);
-                this.props.importRecipes(recipes);
-              } catch (err) {
+          torrent.files
+            .find(file => file.name === TORRENT_FILE_NAME)
+            .getBuffer((err, buf) => {
+              if (err) {
+                const { message } = err || {};
                 console.error(err);
+                self.setState({ error: message });
               }
-            }
-          });
+              const recipesSerialized = buf.toString('ascii');
+              if (recipesSerialized) {
+                try {
+                  const recipes = JSON.parse(recipesSerialized);
+                  self.props.importRecipes(recipes);
+                  self.setState({ done: 'Import complete!' });
+                } catch (err) {
+                  console.error(err);
+                }
+              }
+            });
+        });
       });
-    });
-  }
+    } else {
+      self.setState({ error: 'missing torrentId' });
+    }
+  };
 
-  handleScan(torrentId) {
+  handleScan = torrentId => {
     if (torrentId) {
       this.setState({ torrentId });
     }
-  }
+  };
 
-  handleScanError(err) {
+  handleScanError = err => {
     // todo show snackbar
     console.error(err);
-  }
+    const { message } = err || {};
+    this.setState({ error: message });
+  };
 
   render() {
     return (
@@ -66,7 +74,7 @@ class Importer extends Component {
           title="Import Recipes"
           open={this.state.importDialogIsOpen}
           onClose={() => this.setState({ importDialogIsOpen: false })}
-          acceptLabel="Save"
+          acceptLabel="Start"
           onAccept={this.startTorrentFetching}
           onCancel={() => console.log('cancelled import')}
         >
@@ -81,6 +89,9 @@ class Importer extends Component {
           )}
           <p>{this.state.torrentId && 'Ready'}</p>
         </SimpleDialog>
+
+        {this.state.error}
+        {this.state.done}
 
         <style jsx>{`
           .qrImage {
