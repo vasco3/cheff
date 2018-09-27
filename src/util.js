@@ -13,8 +13,8 @@ export function calculateSettings({ calories, carbs, fat, protein }) {
     CARBS_UPPER_BOUND: carbs + CARBS_TOLERANCE,
     FAT_LOWER_BOUND: fat - FAT_TOLERANCE,
     FAT_UPPER_BOUND: fat + FAT_TOLERANCE,
+    // No need for protein upper bound.
     PROTEIN_LOWER_BOUND: protein - PROTEIN_TOLERANCE,
-    PROTEIN_UPPER_BOUND: protein + PROTEIN_TOLERANCE,
   };
 }
 
@@ -65,8 +65,7 @@ export function calculateDayMenu({
       fat < settings.FAT_LOWER_BOUND || settings.FAT_UPPER_BOUND < fat;
 
     const isProteinOutOfBounds =
-      protein < settings.PROTEIN_LOWER_BOUND ||
-      settings.PROTEIN_UPPER_BOUND < protein;
+      protein < settings.PROTEIN_LOWER_BOUND 
 
     const shouldRestart =
       isCaloriesOutOfBounds ||
@@ -96,7 +95,6 @@ export function calculateDayMenu({
     caloriesCounted > settings.CALORIES_UPPER_BOUND ||
     carbsCounted > settings.CARBS_UPPER_BOUND ||
     fatCounted > settings.FAT_UPPER_BOUND ||
-    proteinCounted > settings.PROTEIN_UPPER_BOUND ||
     hasServingsLeft;
 
   if (shouldSkipRecipe) {
