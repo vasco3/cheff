@@ -5,16 +5,16 @@ import { Button } from 'rmwc/Button';
 import { SimpleDialog } from 'rmwc/Dialog';
 import { Typography } from 'rmwc';
 
-const TORRENT_FILE_NAME = 'cheff recipes';
+import { TORRENT_FILE_NAME } from './constants';
 
 class Exporter extends Component {
   constructor(props) {
     super(props);
-    this.exportRecipesToQRCode = this.exportRecipesToQRCode.bind(this);
     this.state = {};
   }
 
-  exportRecipesToQRCode() {
+  exportRecipesToQRCode = () => {
+    const self = this;
     const recipesSerialized = JSON.stringify(this.props.recipes);
 
     const recipesBuffer = Buffer.from(recipesSerialized, 'ascii');
@@ -23,6 +23,7 @@ class Exporter extends Component {
 
     client.seed(recipesBuffer, { name: TORRENT_FILE_NAME }, torrent => {
       console.log('Client is seeding ' + torrent.magnetURI);
+      self.setState({ magnetURI: torrent.magnetURI });
 
       QRCode.toDataURL(torrent.magnetURI)
         .then(url => {
@@ -38,7 +39,7 @@ class Exporter extends Component {
           console.error(err);
         });
     });
-  }
+  };
 
   render() {
     return (
@@ -50,12 +51,16 @@ class Exporter extends Component {
           open={this.state.exportDialogIsOpen}
           onClose={() => this.setState({ exportDialogIsOpen: false })}
           onAccept={() => console.log('accepted')}
-          acceptLabel="Done"
+          acceptLabel="Stop Seeding"
           onCancel={() => console.log('cancelled')}
         >
           <Typography use="subtitle2">QR code generated</Typography>
           <img src={this.state.qrCodeDataUrl} className="qrImage" />
         </SimpleDialog>
+
+        {this.state.magnetURI && `Seeding ${this.state.magnetURI}`}
+
+        {this.state.error}
 
         <style jsx>{`
           .qrImage {
