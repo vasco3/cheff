@@ -1,6 +1,6 @@
 {
   "name": "cheff",
-  "version": "16.0.0",
+  "version": "16.0.1",
   "description": "Meal Planner",
   "main": "index.js",
   "scripts": {
