@@ -7,9 +7,9 @@
     "dev": "next",
     "build": "next build",
     "preexport": "npm run build",
-    "export": "next export",
+    "export": "next export -o cheff",
     "postexport": "cp static/sw.js out && cp static/robots.txt out",
-    "deploy": "now out",
+    "deploy": "now cheff",
     "start": "next start",
     "start:static": "serve -p 3000",
     "test": "test"
