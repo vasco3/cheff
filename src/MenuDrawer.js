@@ -22,6 +22,7 @@ const PATHS = {
   plan: '/plan',
   recipes: '/recipes',
   sync: '/sync',
+  trivia: '/trivia',
 };
 
 const MenuDrawer = ({ open, onClose, router = {} }) => {
@@ -34,6 +35,13 @@ const MenuDrawer = ({ open, onClose, router = {} }) => {
       </DrawerHeader>
 
       <DrawerContent onClick={onClose}>
+        <Link href={PATHS.trivia}>
+          <SimpleListItem
+            graphic={<Icon icon="casino" theme="primary" />}
+            text="Trivia"
+            selected={pathname === PATHS.trivia}
+          />
+        </Link>
         <Link href={PATHS.plan}>
           <SimpleListItem
             graphic={<Icon icon="list_alt" theme="primary" />}
